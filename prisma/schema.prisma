@@ -34,9 +34,8 @@ model User {
   password      String?
   xp            Int          @default(0)
   createdAt     DateTime     @default(now())
-  tasks         TaskStatus[] // Relationship with TaskStatus model for user's tasks
-  ownedNFT      NFT[]
-  taskOrders    TaskOrder[]
+  tasks         TaskStatus[]
+  NFTs          UserNFT[]
 }
 
 model Task {
@@ -47,15 +46,16 @@ model Task {
   link         String
   platform     Platform
   taskType     TaskType
-  pendingTasks TaskOrder[]
   active       Boolean      @default(true)
+  daily        Boolean
   createdAt    DateTime     @default(now())
   expiresAt    DateTime?
-  userStatuses TaskStatus[] // Relationship with TaskStatus model for task's users
+  userStatuses TaskStatus[]
 }
 
 model TaskStatus {
   id        String         @id @default(uuid()) @db.VarChar(36)
+  xp        Int
   userId    String
   taskId    String
   status    TaskStatusEnum
@@ -63,20 +63,24 @@ model TaskStatus {
   task      Task           @relation(fields: [taskId], references: [id])
   createdAt DateTime       @default(now())
 
-  @@unique([userId, taskId]) // Ensure a user-task combination is unique
-}
-
-model TaskOrder {
-  id     String @id @default(uuid()) @db.VarChar(36)
-  User   User   @relation(fields: [userId], references: [id])
-  userId String @db.VarChar(36)
-  Task   Task   @relation(fields: [taskId], references: [id])
-  taskId String @db.VarChar(36)
+  @@unique([userId, taskId])
 }
 
 model NFT {
-  id      String @id @default(uuid()) @db.VarChar(36)
-  address String
-  User    User   @relation(fields: [userId], references: [id])
-  userId  String @db.VarChar(36)
+  id    String    @id @default(uuid()) @db.VarChar(36)
+  xp    Int
+  name  String    @unique
+  img   String
+  users UserNFT[]
+}
+
+model UserNFT {
+  id        String   @id @default(uuid()) @db.VarChar(36)
+  userId    String
+  nftId     String
+  user      User     @relation(fields: [userId], references: [id])
+  nft       NFT      @relation(fields: [nftId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, nftId])
 }

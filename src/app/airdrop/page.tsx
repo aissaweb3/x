@@ -1,9 +1,7 @@
 import Header from "@/components/header";
 
-
 export default async function Component() {
   return (
-    
     <div className="relative min-h-screen">
       <div className="absolute inset-0 z-[-1] overflow-hidden">
         <video
@@ -17,7 +15,12 @@ export default async function Component() {
       </div>
       <Header />
       <main className="flex flex-col items-center min-h-[calc(100vh-80px)] px-6 md:px-12 text-white">
-        <h1 className="text-4xl md:text-6xl font-bold">Airdrop</h1>
+        <h1
+          className="text-4xl md:text-6xl font-bold"
+          style={{ fontFamily: "'CustomFont'" }}
+        >
+          Airdrop
+        </h1>
       </main>
     </div>
   );

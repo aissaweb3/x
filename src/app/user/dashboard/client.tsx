@@ -4,19 +4,32 @@ import Tasks from "./tasks";
 import { Task } from "@prisma/client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 export function Client({
   tasksSTR,
   token,
   xp,
   count,
+  nftCount,
 }: {
   tasksSTR: string;
   token: string;
   xp: number;
   count: number;
+  nftCount: number;
 }) {
   const tasks: Task[] = JSON.parse(tasksSTR);
+
+  useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 1000);
+  }, []);
+
   return (
     <div
       style={
@@ -37,14 +50,14 @@ export function Client({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card className="flex flex-col gap-4">
           <CardHeader>
-            <CardTitle>XP Points</CardTitle>
+            <CardTitle>Unlocked Secrets</CardTitle>
           </CardHeader>
           <CardContent className="flex items-center justify-between">
             <div
-              className="text-6xl font-bold"
+              className="text-6xl font-bold text-[#ff0]"
               style={{ fontFamily: "'CustomFont'" }}
             >
-              {xp}
+              {xp} <span className="text-3xl opacity-80">Secrets</span>
             </div>
             <TrophyIcon className="h-8 w-8 text-white opacity-50" />
           </CardContent>
@@ -56,6 +69,23 @@ export function Client({
           <CardContent className="flex items-center justify-between">
             <div className="text-4xl font-bold">{count}</div>
             <ClipboardListIcon className="h-8 w-8 text-white opacity-50" />
+          </CardContent>
+        </Card>
+        <Card className="flex flex-col gap-4">
+          <CardHeader>
+            <div className="flex gap-2 items-center">
+              <CardTitle>NFTs</CardTitle>
+              <Link
+                href="/user/nft"
+                className="text-[white] underline hover:opacity-80"
+              >
+                Buy NFT
+              </Link>
+            </div>
+          </CardHeader>
+          <CardContent className="flex items-center justify-between">
+            <div className="text-4xl font-bold">{nftCount}</div>
+            <TrophyIcon className="h-8 w-8 text-white opacity-50" />
           </CardContent>
         </Card>
       </div>

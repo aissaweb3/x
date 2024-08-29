@@ -19,6 +19,7 @@ import { signOut } from "next-auth/react";
 import { Platform, Task, TaskType } from "@prisma/client";
 import { addTask, deleteTask, toggleStateTask } from "./server/manageTask";
 import formatDateSimple from "@/utils/simple/formatDateSimple";
+import Link from "next/link";
 
 export default function Add({
   token,
@@ -40,6 +41,7 @@ export default function Add({
     const taskType = e.get("taskType")?.toString().toUpperCase() as TaskType;
     const xp = parseFloat(e.get("xp") as string) as number;
     const expiresAt = new Date(e.get("expiresAt") as string) || null;
+    const daily = e.get("daily")?.toString().toLowerCase() === "daily";
 
     const payload = {
       title,
@@ -50,6 +52,7 @@ export default function Add({
       xp,
       expiresAt,
       token,
+      daily,
     };
     const result = await addTask(payload);
     if (!result.success) return setError(result.error);
@@ -84,6 +87,7 @@ export default function Add({
 
   return (
     <section>
+      <Link href="/admin/dashboard">dashboard</Link>
       <Button
         onClick={() => {
           signOut();
@@ -124,7 +128,7 @@ export default function Add({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <StarIcon className="h-4 w-4" style={{ color: "yellow" }} />
-                  <span style={{ color: "yellow" }}>{t.xp} XP</span>
+                  <span style={{ color: "yellow" }}>{t.xp} Secrets</span>
                 </div>
                 <div className="text-sm text-muted-foreground">
                   Created: {formatDateSimple(t.createdAt)}
@@ -218,12 +222,26 @@ export default function Add({
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="xp">XP</Label>
+                    <Label htmlFor="xp">Secrets</Label>
                     <Input name="xp" id="xp" type="number" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="expires-at">Expires At</Label>
                     <Input name="expiresAt" id="expiresAt" type="date" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="daily">Period</Label>
+                    <Select name="daily">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Period" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="daily">Daily</SelectItem>
+                        <SelectItem value="none">Not Daily</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 <div>

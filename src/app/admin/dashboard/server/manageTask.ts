@@ -12,11 +12,21 @@ type Data = {
   xp: number;
   expiresAt: Date;
   token: string;
+  daily: boolean;
 };
 
 export const addTask = async (data: Data) => {
-  const { platform, taskType, xp, expiresAt, token, description, link, title } =
-    data;
+  const {
+    platform,
+    taskType,
+    xp,
+    expiresAt,
+    token,
+    description,
+    link,
+    title,
+    daily,
+  } = data;
 
   const decoded: any = verify(token, process.env.JWT_SECRET as string);
   const { id } = decoded;
@@ -26,7 +36,16 @@ export const addTask = async (data: Data) => {
   // continue
   try {
     const created = await db.task.create({
-      data: { title, description, link, expiresAt, platform, taskType, xp },
+      data: {
+        title,
+        description,
+        link,
+        expiresAt,
+        platform,
+        taskType,
+        xp,
+        daily,
+      },
     });
     return { success: created, error: "" };
   } catch (error) {

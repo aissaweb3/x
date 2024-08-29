@@ -14,34 +14,23 @@ export const completeTaskServer = async (data: Data) => {
   const decoded: any = verify(token, process.env.JWT_SECRET as string);
   const { id } = decoded;
   const user = await db.user.findUnique({ where: { id } });
-  if (!user) return { success: false, error: "Not Authorised !" };
+  if (!user) return { success: false, error: "Re-Signin and try Again !" };
+  const task = await db.task.findUnique({ where: { id: taskId } });
+  if (!task) return { success: false, error: "Task Doesn't exist !" };
 
-    return { success: true, error: "" };
-    // continue
-    /*
+  // continue
   try {
-    db.$transaction(async (db) => {
-      const t1 = await db.user.update({
-        where: { id },
-        data: {
-          pendingTasks: {
-            connect: { id: taskId },
-          },
-        },
-      });
-      const t2 = await db.task.update({
-        where: { id: taskId },
-        data: {
-          pendingUsers: {
-            connect: { id },
-          },
-        },
-      });
-      return [t1, t2];
+    const alreadydid = await db.taskStatus.findFirst({
+      where: { userId: id, taskId },
+    });
+    if (alreadydid)
+      return { success: false, error: "Task Already Submitted !" };
+    await db.taskStatus.create({
+      data: { userId: id, taskId, status: "PENDING", xp: task.xp },
     });
     return { success: true, error: "" };
   } catch (error) {
     console.log(error);
     return { success: false, error: "Server Error Or Connection Error" };
-  }*/
+  }
 };

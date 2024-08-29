@@ -11,7 +11,7 @@ export function Dashboard() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           <Card className="bg-background shadow-lg">
             <CardHeader className="bg-primary text-primary-foreground p-6">
-              <h2 className="text-2xl font-bold">XP</h2>
+              <h2 className="text-2xl font-bold">Secrets</h2>
             </CardHeader>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -32,7 +32,7 @@ export function Dashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">Complete onboarding</p>
-                    <p className="text-muted-foreground text-sm">50 XP</p>
+                    <p className="text-muted-foreground text-sm">50 Secrets</p>
                   </div>
                   <Button size="sm" variant="outline">
                     Complete
@@ -41,7 +41,7 @@ export function Dashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">Write blog post</p>
-                    <p className="text-muted-foreground text-sm">100 XP</p>
+                    <p className="text-muted-foreground text-sm">100 Secrets</p>
                   </div>
                   <Button size="sm" variant="outline">
                     Complete
@@ -50,7 +50,7 @@ export function Dashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-medium">Attend team meeting</p>
-                    <p className="text-muted-foreground text-sm">25 XP</p>
+                    <p className="text-muted-foreground text-sm">25 Secrets</p>
                   </div>
                   <Button size="sm" variant="outline">
                     Complete

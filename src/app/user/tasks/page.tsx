@@ -2,6 +2,8 @@ import getTokenOrBack from "@/utils/server/getTokenOrBack";
 import db from "@/lib/db";
 import { Task, TaskStatus } from "@prisma/client";
 import Client from "./client";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 export default async function server() {
   const { token, user, id } = await getTokenOrBack({ admin: false });
@@ -19,10 +21,18 @@ export default async function server() {
 
       return {
         ...task,
-        userStatus: userTaskStatus?.status || "NONE",
+        status: userTaskStatus?.status || "NONE",
       };
     })
   );
 
-  return <Client tasksSTR={JSON.stringify(tasksPro)} />;
+  return (
+    <>
+      <div style={{ background: "url('/images/media/bg.jpg')" }}>
+        <Header />
+        <Client tasksSTR={JSON.stringify(tasksPro)} token={token} />;
+        <Footer />
+      </div>
+    </>
+  );
 }

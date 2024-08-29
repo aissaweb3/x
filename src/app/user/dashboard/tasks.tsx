@@ -2,7 +2,7 @@ import Modal from "@/components/simple/Modal";
 import formatDateSimple from "@/utils/simple/formatDateSimple";
 import { Task } from "@prisma/client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import FormBtn from "@/components/simple/FormBtn";
 import { completeTaskServer } from "./server/completeTask";
+import { Button } from "@/components/ui/button";
 
 export default function Tasks({
   tasks,
@@ -22,8 +23,13 @@ export default function Tasks({
   token: string;
 }) {
   const [completeTask, setCompleteTask] = useState<Task | null>(null);
+  const [clickedLink, setClickedLink] = useState(false);
   const [error, setError] = useState("");
   const [dTasks, setDTasks] = useState(tasks);
+
+  useEffect(() => {
+    setClickedLink(false);
+  }, [completeTask]);
 
   const handleComplete = async (e: FormData) => {
     const taskId = e.get("taskId") as string;
@@ -65,7 +71,7 @@ export default function Tasks({
                 <div className="text-sm text-muted-forground opacity-60">
                   {t.description.slice(0, 25)}
                   {"..."}
-                  <span className="text-[#ff0]/80">{t.xp} XP</span>
+                  <span className="text-[#ff0]/80">{t.xp} Secrets</span>
                 </div>
               </div>
             </div>
@@ -86,7 +92,7 @@ export default function Tasks({
             <CardTitle>Complete The Task</CardTitle>
             <CardDescription>
               Finish the task below to earn{" "}
-              <span className="text-[#ff0]/80">{completeTask?.xp} XP</span>
+              <span className="text-[#ff0]/80">{completeTask?.xp} Secrets</span>
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -96,13 +102,6 @@ export default function Tasks({
                 <p className="text-muted-foreground">
                   {completeTask?.description}
                 </p>
-                <a
-                  href={completeTask?.link as string}
-                  className="text-white underline hover:opacity-80"
-                  target="_blank"
-                >
-                  Task Link
-                </a>
               </div>
             </div>
           </CardContent>
@@ -111,12 +110,35 @@ export default function Tasks({
             style={{ placeContent: "end" }}
           >
             <form action={handleComplete}>
-              <div>
-                <p style={{ color: "red" }}>{error}</p>
-              </div>
               <input type="hidden" name="taskId" value={completeTask?.id} />
-              <FormBtn>Complete</FormBtn>
+              {clickedLink ? (
+                <FormBtn>Complete</FormBtn>
+              ) : (
+                <a
+                  href={completeTask?.link as string}
+                  className="text-white underline hover:opacity-80"
+                  target="_blank"
+                  onClick={() => {
+                    setClickedLink(true);
+                  }}
+                >
+                  <Button>Task Link</Button>
+                </a>
+              )}
             </form>
+            <Modal
+              isOpen={error !== ""}
+              onClose={() => {
+                setError("");
+              }}
+            >
+              <Card
+                className="w-full max-w-md p-8"
+                style={{ background: "red", borderColor: "white" }}
+              >
+                <p style={{ color: "white" }}>{error}</p>
+              </Card>
+            </Modal>
           </CardFooter>
         </Card>
       </Modal>

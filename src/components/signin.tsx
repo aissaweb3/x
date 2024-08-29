@@ -10,30 +10,7 @@ import providers from "./homePage/providers";
 export default function SignIN({ id }: { id: string }) {
   const [wantsToSignIn, setWantsToSignIn] = useState(false);
 
-  if (id)
-    return (
-      <div
-        style={{
-          fontFamily: "'CustomFont', sans-serif",
-        }}
-        className="flex gap-2 mx-4 w-fit"
-      >
-        <div className="grid align-center" style={{ alignContent: "center" }}>
-          <Link className="hover:opacity-70" href="/user/dashboard">
-            Dashboard
-          </Link>
-        </div>
-        <div>
-          <Button
-            onClick={() => {
-              signOut();
-            }}
-          >
-            Sign Out
-          </Button>
-        </div>
-      </div>
-    );
+  if (id) return <AvatarUser />;
 
   return (
     <div
@@ -45,7 +22,7 @@ export default function SignIN({ id }: { id: string }) {
         onClick={() => {
           setWantsToSignIn(true);
         }}
-        className="font-bold text-white bg-primary-light/50 hover:bg-primary-light hover:text-black transition inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+        className="font-bold text-white bg-primary-light/50 hover:bg-primary-light hover:text-black transition inline-flex items-center text-white justify-center rounded-md px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
       >
         Sign In
       </button>
@@ -94,44 +71,80 @@ export default function SignIN({ id }: { id: string }) {
   );
 }
 
-function LogInIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
-      <polyline points="10 17 15 12 10 7" />
-      <line x1="15" x2="3" y1="12" y2="12" />
-    </svg>
-  );
-}
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Laptop,
+  ListTodo,
+  Image as ImageIcon,
+  User,
+  LogOut,
+} from "lucide-react";
 
-function MenuIcon(props: any) {
+function AvatarUser() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <line x1="4" x2="20" y1="12" y2="12" />
-      <line x1="4" x2="20" y1="6" y2="6" />
-      <line x1="4" x2="20" y1="18" y2="18" />
-    </svg>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="relative h-8 w-8 rounded-full"
+          onMouseEnter={() => setIsOpen(true)}
+          onMouseLeave={() => setIsOpen(false)}
+        >
+          <Avatar className="h-8 w-8">
+            <AvatarImage
+              src="/placeholder.svg?height=32&width=32"
+              alt="User avatar"
+            />
+            <AvatarFallback>U</AvatarFallback>
+          </Avatar>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        className="w-56"
+        align="end"
+        forceMount
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
+        <DropdownMenuItem asChild>
+          <Link href="/user/dashboard" className="flex items-center text-white">
+            <Laptop className="mr-2 h-4 w-4" />
+            <span>Dashboard</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/user/tasks" className="flex items-center text-white">
+            <ListTodo className="mr-2 h-4 w-4" />
+            <span>Tasks</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/user/nft" className="flex items-center text-white">
+            <ImageIcon className="mr-2 h-4 w-4" />
+            <span>NFTs</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/user/profile" className="flex items-center text-white">
+            <User className="mr-2 h-4 w-4" />
+            <span>Profile</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onSelect={() => signOut()}>
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Sign out</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

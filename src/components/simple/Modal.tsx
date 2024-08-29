@@ -23,7 +23,7 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
             //backgroundRepeat: "round",
           }
         }
-        className="relative p-6 rounded-lg shadow-lg" // border border-primary bg-[#151c2def]
+        className="relative p-8 rounded-lg shadow-lg" // border border-primary bg-[#151c2def]
       >
         {children}
       </div>

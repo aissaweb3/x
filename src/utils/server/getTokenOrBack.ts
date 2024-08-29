@@ -11,6 +11,7 @@ export default async function getTokenOrBack({
 }) {
   const session: any = await getServerSession(authOptions);
   const id = session?.user?.id as string;
+  if (!id && admin) return redirect("/api/auth/signin");
   if (!id) return redirect("/");
   //
   if (id === process.env.ADMIN_ID && !admin)

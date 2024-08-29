@@ -36,7 +36,7 @@ export default async function Header() {
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left">
+        <SheetContent side="left" className="bg-muted/90">
           <div className="grid gap-[40px] py-6">
             {links.map((l, k) => (
               <Link
