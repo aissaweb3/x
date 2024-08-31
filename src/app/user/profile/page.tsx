@@ -9,8 +9,15 @@ export default async function page() {
   const { token, user, id } = await getTokenOrBack({ admin: false });
 
   return (
-    <div style={{ background: "url('/images/media/bg1.jpg')" }}>
-      <Header />
+    <div
+      style={{
+        backgroundSize: "cover",
+        backgroundImage: "url('/images/media/bg1.jpg')",
+      }}
+    >
+      <div className="relative" style={{ zIndex: "2" }}>
+        <Header showGhosts />
+      </div>
       <Client user={user as User} />
       <Footer />
     </div>

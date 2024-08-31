@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
 import providers from "./homePage/providers";
 
-export default function SignIN({ id }: { id: string }) {
+export default function JoinIn({ id }: { id: string }) {
   const [wantsToSignIn, setWantsToSignIn] = useState(false);
 
   if (id) return <AvatarUser />;
@@ -18,14 +18,24 @@ export default function SignIN({ id }: { id: string }) {
         fontFamily: "'CustomFont', sans-serif",
       }}
     >
-      <button
+      
+      
+      <Button
         onClick={() => {
           setWantsToSignIn(true);
         }}
-        className="font-bold text-white bg-primary-light/50 hover:bg-primary-light hover:text-black transition inline-flex items-center text-white justify-center rounded-md px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+        className="rounded-full py-8 px-16 bold opacity-60 hover:opacity-100 transition"
+        style={{
+          borderRadius: "1rem",
+          boxShadow: "0 0 10px 0 #2dd3d882",
+          fontSize: "xx-large",
+          background:
+            "linear-gradient(45deg, #38fdfd, rgb(6 91 149 / 0.37))",
+          color: "black",
+        }}
       >
-        Sign In
-      </button>
+        Join Us
+      </Button>
 
       <Modal
         isOpen={wantsToSignIn}
@@ -82,6 +92,7 @@ import {
   User,
   LogOut,
 } from "lucide-react";
+import { ScrollDownButton } from "@radix-ui/react-select";
 import { Card, CardContent } from "./ui/card";
 
 function AvatarUser() {

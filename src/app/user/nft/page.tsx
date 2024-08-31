@@ -27,8 +27,16 @@ export default async function NFT_page() {
   );
 
   return (
-    <div style={{ background: "url('/images/media/bg1.jpg')" }}>
-      <Header />
+    <div
+      style={{
+        backgroundSize: "cover",
+        backgroundImage: "url('/images/media/bg1.jpg')",
+        minHeight: "100vh"
+      }}
+    >
+      <div className="relative" style={{ zIndex: "2" }}>
+        <Header showGhosts />
+      </div>
       <Client NFTs={NFTsPro} xp={user.xp} token={token} />
       <Footer />
     </div>

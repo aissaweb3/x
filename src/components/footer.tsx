@@ -1,6 +1,8 @@
 import Image from "next/image";
+import RandomGhosts from "./ghost";
 
 export default function Footer() {
+  return null;
   return (
     <footer className="py-4">
       <div className="border border-card-foreground rounded-[15px] bg-primary-dark/80 w-fit container mx-auto p-4 sm:px-6 lg:px-8 justify-center gap-4">

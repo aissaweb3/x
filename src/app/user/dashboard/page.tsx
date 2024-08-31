@@ -26,7 +26,7 @@ export default async function Dashboard() {
         <Video loop={false} src="home" />
       </div>
       <div className="relative" style={{ zIndex: "2" }}>
-        <Header />
+        <Header showGhosts />
       </div>
 
       <div className="relative" style={{ zIndex: "2" }}>

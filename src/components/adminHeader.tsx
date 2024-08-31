@@ -1,3 +1,4 @@
+"use client"
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -6,22 +7,15 @@ import {
   NavigationMenuList,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
-import Logo from "./Logo";
-import SignIN from "./signin";
-import { authOptions } from "../../lib/authOptions";
-import { getServerSession } from "next-auth";
-import getToken from "@/utils/server/getToken";
-import RandomGhosts from "./ghost";
+import { signOut } from "next-auth/react";
 
-export default async function Header({showGhosts}: {showGhosts: boolean}) {
-  const { token, id } = await getToken();
+export default async function adminHeader() {
 
-  console.log(token, id);
+  
   const links = [
-    { name: "Home", link: "/" },
-    { name: "Roadmap", link: "/roadmap" },
-    { name: "Airdrop", link: "/airdrop" },
-    { name: "Contact Us", link: "/contact" },
+    { name: "NFT", link: "/admin/nft" },
+    { name: "Tasks", link: "/admin/tasks" },
+    { name: "Users", link: "/admin/users" },
   ];
   return (
     <>
@@ -53,11 +47,10 @@ export default async function Header({showGhosts}: {showGhosts: boolean}) {
                   {l.name}
                 </Link>
               ))}
-            </div>
-            <SignIN id={id} />
+              <Button onClick={()=>{signOut()}} >Sign Out</Button>
+              </div>
           </SheetContent>
         </Sheet>
-        <Logo />
         <div className="ml-auto hidden lg:flex">
           <NavigationMenu>
             <NavigationMenuList>
@@ -78,13 +71,12 @@ export default async function Header({showGhosts}: {showGhosts: boolean}) {
                   </Link>
                 </NavigationMenuLink>
               ))}
+              <Button onClick={()=>{signOut()}} >Sign Out</Button>
             </NavigationMenuList>
           </NavigationMenu>
-          <SignIN id={id} />
         </div>
       </header>
-      {showGhosts && <><RandomGhosts reverse={false} />
-      <RandomGhosts reverse /></>}
+      
     </>
   );
 }

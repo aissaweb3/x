@@ -16,10 +16,12 @@ export default function Contact() {
     <div
       style={{
         fontFamily: "'CustomFont'",
-        background: "url('/images/media/dashboard.jpg')",
+        backgroundImage: "url('/images/media/dashboard.jpg')",backgroundSize: "cover", minHeight: "100vh",
       }}
     >
-      <Header />
+      <div className="relative" style={{ zIndex: "2" }}>
+        <Header showGhosts />
+      </div>
       <div className="w-full">
         <section className="w-full py-6 md:py-12 lg:py-16">
           <div className="container px-4 md:px-6">

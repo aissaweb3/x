@@ -13,7 +13,10 @@ export default async function Component() {
           <source src="/videos/commingsoon.mp4" type="video/mp4" />
         </video>
       </div>
-      <Header />
+
+      <div className="relative" style={{ zIndex: "2" }}>
+        <Header showGhosts />
+      </div>
       <main className="flex flex-col items-center min-h-[calc(100vh-80px)] px-6 md:px-12 text-white">
         <h1
           className="text-4xl md:text-6xl font-bold"

@@ -16,7 +16,7 @@ export default function RootLayout({
     <div
       style={{
         fontFamily: "auto",
-        background: "url('/images/media/dashboard.jpg')",
+        backgroundImage: "url('/images/media/dashboard.jpg')",backgroundSize: "cover", minHeight: "100vh",
         color: "white",
       }}
     >

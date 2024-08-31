@@ -86,6 +86,11 @@ export default function Client({
             NFTs.
           </p>
         </div>
+        {nfts.length === 0 && (
+          <div className="p-4 bg-muted text-[#fff] opacity-50 text-center">
+            No NFTs To Buy.
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {nfts.map((nft) => (
             <Card key={nft.id} className="group relative overflow-hidden">

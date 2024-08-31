@@ -10,6 +10,7 @@ import { completeTaskServer } from "../dashboard/server/completeTask";
 import { CardDescription, CardFooter } from "@/components/ui/card";
 import FormBtn from "@/components/simple/FormBtn";
 import formatDateSimple from "@/utils/simple/formatDateSimple";
+import JumpScareButton from "@/components/click";
 
 type TaskPro = Task & { status: string };
 
@@ -82,6 +83,7 @@ export default function Client({
           <span className="text-8xl">!</span> Finish Tasks to Unlock More
           Secrets.
         </div>
+        <JumpScareButton>test link</JumpScareButton>
         <div className="mb-6 grid-cols-1 grid items-center justify-between">
           <div className="flex items-center gap-4 mb-2">
             <Button
@@ -130,10 +132,16 @@ export default function Client({
             </Button>
           </div>
         </div>
+        {filteredTasks.length === 0 && (
+          <div className="p-4 bg-muted text-[#fff] opacity-50 text-center">
+            No Tasks To Do.
+          </div>
+        )}
         <div
           style={{ minHeight: "10.2rem", placeItems: "center" }}
           className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
         >
+          
           {filteredTasks.map((task) => (
             <Card
               key={task.id}

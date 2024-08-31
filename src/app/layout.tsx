@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
+import RandomGhosts from "@/components/ghost";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,7 +23,7 @@ export default function RootLayout({
           color: "white",
         }}
       >
-        {children}
+        <div className="overflow-hidden">{children}</div>
       </body>
     </html>
   );
