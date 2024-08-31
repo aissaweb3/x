@@ -1,9 +1,10 @@
 "use server";
 import db from "@/lib/db";
+import { uploadFile } from "@/utils/server/upload";
 import { verify } from "jsonwebtoken";
 
 type Data = {
-  img: string;
+  img: File;
   name: string;
   xp: number;
   token: string;
@@ -11,6 +12,9 @@ type Data = {
 
 export const addNFT = async (data: Data) => {
   const { img, name, xp, token } = data;
+
+  await uploadFile(img, "/images/nft")
+  return { success: true, error: "" };
 
   const decoded: any = verify(token, process.env.JWT_SECRET as string);
   const { id } = decoded;

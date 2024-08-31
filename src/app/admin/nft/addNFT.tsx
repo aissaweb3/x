@@ -17,6 +17,7 @@ import { NFT } from "@prisma/client";
 import { addNFT, deleteNFT } from "./server/manageNFT";
 import FormBtn from "@/components/simple/FormBtn";
 
+
 export default function Add({
   NFTs,
   token,
@@ -91,6 +92,10 @@ export default function Add({
                 onChange={handleInputChange}
                 placeholder="Enter img URL"
               />
+              
+
+
+
             </div>
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="xp">Price (XP)</Label>

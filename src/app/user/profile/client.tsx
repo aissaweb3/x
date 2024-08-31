@@ -25,24 +25,28 @@ export function Client({ user }: { user: User }) {
           <div
           //className="grid grid-cols-3 gap-4"
           >
-            <div>
-              {socials.map((s, k) => (
-                <div key={k}>
-                  <Input
+            {false ? (
+              <div>
+                {socials.map((s, k) => (
+                  <div key={k}>
+                    <Input
                     //value={s.value.startsWith("nullvalue") ? "" : s.value.split("-name")[1]}
-                  />
-                  <Button
-                    onClick={() => {
-                      signIn(s.name);
-                    }}
-                    variant="outline"
-                    className="flex flex-col items-center gap-2"
-                  >
-                    <span>{s.name}</span>
-                  </Button>
-                </div>
-              ))}
-            </div>
+                    />
+                    <Button
+                      onClick={() => {
+                        signIn(s.name);
+                      }}
+                      variant="outline"
+                      className="flex flex-col items-center gap-2"
+                    >
+                      <span>{s.name}</span>
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div>Still Under Work</div>
+            )}
           </div>
         </div>
         <div className="w-full bg-background rounded-lg shadow-lg p-6 space-y-6">
