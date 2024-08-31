@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function JumpScareButton({ children }: { children: any }) {
   const [isScary, setIsScary] = useState(false);
@@ -21,7 +22,7 @@ export default function JumpScareButton({ children }: { children: any }) {
       </Button>
       {isScary && (
         <div className="fixed inset-0 bg-[#00000000] z-50 flex items-center justify-center">
-          <img
+          <Image
             src="/images/media/logo1.png?height=600&width=800"
             alt="Scary face"
             className="max-w-full max-h-full object-contain animate-pulse"

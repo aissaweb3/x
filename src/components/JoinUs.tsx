@@ -1,16 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 
 export default function JoinUs() {
+  const [join, setJoin] = useState(false);
 
-    const [join, setJoin] = useState(false)
-
-    useEffect(()=>{
-        setTimeout(()=>{
-            setJoin(true)
-        }, 18000)
-    }, [])
+  useEffect(() => {
+    setTimeout(() => {
+      setJoin(true);
+    }, 18000);
+  }, []);
 
   return (
     <>
@@ -20,34 +19,41 @@ export default function JoinUs() {
         }}
         className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-6 md:px-12 text-white"
       >
-          <Card style={{maxWidth: "40rem", opacity: join ? 1 : 0, transition: "all 1s ease"}} className="items-center" >
-            <CardContent>
-              <div
+        <Card
+          style={{
+            maxWidth: "40rem",
+            opacity: join ? 1 : 0,
+            transition: "all 1s ease",
+          }}
+          className="items-center"
+        >
+          <CardContent>
+            <div
+              style={{
+                fontFamily: "'customFont'",
+              }}
+              className="text-center"
+            >
+              <h1
                 style={{
-                  fontFamily: "'customFont'",
+                  fontSize: "4rem",
                 }}
-                className="text-center"
               >
-                <h1
-                  style={{
-                    fontSize: "4rem",
-                  }}
-                >
-                  HELLO THERE !
-                </h1>
-                <h2 className="opacity-70" >
-                  Welcome To the forbidden Forest, Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit. Maiores veritatis totam voluptas
-                  reiciendis accusamus culpa sapiente quos expedita temporibus,
-                  perferendis nihil, veniam eveniet. At natus totam ad facere
-                  minus itaque in dicta doloremque repellat vero velit incidunt
-                  qui dolorum error porro delectus excepturi, aliquid
-                  accusantium ex! Itaque quas sapiente quos.
-                </h2>
-              </div>
-              <div className="flex gap-4 p-8">
-                  <JoinIn id="" />
-                <Link href="https://google.com">
+                HELLO THERE !
+              </h1>
+              <h2 className="opacity-70">
+                Welcome To the forbidden Forest, Lorem ipsum dolor sit amet
+                consectetur adipisicing elit. Maiores veritatis totam voluptas
+                reiciendis accusamus culpa sapiente quos expedita temporibus,
+                perferendis nihil, veniam eveniet. At natus totam ad facere
+                minus itaque in dicta doloremque repellat vero velit incidunt
+                qui dolorum error porro delectus excepturi, aliquid accusantium
+                ex! Itaque quas sapiente quos.
+              </h2>
+            </div>
+            <div className="flex gap-4 p-8">
+              <JoinIn id="" />
+              <Link href="https://google.com">
                 <Button
                   className="rounded-full py-8 px-16 bold opacity-40 hover:opacity-60 transition"
                   style={{
@@ -58,12 +64,12 @@ export default function JoinUs() {
                     color: "white",
                   }}
                 >
-                  I'm Scared
+                  I am Scared
                 </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
       </main>
     </>
   );

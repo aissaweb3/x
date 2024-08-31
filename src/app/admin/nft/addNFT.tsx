@@ -17,7 +17,6 @@ import { NFT } from "@prisma/client";
 import { addNFT, deleteNFT } from "./server/manageNFT";
 import FormBtn from "@/components/simple/FormBtn";
 
-
 export default function Add({
   NFTs,
   token,
@@ -32,7 +31,6 @@ export default function Add({
     name: "",
     img: "",
     xp: 0,
-    userId,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +49,7 @@ export default function Add({
     // success
     const { id } = result.success as NFT;
     setNfts((prev) => [...prev, { ...newNFT, userId, id }]);
-    setNewNFT({ name: "", img: "", xp: 0, userId });
+    setNewNFT({ name: "", img: "", xp: 0 });
   };
 
   const handleDelete = async (e: FormData) => {
@@ -92,10 +90,6 @@ export default function Add({
                 onChange={handleInputChange}
                 placeholder="Enter img URL"
               />
-              
-
-
-
             </div>
             <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="xp">Price (XP)</Label>
