@@ -18,19 +18,16 @@ export default function JoinIn({ id }: { id: string }) {
         fontFamily: "'CustomFont', sans-serif",
       }}
     >
-      
-      
       <Button
         onClick={() => {
           setWantsToSignIn(true);
         }}
-        className="rounded-full py-8 px-16 bold opacity-60 hover:opacity-100 transition"
+        className="rounded-full py-8 px-16 bold opacity-60 hover:opacity-100 hover:scale-110 transition"
         style={{
           borderRadius: "1rem",
           boxShadow: "0 0 10px 0 #2dd3d882",
           fontSize: "xx-large",
-          background:
-            "linear-gradient(45deg, #38fdfd, rgb(6 91 149 / 0.37))",
+          background: "linear-gradient(45deg, #38fdfd, rgb(6 91 149 / 0.37))",
           color: "black",
         }}
       >
@@ -55,7 +52,7 @@ export default function JoinIn({ id }: { id: string }) {
                     onClick={() => signIn(p.toLowerCase())}
                     key={key}
                     className="font-bold text-4xl text-white bg-[#30e1e6]/20 hover:bg-[#30e1e6]/70 hover:text-[black] transition inline-flex items-center justify-center rounded-md px-4 py-2 font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    style={{borderRadius: "3rem"}}
+                    style={{ borderRadius: "3rem" }}
                   >
                     <Image
                       src={`/images/social/${p}.png`}

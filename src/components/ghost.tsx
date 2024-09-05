@@ -18,6 +18,7 @@ const randomMathOp = (x: number) => {
 };
 
 export default function RandomGhosts({ reverse }: { reverse: boolean }) {
+  return null
   const [ghosts, setGhosts] = useState<Ghost[]>([]);
 
   useEffect(() => {

@@ -4,13 +4,18 @@ import Link from "next/link";
 import Modal from "./simple/Modal";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import providers from "./homePage/providers";
 
 export default function SignIN({ id }: { id: string }) {
   const [wantsToSignIn, setWantsToSignIn] = useState(false);
 
-  if (id) return <AvatarUser />;
+  if (id)
+    return (
+      <SessionProvider>
+        <AvatarUser />
+      </SessionProvider>
+    );
 
   return (
     <div
@@ -45,7 +50,7 @@ export default function SignIN({ id }: { id: string }) {
                     onClick={() => signIn(p.toLowerCase())}
                     key={key}
                     className="font-bold text-4xl text-white bg-[#30e1e6]/20 hover:bg-[#30e1e6]/70 hover:text-[black] transition inline-flex items-center justify-center rounded-md px-4 py-2 font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    style={{borderRadius: "3rem"}}
+                    style={{ borderRadius: "3rem" }}
                   >
                     <Image
                       src={`/images/social/${p}.png`}
@@ -86,6 +91,7 @@ import { Card, CardContent } from "./ui/card";
 
 function AvatarUser() {
   const [isOpen, setIsOpen] = useState(false);
+  const { data } = useSession();
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -98,10 +104,10 @@ function AvatarUser() {
         >
           <Avatar className="h-8 w-8">
             <AvatarImage
-              src="/placeholder.svg?height=32&width=32"
+              src={(data?.user?.image as string) + "?height=32&width=32"}
               alt="User avatar"
             />
-            <AvatarFallback>U</AvatarFallback>
+            <AvatarFallback></AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>

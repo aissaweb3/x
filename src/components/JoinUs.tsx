@@ -51,11 +51,11 @@ export default function JoinUs() {
                 ex! Itaque quas sapiente quos.
               </h2>
             </div>
-            <div className="flex gap-4 p-8">
+            <div className="flex gap-16 p-8">
               <JoinIn id="" />
               <Link href="https://google.com">
                 <Button
-                  className="rounded-full py-8 px-16 bold opacity-40 hover:opacity-60 transition"
+                  className="rounded-full py-8 px-16 bold opacity-40 hover:opacity-60 hover:scale-110 transition"
                   style={{
                     borderRadius: "1rem",
                     fontSize: "xx-large",

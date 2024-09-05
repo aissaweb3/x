@@ -12,6 +12,13 @@ export function Client({ user }: { user: User }) {
     { name: "Twitter", value: user.twitter },
     //{ name: "Google", value: user.twitter },
   ];
+
+  const handleSignIn = async (p: string) => {
+    const data = { connect: "1" + user.id };
+    const query = new URLSearchParams(data).toString();
+    await signIn(p); //, { callbackUrl: `/api/auth/${p}/calback?${query}` });
+  };
+
   return (
     <div className="w-full max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col items-center space-y-6">
@@ -25,7 +32,7 @@ export function Client({ user }: { user: User }) {
           <div
           //className="grid grid-cols-3 gap-4"
           >
-            {false ? (
+            {true ? (
               <div>
                 {socials.map((s, k) => (
                   <div key={k}>
@@ -34,7 +41,7 @@ export function Client({ user }: { user: User }) {
                     />
                     <Button
                       onClick={() => {
-                        signIn(s.name);
+                        handleSignIn(s.name);
                       }}
                       variant="outline"
                       className="flex flex-col items-center gap-2"
