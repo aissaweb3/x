@@ -16,6 +16,7 @@ export default async function adminHeader() {
     { name: "NFT", link: "/admin/nft" },
     { name: "Tasks", link: "/admin/tasks" },
     { name: "Users", link: "/admin/users" },
+    { name: "Dashboard", link: "/admin/dashboard" },
   ];
   return (
     <>

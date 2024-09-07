@@ -1,6 +1,5 @@
 import AdminHeader from "@/components/adminHeader";
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -8,10 +7,8 @@ export default function RootLayout({
 }>) {
   return (
     <>
-    <AdminHeader />
-    {children}
+      <AdminHeader />
+      {children}
     </>
-    
-        
   );
 }

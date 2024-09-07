@@ -13,8 +13,8 @@ type Data = {
 export const addNFT = async (data: Data) => {
   const { img, name, xp, token } = data;
 
-  //await uploadFile(img, "/images/nft")
-  //return { success: true, error: "" };
+  if (!img)
+    return { success: true, error: "Image is Required !!" };
 
   const decoded: any = verify(token, process.env.JWT_SECRET as string);
   const { id } = decoded;

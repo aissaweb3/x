@@ -83,7 +83,7 @@ export default function Client({
           <span className="text-8xl">!</span> Finish Tasks to Unlock More
           Secrets.
         </div>
-        <JumpScareButton>test link</JumpScareButton>
+        {/*<JumpScareButton>test link</JumpScareButton>*/}
         <div className="mb-6 grid-cols-1 grid items-center justify-between">
           <div className="flex items-center gap-4 mb-2">
             <Button

@@ -17,13 +17,7 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
         onClick={onClose}
       ></div>
       <div
-        style={
-          {
-            //backgroundImage: "url(/images/media/logo.png)",
-            //backgroundRepeat: "round",
-          }
-        }
-        className="relative p-8 rounded-lg shadow-lg" // border border-primary bg-[#151c2def]
+        className="relative p-8 rounded-lg shadow-lg"
       >
         {children}
       </div>

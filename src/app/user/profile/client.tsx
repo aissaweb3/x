@@ -5,18 +5,40 @@ import { Input } from "@/components/ui/input";
 import Header from "@/components/header";
 import { signIn } from "next-auth/react";
 import { User } from "@prisma/client";
+import FormBtn from "@/components/simple/FormBtn";
+import { useState } from "react";
+import { changeEmail } from "./server/manageProfile";
+import Image from "next/image";
+import isConnected from "@/utils/simple/isConnected";
 
-export function Client({ user }: { user: User }) {
+export function Client({ user, token }: { user: User; token: string }) {
+  const [email, setEmail] = useState(user.email as string);
   const socials = [
     { name: "Discord", value: user.discord },
     { name: "Twitter", value: user.twitter },
-    //{ name: "Google", value: user.twitter },
+    { name: "Telegram", value: user.twitter },
   ];
 
+  socials.sort((a, b) => {
+    const aName = a.name.toUpperCase();
+    const bName = b.name.toUpperCase();
+    const mainAccount = user.mainAccount.toUpperCase();
+    const aIsMain = aName === mainAccount ? 1 : 0;
+    const bIsMain = bName === mainAccount ? 1 : 0;
+    return bIsMain - aIsMain;
+  });
+
   const handleSignIn = async (p: string) => {
-    const data = { connect: "1" + user.id };
-    const query = new URLSearchParams(data).toString();
-    await signIn(p); //, { callbackUrl: `/api/auth/${p}/calback?${query}` });
+    await signIn(p, { callbackUrl: `http://localhost:5000/api/auth/callback/${p}?token=${token}` });
+    return;
+    await signIn(p, { callbackUrl: `/api/connect/${token}/callback/${p}` });
+    const data = { customKey: "customValue" };
+    await signIn("providerName", {
+      redirect: false, // Change to true if you want to redirect after sign-in
+      callbackUrl: "/some-url",
+      // Pass data as an extra parameter
+      data,
+    });
   };
 
   return (
@@ -29,25 +51,41 @@ export function Client({ user }: { user: User }) {
         </div>
         <div className="w-full bg-background rounded-lg shadow-lg p-6 space-y-6">
           <h3 className="text-lg font-bold">Connect Accounts</h3>
-          <div
-          //className="grid grid-cols-3 gap-4"
-          >
+          <div>
             {true ? (
               <div>
                 {socials.map((s, k) => (
-                  <div key={k}>
-                    <Input
-                    //value={s.value.startsWith("nullvalue") ? "" : s.value.split("-name")[1]}
-                    />
-                    <Button
-                      onClick={() => {
-                        handleSignIn(s.name);
-                      }}
-                      variant="outline"
-                      className="flex flex-col items-center gap-2"
-                    >
-                      <span>{s.name}</span>
-                    </Button>
+                  <div className="" key={k}>
+                    <Label>
+                      <p>{s.name}</p>
+                    </Label>
+                    <div className="flex mb-4">
+                      <Input
+                        value={"isConnected(s.value).toString()"}
+                        style={{
+                          opacity: s.value.startsWith("nullvalue") ? 0.5 : 1,
+                        }}
+                        readOnly
+                      />
+                      {user.mainAccount !== s.name.toUpperCase() && (
+                        <Button
+                          onClick={() => {
+                            handleSignIn(s.name.toLowerCase());
+                          }}
+                          variant="outline"
+                          className="flex bg-[#184c6b] flex-col items-center gap-2"
+                        >
+                          <Image
+                            className="h-full w-[auto]"
+                            src={`/images/social/${s.name.toLowerCase()}.png`}
+                            width="100"
+                            height="100"
+                            alt={s.name}
+                          />
+                          {/*<span>{s.name}</span>*/}
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -58,17 +96,29 @@ export function Client({ user }: { user: User }) {
         </div>
         <div className="w-full bg-background rounded-lg shadow-lg p-6 space-y-6">
           <div className="grid gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
-              <Input
-                id="email"
-                type="text"
-                placeholder="email@example.com"
-                className="px-3 py-2 bg-muted rounded-md focus:ring-0 focus:border-primary"
-                //value={user.email.startsWith("nullvalue") ? "" : user.email}
-              />
-            </div>
-            <Button className="w-full">Save Email</Button>
+            <form
+              action={async () => {
+                const result = await changeEmail(token, email);
+                result.success
+                  ? alert("Email Updated Successfully.")
+                  : alert(result.error);
+              }}
+            >
+              <div className="space-y-2">
+                <Label htmlFor="email">Email Address</Label>
+                <Input
+                  id="email"
+                  type="text"
+                  placeholder="email@example.com"
+                  className="px-3 py-2 bg-muted rounded-md focus:ring-0 focus:border-primary"
+                  onChange={(e) => {
+                    setEmail(e.target.value as string);
+                  }}
+                  value={"email"}
+                />
+                <FormBtn>Save Email</FormBtn>
+              </div>
+            </form>
           </div>
         </div>
       </div>

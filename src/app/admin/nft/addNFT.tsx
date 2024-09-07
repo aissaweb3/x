@@ -16,6 +16,9 @@ import Image from "next/image";
 import { NFT } from "@prisma/client";
 import { addNFT, deleteNFT } from "./server/manageNFT";
 import FormBtn from "@/components/simple/FormBtn";
+import Modal from "@/components/simple/Modal";
+import UploadForm from "@/components/upload/uploadForm";
+import UploadCompo from "@/components/upload/uploadCompo";
 
 export default function Add({
   NFTs,
@@ -32,6 +35,10 @@ export default function Add({
     img: "",
     xp: 0,
   });
+
+  const handleUploadSuccess = (fileName: string) => {
+    setNewNFT((prev) => ({ ...prev, img: fileName }));
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -81,17 +88,6 @@ export default function Add({
               />
             </div>
             <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="img">Image URL</Label>
-              <Input
-                type="text"
-                id="img"
-                name="img"
-                value={newNFT.img}
-                onChange={handleInputChange}
-                placeholder="Enter img URL"
-              />
-            </div>
-            <div className="grid w-full items-center gap-1.5">
               <Label htmlFor="xp">Price (XP)</Label>
               <Input
                 type="number"
@@ -105,6 +101,10 @@ export default function Add({
             </div>
             <FormBtn className="w-full">Add NFT</FormBtn>
           </form>
+          <UploadCompo
+            currentImg={newNFT.img}
+            handleUploadSuccess={handleUploadSuccess}
+          />
         </CardContent>
       </Card>
 
@@ -117,7 +117,7 @@ export default function Add({
           <Card key={nft.id}>
             <CardHeader>
               <Image
-                src={`/images/nft/${nft.img}`}
+                src={`/images/uploads/${nft.img}`}
                 alt={nft.name}
                 width={200}
                 height={200}

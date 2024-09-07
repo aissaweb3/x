@@ -95,7 +95,7 @@ export default function Client({
           {nfts.map((nft) => (
             <Card key={nft.id} className="group relative overflow-hidden">
               <Image
-                src={`/images/nft/${nft.img}`}
+                src={`/images/uploads/${nft.img}`}
                 alt={nft.name}
                 width={400}
                 height={400}
@@ -146,34 +146,41 @@ export default function Client({
                   {nft.name}
                 </CardTitle>
               </CardHeader>
-              <CardContent className="relative overflow-hidden">
-                <div
-                  style={{ zIndex: 100 }}
-                  className="relative h-0 bg-black bg-opacity-75 text-[yellow] rounded-full"
-                >
-                  Price: {nft.xp} Secrets
+              <CardContent
+                style={{ maxHeight: "90vh" }}
+                className="relative overflow-hidden"
+              >
+                <div>
+                  <div
+                    style={{ zIndex: 100 }}
+                    className="relative h-0 bg-black bg-opacity-75 text-[yellow] rounded-full"
+                  >
+                    Price: {nft.xp} Secrets
+                  </div>
+                  <div className="flex overflow-hidden h-[20rem] justify-center">
+                    <Image
+                      src={`/images/uploads/${nft.img}`}
+                      alt={nft.name}
+                      width={400}
+                      height={400}
+                      className="h-auto w-full object-contain rounded-lg transform transition-transform duration-1000 hover:scale-110 animate-pulse"
+                    />
+                  </div>
+                  {nft.brought ? (
+                    <div>You Now Own This NFT</div>
+                  ) : (
+                    <form action={handlePurchase} className="space-y-4">
+                      <input type="hidden" name="nftId" value={nft.id} />
+                      <FormBtn className="w-full">Buy NFT</FormBtn>
+                    </form>
+                  )}
+                  <Button
+                    onClick={() => setBuying(null)}
+                    className="w-full bg-[red]/80 hover:bg-[red]/60 text-[white]"
+                  >
+                    Cancel
+                  </Button>
                 </div>
-                <Image
-                  src={`/images/nft/${nft.img}`}
-                  alt={nft.name}
-                  width={400}
-                  height={400}
-                  className="h-[75vh] w-auto object-cover rounded-lg transform transition-transform duration-1000 hover:scale-110 animate-pulse"
-                />
-                {nft.brought ? (
-                  <div>You Now Own This NFT</div>
-                ) : (
-                  <form action={handlePurchase} className="space-y-4">
-                    <input type="hidden" name="nftId" value={nft.id} />
-                    <FormBtn className="w-full">Buy NFT</FormBtn>
-                  </form>
-                )}
-                <Button
-                  onClick={() => setBuying(null)}
-                  className="w-full bg-[red]/80 hover:bg-[red]/60 text-[white]"
-                >
-                  Cancel
-                </Button>
               </CardContent>
             </Card>
           </div>

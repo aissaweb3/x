@@ -12,6 +12,7 @@ enum Platform {
   TWITTER
   YOUTUBE
   TELEGRAM
+  DISCORD
 }
 
 enum TaskType {
@@ -26,11 +27,18 @@ enum TaskStatusEnum {
   COMPLETED
 }
 
+enum Account {
+  NONE
+  TWITTER
+  DISCORD
+}
+
 model User {
   id            String       @id @default(uuid()) @db.VarChar(36)
+  mainAccount   Account
   discord       String       @unique
   twitter       String       @unique
-  email         String       @unique
+  email         String?
   walletAddress String?
   password      String?
   xp            Int          @default(0)

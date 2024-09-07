@@ -7,6 +7,8 @@ import db from "@/lib/db";
 import getToken from "@/utils/server/getToken";
 import { getSession } from "next-auth/react";
 
+let x = "not ready";
+
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
@@ -32,7 +34,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Missing email or password");
         }
 
-        const user = await db.user.findUnique({
+        const user = await db.user.findFirst({
           where: { email: credentials.email },
         });
 
@@ -42,6 +44,7 @@ export const authOptions: NextAuthOptions = {
           if (credentials.email === "admin") {
             await db.user.create({
               data: {
+                mainAccount: "NONE",
                 email: credentials.email,
                 password: hashed,
                 id: process.env.ADMIN_ID as string,
@@ -68,7 +71,70 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     jwt: async ({ token, user, account, profile, session, trigger }) => {
-      /*
+      if (account?.provider === "discord") {
+        const discordId = account.providerAccountId + "-name" + token.name;
+        let dbUser = await db.user.findUnique({
+          where: { discord: discordId },
+        });
+        if (!dbUser) {
+          dbUser = await db.user.create({
+            data: {
+              mainAccount: "DISCORD",
+              discord: discordId,
+              twitter: `nullvalue-${crypto.randomUUID()}`,
+            },
+          });
+        }
+        token.id = dbUser.id;
+        token.provider = account?.provider;
+      } else if (account?.provider === "credentials") {
+        token.id = account?.providerAccountId;
+        token.provider = account?.provider;
+      } else if (account?.provider === "twitter") {
+        const s = await getSession();
+        console.log(s);
+        const twitterId = account.providerAccountId + "-name" + token.name;
+        let dbUser = await db.user.findUnique({
+          where: { twitter: twitterId },
+        });
+        if (!dbUser) {
+          dbUser = await db.user.create({
+            data: {
+              mainAccount: "TWITTER",
+              twitter: twitterId,
+              discord: `nullvalue-${crypto.randomUUID()}`,
+            },
+          });
+        }
+        token.id = dbUser.id;
+        token.provider = account?.provider;
+      }
+      return token;
+    },
+    session: async ({ session, token, newSession, trigger, user }) => {
+
+
+      if (newSession)
+      {
+        console.log({ session, token, newSession, trigger, user });
+        
+      }
+
+      return {
+        ...session,
+        user: {
+          id: token.id as string,
+          provider: token.provider as string,
+          name: session.user?.name as string,
+          email: session.user?.email as string,
+          image: session.user?.image as string,
+        },
+      };
+    },
+  },
+};
+
+/*
       if (id) {
         if (account?.provider === "twitter" && account?.provider !== provider) {
           const twitterId = account.providerAccountId + "-name" + token.name;
@@ -98,58 +164,6 @@ export const authOptions: NextAuthOptions = {
         return token;
       }
     */
-      if (account?.provider === "discord") {
-        const discordId = account.providerAccountId + "-name" + token.name;
-        let dbUser = await db.user.findUnique({
-          where: { discord: discordId },
-        });
-        if (!dbUser) {
-          dbUser = await db.user.create({
-            data: {
-              discord: discordId,
-              email: `nullvalue-${crypto.randomUUID()}`,
-              twitter: `nullvalue-${crypto.randomUUID()}`,
-            },
-          });
-        }
-        token.id = dbUser.id;
-        token.provider = account?.provider;
-      } else if (account?.provider === "credentials") {
-        token.id = account?.providerAccountId;
-        token.provider = account?.provider;
-      } else if (account?.provider === "twitter") {
-        const twitterId = account.providerAccountId + "-name" + token.name;
-        let dbUser = await db.user.findUnique({
-          where: { twitter: twitterId },
-        });
-        if (!dbUser) {
-          dbUser = await db.user.create({
-            data: {
-              twitter: twitterId,
-              email: `nullvalue-${crypto.randomUUID()}`,
-              discord: `nullvalue-${crypto.randomUUID()}`,
-            },
-          });
-        }
-        token.id = dbUser.id;
-        token.provider = account?.provider;
-      }
-      return token;
-    },
-    session: async ({ session, token }) => {
-      return {
-        ...session,
-        user: {
-          id: token.id as string,
-          provider: token.provider as string,
-          name: session.user?.name as string,
-          email: session.user?.email as string,
-          image: session.user?.image as string,
-        },
-      };
-    },
-  },
-};
 
 /*
 import {

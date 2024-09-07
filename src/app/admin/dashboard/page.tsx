@@ -1,6 +1,6 @@
 import getTokenOrBack from "@/utils/server/getTokenOrBack";
-import Add from "./addtasks";
 import db from "@/lib/db";
+import Client from "./client";
 
 export default async function AdminDashboard() {
   const { token } = await getTokenOrBack({ admin: true });
@@ -22,7 +22,7 @@ export default async function AdminDashboard() {
         </h1>
       </div>
       <main className="flex-1 p-4 sm:p-6">
-        <Add token={token as string} tasks={JSON.stringify(lastTasks)} />
+        <Client />
       </main>
     </div>
   );
