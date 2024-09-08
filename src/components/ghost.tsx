@@ -17,8 +17,7 @@ const randomMathOp = (x: number) => {
   return Math.sin(x);
 };
 
-export default function RandomGhosts({ reverse }: { reverse: boolean }) {
-  return null
+export default function RandomGhosts({ reverse, sound }: { reverse: boolean, sound: boolean }) {
   const [ghosts, setGhosts] = useState<Ghost[]>([]);
 
   useEffect(() => {
@@ -95,7 +94,9 @@ export default function RandomGhosts({ reverse }: { reverse: boolean }) {
             alt="logo"
           />
           <div>
-            <AudioPlayer />
+            {
+              sound ? <AudioPlayer play={sound} /> : null
+            }
           </div>
           
         </div>

@@ -12,8 +12,8 @@ export default async function NFT_page() {
   const { token, user, id } = await getTokenOrBack({ admin: false });
   const NFTs = await prisma.nFT.findMany();
   const dbUser = await prisma.user.findUnique({where: {id}});
-  if (!user) return;
-  if (!dbUser) return;
+  if (!user) return "401";
+  if (!dbUser) return "401";
 
   const NFTsPro: NFTPro[] = await Promise.all(
     NFTs.map(async (nft) => {

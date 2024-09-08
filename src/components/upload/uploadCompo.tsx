@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
 import Modal from "../simple/Modal";
-import { Card, CardContent } from "../ui/card";
 import UploadForm from "./uploadForm";
 import { useState } from "react";
 
@@ -25,10 +24,10 @@ export default function UploadCompo({
       <div className="grid w-full items-center gap-1.5">
         <Image
           src={`/images/uploads/${currentImg}`}
-          alt={"uploaded image"}
+          alt={"No Image Uploaded"}
           width={200}
           height={200}
-          className="w-full h-48 object-contain rounded-t-lg"
+          className="w-full bg-[#ffffff47] border h-12 object-contain rounded-t-lg"
         />
         <Button
           type="button"
@@ -36,7 +35,7 @@ export default function UploadCompo({
             setUploading(true);
           }}
         >
-          Upload Nft Image
+          Upload Image
         </Button>
       </div>
       <Modal
@@ -45,14 +44,7 @@ export default function UploadCompo({
           setUploading(false);
         }}
       >
-        <Card>
-          <CardContent
-            style={{ maxHeight: "90vh" }}
-            className="relative overflow-hidden"
-          >
-            <UploadForm onUploadSuccess={handleUploadSuccess1} />
-          </CardContent>
-        </Card>
+        <UploadForm onUploadSuccess={handleUploadSuccess1} />
       </Modal>
     </>
   );

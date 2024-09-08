@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
@@ -19,6 +19,14 @@ enum TaskType {
   FOLLOW
   LIKE
   REPOST
+  COMMENT
+  WATCH
+}
+
+enum TaskVerificationType {
+  SCREEN_SHOT
+  JWT_CODE
+  AUTO_API
 }
 
 enum TaskStatusEnum {
@@ -34,43 +42,49 @@ enum Account {
 }
 
 model User {
-  id            String       @id @default(uuid()) @db.VarChar(36)
-  mainAccount   Account
-  discord       String       @unique
-  twitter       String       @unique
-  email         String?
-  walletAddress String?
-  password      String?
-  xp            Int          @default(0)
-  createdAt     DateTime     @default(now())
-  tasks         TaskStatus[]
-  NFTs          UserNFT[]
+  id              String       @id @default(uuid()) @db.VarChar(36)
+  mainAccount     Account
+  mainAccountId   String       @unique
+  mainAccountName String       @unique
+  discordId       String       @unique
+  discordName     String       @unique
+  twitterId       String       @unique
+  twitterName     String       @unique
+  email           String?
+  walletAddress   String?
+  password        String?
+  xp              Int          @default(0)
+  createdAt       DateTime     @default(now())
+  tasks           TaskStatus[]
+  NFTs            UserNFT[]
 }
 
 model Task {
-  id           String       @id @default(uuid()) @db.VarChar(36)
-  xp           Int
-  title        String
-  description  String
-  link         String
-  platform     Platform
-  taskType     TaskType
-  active       Boolean      @default(true)
-  daily        Boolean
-  createdAt    DateTime     @default(now())
-  expiresAt    DateTime?
-  userStatuses TaskStatus[]
+  id                   String               @id @default(uuid()) @db.VarChar(36)
+  xp                   Int
+  title                String
+  description          String
+  link                 String
+  platform             Platform
+  taskType             TaskType
+  taskVerificationType TaskVerificationType
+  active               Boolean              @default(true)
+  daily                Boolean
+  createdAt            DateTime             @default(now())
+  expiresAt            DateTime?
+  userStatuses         TaskStatus[]
 }
 
 model TaskStatus {
-  id        String         @id @default(uuid()) @db.VarChar(36)
-  xp        Int
-  userId    String
-  taskId    String
-  status    TaskStatusEnum
-  user      User           @relation(fields: [userId], references: [id])
-  task      Task           @relation(fields: [taskId], references: [id])
-  createdAt DateTime       @default(now())
+  id         String         @id @default(uuid()) @db.VarChar(36)
+  xp         Int
+  userId     String
+  taskId     String
+  status     TaskStatusEnum
+  screenShot String?
+  user       User           @relation(fields: [userId], references: [id])
+  task       Task           @relation(fields: [taskId], references: [id])
+  createdAt  DateTime       @default(now())
 
   @@unique([userId, taskId])
 }

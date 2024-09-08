@@ -59,16 +59,15 @@ export default function UploadForm({ onUploadSuccess }: { onUploadSuccess: any }
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full">
-        <h1 className="text-2xl font-bold text-center mb-6">Upload Your File</h1>
+    <div className="flex items-center justify-center p-4">
+      <div className="bg-[#020a10] border rounded-xl shadow-2xl p-8 max-w-md w-full">
+        <h1 className="text-2xl font-bold text-center mb-6">Upload Your Image</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex items-center justify-center w-full">
-            <label htmlFor="file-upload" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
-              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+            <label htmlFor="file-upload" className="flex h-fit flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+              <div className="flex flex-col items-center justify-center p-4">
                 <Upload className="w-10 h-10 mb-3 text-gray-400" />
                 <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                <p className="text-xs text-gray-500">Any file up to 10MB</p>
               </div>
               <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} />
             </label>

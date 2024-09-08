@@ -11,6 +11,9 @@ import { CardDescription, CardFooter } from "@/components/ui/card";
 import FormBtn from "@/components/simple/FormBtn";
 import formatDateSimple from "@/utils/simple/formatDateSimple";
 import JumpScareButton from "@/components/click";
+import { Input } from "@/components/ui/input";
+import UploadCompo from "@/components/upload/uploadCompo";
+import { Label } from "@/components/ui/label";
 
 type TaskPro = Task & { status: string };
 
@@ -24,6 +27,7 @@ export default function Client({
   const [filter, setFilter] = useState("none");
   const [sort, setSort] = useState("xp");
   const [tasks, setTasks] = useState<TaskPro[]>(JSON.parse(tasksSTR));
+  const [img, setImg] = useState("");
 
   const filteredTasks = useMemo(() => {
     let filtered = tasks;
@@ -57,7 +61,7 @@ export default function Client({
   const handleComplete = async (e: FormData) => {
     const taskId = e.get("taskId") as string;
 
-    const result = await completeTaskServer({ token, taskId });
+    const result = await completeTaskServer({ token, taskId, img });
     if (!result.success) return setError(result.error);
     // success
     setTasks((prev) =>
@@ -141,7 +145,6 @@ export default function Client({
           style={{ minHeight: "10.2rem", placeItems: "center" }}
           className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
         >
-          
           {filteredTasks.map((task) => (
             <Card
               key={task.id}
@@ -227,7 +230,7 @@ export default function Client({
           setCompleteTask(null);
         }}
       >
-        <Card className="w-full max-w-md">
+        <Card className="bg-[#020a10ba] p-4" style={{ maxWidth: "25rem" }}>
           <CardHeader>
             <CardTitle>Complete The Task</CardTitle>
             <CardDescription>
@@ -243,6 +246,23 @@ export default function Client({
                   {completeTask?.description}
                 </p>
               </div>
+            </div>
+
+            <div className="pt-16">
+              {completeTask?.taskVerificationType === "JWT_CODE" ? (
+                <div>
+                  <Label htmlFor="JWT_CODE">Enter the KEY here :</Label>
+                  <Input
+                    type="text"
+                    name="JWT_CODE"
+                    id="JWT_CODE"
+                    placeholder="eyJ..."
+                    required
+                  />
+                </div>
+              ) : completeTask?.taskVerificationType === "SCREEN_SHOT" ? (
+                <UploadCompo currentImg={img} handleUploadSuccess={setImg} />
+              ) : null}
             </div>
           </CardContent>
           <CardFooter

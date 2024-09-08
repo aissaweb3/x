@@ -8,12 +8,10 @@ import {
 } from "@/components/ui/navigation-menu";
 import Logo from "./Logo";
 import SignIN from "./signin";
-import { authOptions } from "../../lib/authOptions";
-import { getServerSession } from "next-auth";
 import getToken from "@/utils/server/getToken";
-import RandomGhosts from "./ghost";
+import ToggleGhostSound from "./ToggleGhostSound";
 
-export default async function Header({showGhosts}: {showGhosts: boolean}) {
+export default async function Header({ showGhosts }: { showGhosts: boolean }) {
   const { token, id } = await getToken();
 
   console.log(token, id);
@@ -55,6 +53,8 @@ export default async function Header({showGhosts}: {showGhosts: boolean}) {
               ))}
             </div>
             <SignIN id={id} />
+          <Ghosts showGhosts={showGhosts} />
+            
           </SheetContent>
         </Sheet>
         <Logo />
@@ -81,12 +81,19 @@ export default async function Header({showGhosts}: {showGhosts: boolean}) {
             </NavigationMenuList>
           </NavigationMenu>
           <SignIN id={id} />
-        </div>
+          <Ghosts showGhosts={showGhosts} />
+          </div>
       </header>
-      {showGhosts && <><RandomGhosts reverse={false} />
-      <RandomGhosts reverse /></>}
     </>
   );
+}
+
+function Ghosts({ showGhosts }: { showGhosts: boolean }) {
+  return showGhosts && (
+    <div className="mt-[6px] p-4" >
+      <ToggleGhostSound />
+    </div>
+  )
 }
 
 function MenuIcon(props: any) {

@@ -1,6 +1,6 @@
 "use server";
 import db from "@/lib/db";
-import { Platform, TaskType } from "@prisma/client";
+import { Platform, TaskType, TaskVerificationType } from "@prisma/client";
 import { verify } from "jsonwebtoken";
 
 type Data = {
@@ -13,6 +13,7 @@ type Data = {
   expiresAt: Date;
   token: string;
   daily: boolean;
+  taskVerificationType: TaskVerificationType;
 };
 
 export const addTask = async (data: Data) => {
@@ -26,6 +27,7 @@ export const addTask = async (data: Data) => {
     link,
     title,
     daily,
+    taskVerificationType
   } = data;
 
   const decoded: any = verify(token, process.env.JWT_SECRET as string);
@@ -45,6 +47,7 @@ export const addTask = async (data: Data) => {
         taskType,
         xp,
         daily,
+        taskVerificationType
       },
     });
     return { success: created, error: "" };

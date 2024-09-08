@@ -4,16 +4,12 @@ import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from "next-auth/providers/credentials";
 import crypto from "crypto";
 import db from "@/lib/db";
-import getToken from "@/utils/server/getToken";
-import { getSession } from "next-auth/react";
-
-let x = "not ready";
 
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.AUTH_SECRET,
+  secret: "314",//process.env.AUTH_SECRET,
   providers: [
     TwitterProvider({
       clientId: process.env.TWITTER_CLIENT_ID as string,
@@ -48,8 +44,12 @@ export const authOptions: NextAuthOptions = {
                 email: credentials.email,
                 password: hashed,
                 id: process.env.ADMIN_ID as string,
-                discord: "x",
-                twitter: "x",
+                discordId: "x",
+                discordName: "x",
+                twitterId: "x",
+                twitterName: "x",
+                mainAccountId: "x",
+                mainAccountName: "x",
               },
             });
           }
@@ -72,16 +72,21 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     jwt: async ({ token, user, account, profile, session, trigger }) => {
       if (account?.provider === "discord") {
-        const discordId = account.providerAccountId + "-name" + token.name;
+        const discordId = account.providerAccountId;
+        const discordName = token.name as string;
         let dbUser = await db.user.findUnique({
-          where: { discord: discordId },
+          where: { discordId },
         });
         if (!dbUser) {
           dbUser = await db.user.create({
             data: {
               mainAccount: "DISCORD",
-              discord: discordId,
-              twitter: `nullvalue-${crypto.randomUUID()}`,
+              discordId,
+              discordName,
+              mainAccountId: discordId,
+              mainAccountName: discordName,
+              twitterId: `nullvalue-${crypto.randomUUID()}`,
+              twitterName: `nullvalue-${crypto.randomUUID()}`,
             },
           });
         }
@@ -91,18 +96,21 @@ export const authOptions: NextAuthOptions = {
         token.id = account?.providerAccountId;
         token.provider = account?.provider;
       } else if (account?.provider === "twitter") {
-        const s = await getSession();
-        console.log(s);
-        const twitterId = account.providerAccountId + "-name" + token.name;
+        const twitterId = account.providerAccountId;
+        const twitterName = token.name as string;
         let dbUser = await db.user.findUnique({
-          where: { twitter: twitterId },
+          where: { twitterId },
         });
         if (!dbUser) {
           dbUser = await db.user.create({
             data: {
               mainAccount: "TWITTER",
-              twitter: twitterId,
-              discord: `nullvalue-${crypto.randomUUID()}`,
+              twitterId,
+              twitterName,
+              mainAccountId: twitterId,
+              mainAccountName: twitterName,
+              discordId: `nullvalue-${crypto.randomUUID()}`,
+              discordName: `nullvalue-${crypto.randomUUID()}`,
             },
           });
         }
@@ -114,11 +122,6 @@ export const authOptions: NextAuthOptions = {
     session: async ({ session, token, newSession, trigger, user }) => {
 
 
-      if (newSession)
-      {
-        console.log({ session, token, newSession, trigger, user });
-        
-      }
 
       return {
         ...session,

@@ -1,5 +1,5 @@
 const isConnected = (p: string) => {
-  return p.startsWith("nullvalue") ? "Not Connected" : p.split("-name")[1];
+  return p.startsWith("nullvalue") ? "Not Connected" : p;
 };
 
 export default isConnected

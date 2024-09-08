@@ -14,9 +14,9 @@ import isConnected from "@/utils/simple/isConnected";
 export function Client({ user, token }: { user: User; token: string }) {
   const [email, setEmail] = useState(user.email as string);
   const socials = [
-    { name: "Discord", value: user.discord },
-    { name: "Twitter", value: user.twitter },
-    { name: "Telegram", value: user.twitter },
+    { name: "Discord", value: user.discordName },
+    { name: "Twitter", value: user.discordName },
+    { name: "Telegram", value: user.discordName },
   ];
 
   socials.sort((a, b) => {
@@ -29,16 +29,7 @@ export function Client({ user, token }: { user: User; token: string }) {
   });
 
   const handleSignIn = async (p: string) => {
-    await signIn(p, { callbackUrl: `http://localhost:5000/api/auth/callback/${p}?token=${token}` });
-    return;
-    await signIn(p, { callbackUrl: `/api/connect/${token}/callback/${p}` });
-    const data = { customKey: "customValue" };
-    await signIn("providerName", {
-      redirect: false, // Change to true if you want to redirect after sign-in
-      callbackUrl: "/some-url",
-      // Pass data as an extra parameter
-      data,
-    });
+    await signIn(p);
   };
 
   return (
@@ -52,7 +43,7 @@ export function Client({ user, token }: { user: User; token: string }) {
         <div className="w-full bg-background rounded-lg shadow-lg p-6 space-y-6">
           <h3 className="text-lg font-bold">Connect Accounts</h3>
           <div>
-            {true ? (
+            {false ? (
               <div>
                 {socials.map((s, k) => (
                   <div className="" key={k}>
@@ -90,7 +81,7 @@ export function Client({ user, token }: { user: User; token: string }) {
                 ))}
               </div>
             ) : (
-              <div>Still Under Work</div>
+              <div className="opacity-80" >Still Under Work...</div>
             )}
           </div>
         </div>
@@ -114,7 +105,7 @@ export function Client({ user, token }: { user: User; token: string }) {
                   onChange={(e) => {
                     setEmail(e.target.value as string);
                   }}
-                  value={"email"}
+                  value={email}
                 />
                 <FormBtn>Save Email</FormBtn>
               </div>

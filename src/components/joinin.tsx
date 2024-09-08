@@ -40,9 +40,10 @@ export default function JoinIn({ id }: { id: string }) {
           setWantsToSignIn(false);
         }}
       >
-        <Card>
+        
+        <Card className="bg-[#0f1e2e]" >
           <CardContent>
-            <div className="sm:max-w-[425px] p-4">
+            <div className="sm:max-w-[425px] p-4 mb-8">
               <div>
                 <div className="text-4xl text-white font-bold">Login</div>
               </div>
@@ -51,13 +52,13 @@ export default function JoinIn({ id }: { id: string }) {
                   <button
                     onClick={() => signIn(p.toLowerCase())}
                     key={key}
-                    className="font-bold text-4xl text-white bg-[#30e1e6]/20 hover:bg-[#30e1e6]/70 hover:text-[black] transition inline-flex items-center justify-center rounded-md px-4 py-2 font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    className="trnasition font-bold border hover:scale-110 text-4xl text-white bg-[#30e1e6]/20 hover:bg-[#30e1e6]/70 hover:text-[black] transition inline-flex items-center justify-center rounded-md px-4 py-2 font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                     style={{ borderRadius: "3rem" }}
                   >
                     <Image
                       src={`/images/social/${p}.png`}
                       alt={p}
-                      className="h-20 w-20 mr-2 rounded-full border bg-white"
+                      className="opacity-40 h-20 w-20 mr-2 rounded-full border bg-white"
                       width={50}
                       height={50}
                       style={{ aspectRatio: "20/20", objectFit: "cover" }}

@@ -14,6 +14,9 @@ import {
 import FormBtn from "@/components/simple/FormBtn";
 import { completeTaskServer } from "./server/completeTask";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import UploadCompo from "@/components/upload/uploadCompo";
+import { Label } from "@/components/ui/label";
 
 export default function Tasks({
   tasks,
@@ -25,6 +28,8 @@ export default function Tasks({
   const [completeTask, setCompleteTask] = useState<Task | null>(null);
   const [clickedLink, setClickedLink] = useState(false);
   const [error, setError] = useState("");
+  const [img, setImg] = useState("");
+  const [JWT_CODE, setJWT_CODE] = useState("");
   const [dTasks, setDTasks] = useState(tasks);
 
   useEffect(() => {
@@ -34,7 +39,7 @@ export default function Tasks({
   const handleComplete = async (e: FormData) => {
     const taskId = e.get("taskId") as string;
 
-    const result = await completeTaskServer({ token, taskId });
+    const result = await completeTaskServer({ token, taskId, img, JWT_CODE });
     if (!result.success) return setError(result.error);
     // success
     let current = dTasks.filter((t) => t.id !== taskId);
@@ -87,7 +92,7 @@ export default function Tasks({
           setCompleteTask(null);
         }}
       >
-        <Card className="w-full max-w-md">
+        <Card className="bg-[#020a10ba] p-4" style={{maxWidth: "25rem"}} >
           <CardHeader>
             <CardTitle>Complete The Task</CardTitle>
             <CardDescription>
@@ -103,6 +108,20 @@ export default function Tasks({
                   {completeTask?.description}
                 </p>
               </div>
+            </div>
+
+            <div className="pt-16">
+              {completeTask?.taskVerificationType === "JWT_CODE" ? (
+                <div>
+                  <Label htmlFor="JWT_CODE" >Enter the KEY here :</Label>
+                  <Input 
+                  onChange={(e)=>{setJWT_CODE(e.target.value)}}
+                  value={JWT_CODE}
+                  type="text" name="JWT_CODE" id="JWT_CODE" placeholder="eyJ..." required />
+                </div>
+              ) : completeTask?.taskVerificationType === "SCREEN_SHOT" ? (
+                <UploadCompo currentImg={img} handleUploadSuccess={setImg} />
+              ) : null}
             </div>
           </CardContent>
           <CardFooter

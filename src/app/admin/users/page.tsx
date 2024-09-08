@@ -64,8 +64,8 @@ export default async function Page({ searchParams }: { searchParams: any }) {
               .filter((u) => u.email !== "admin")
               .map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell>{isConnected(user.discord)}</TableCell>
-                  <TableCell>{isConnected(user.twitter)}</TableCell>
+                  <TableCell>{isConnected(user.discordName)}</TableCell>
+                  <TableCell>{isConnected(user.twitterName)}</TableCell>
                   <TableCell>{user.email || "N/A"}</TableCell>
                   <TableCell>{user.xp}</TableCell>
                   <TableCell>{formatDateSimple(user.createdAt)}</TableCell>

@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
-import { Platform, Task, TaskType } from "@prisma/client";
+import { Platform, Task, TaskType, TaskVerificationType } from "@prisma/client";
 import { addTask, deleteTask, toggleStateTask } from "./server/manageTask";
 import formatDateSimple from "@/utils/simple/formatDateSimple";
 import Link from "next/link";
@@ -39,6 +39,7 @@ export default function Add({
     const link = e.get("link") as string;
     const platform = e.get("platform")?.toString().toUpperCase() as Platform;
     const taskType = e.get("taskType")?.toString().toUpperCase() as TaskType;
+    const taskVerificationType = e.get("taskVerificationType")?.toString().toUpperCase() as TaskVerificationType;
     const xp = parseFloat(e.get("xp") as string) as number;
     const expiresAt = new Date(e.get("expiresAt") as string) || null;
     const daily = e.get("daily")?.toString().toLowerCase() === "daily";
@@ -53,6 +54,7 @@ export default function Add({
       expiresAt,
       token,
       daily,
+      taskVerificationType
     };
     const result = await addTask(payload);
     if (!result.success) return setError(result.error);
@@ -195,6 +197,7 @@ export default function Add({
                         <SelectItem value="twitter">Twitter</SelectItem>
                         <SelectItem value="youtube">YouTube</SelectItem>
                         <SelectItem value="telegram">Telegram</SelectItem>
+                        <SelectItem value="discord">Discord</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -208,6 +211,19 @@ export default function Add({
                         <SelectItem value="follow">Follow</SelectItem>
                         <SelectItem value="like">Like</SelectItem>
                         <SelectItem value="repost">Repost</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="taskVerificationType">Verification Type</Label>
+                    <Select name="taskVerificationType">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="AUTO_API">Automatic</SelectItem>
+                        <SelectItem value="SCREEN_SHOT">Screenshot</SelectItem>
+                        <SelectItem value="JWT_CODE">Token</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
