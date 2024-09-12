@@ -20,16 +20,17 @@ const randomMathOp = (x: number) => {
 export default function RandomGhosts({ reverse, sound }: { reverse: boolean, sound: boolean }) {
   const [ghosts, setGhosts] = useState<Ghost[]>([]);
 
-  useEffect(() => {
-    const initialGhosts = Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      scale: Math.random() * 0.5 + 0.5,
-      opacity: Math.random() * 0.3 + 0,
-      speed: Math.random() * 4 + 1,
-      direction: Math.random() * 360,
-    }));
+   useEffect(() => {
+     const initialGhosts = Array.from({ length: 4 }, (_, i) => ({
+       id: i,
+       x: Math.random() * 100,
+       y: Math.random() * 100,
+       scale: Math.random() * 1.5 + 0.5,
+       opacity: Math.random() * 0.3 + 0,
+       speed: Math.random() * 5 + 0.5,
+       direction: Math.random() * 360,
+     }));
+     setGhosts(initialGhosts);
     setGhosts(initialGhosts);
 
     const animationFrame = requestAnimationFrame(function animate() {
