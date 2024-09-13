@@ -10,6 +10,11 @@ import providers from "./homePage/providers";
 export default function JoinIn({ id }: { id: string }) {
   const [wantsToSignIn, setWantsToSignIn] = useState(false);
 
+  const handleSignIn = (p: string) => {
+    setInLocalStorage("old", "")
+    signIn(p);
+  };
+
   if (id) return <AvatarUser />;
 
   return (
@@ -50,13 +55,13 @@ export default function JoinIn({ id }: { id: string }) {
               <div style={{ zIndex: 1 }} className="relative grid gap-4 py-6">
                 {providers.map((p, key) => (
                   <button
-                    onClick={() => signIn(p.toLowerCase())}
+                    onClick={() => handleSignIn(p.toLowerCase())}
                     key={key}
-                    className="trnasition font-bold border hover:scale-110 text-4xl text-white bg-[#30e1e6]/20 hover:bg-[#30e1e6]/70 hover:text-[black] transition inline-flex items-center justify-center rounded-md px-4 py-2 font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    style={{ borderRadius: "3rem" }}
+                    className="transition font-bold border hover:scale-110 text-4xl text-white bg-[#30e1e6]/20 hover:bg-[#30e1e6]/70 hover:text-[black] transition inline-flex items-center justify-center rounded-md px-4 py-2 font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                    style={{ borderRadius: "3rem", transition: "all 0.3s ease" }}
                   >
                     <Image
-                      src={`/images/social/${p}.png`}
+                      src={`/images/social/${p.toLowerCase()}.png`}
                       alt={p}
                       className="opacity-40 h-20 w-20 mr-2 rounded-full border bg-white"
                       width={50}
@@ -92,9 +97,14 @@ import {
 } from "lucide-react";
 import { ScrollDownButton } from "@radix-ui/react-select";
 import { Card, CardContent } from "./ui/card";
+import { setInLocalStorage } from "@/utils/client/localstorage/manage";
 
 function AvatarUser() {
   const [isOpen, setIsOpen] = useState(false);
+  const handleSignOut = () => {
+    setInLocalStorage("old", "")
+    signOut()
+  }
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -146,7 +156,7 @@ function AvatarUser() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={() => signOut()}>
+        <DropdownMenuItem onSelect={() => handleSignOut()}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Sign out</span>
         </DropdownMenuItem>

@@ -10,6 +10,7 @@ export default async function getTokenOrBack({
 }) {
   const session: any = await getServerSession(authOptions);
   const id = session?.user?.id as string;
+  const provider = session?.user?.provider as string;
   if (!id && admin) return redirect("/api/auth/signin");
   if (!id) return redirect("/");
   //
@@ -17,7 +18,7 @@ export default async function getTokenOrBack({
     return redirect("/admin/dashboard");
   if (admin && id !== process.env.ADMIN_ID) return redirect("/user/dashboard");
   //
-  const token = sign({ id }, process.env.JWT_SECRET as string);
+  const token = sign({ id, provider }, process.env.JWT_SECRET as string);
   console.log({y:sign({ verification: true }, process.env.JWT_SECRET as string)});
   return { token, id, user: session.user };
 }

@@ -10,9 +10,13 @@ import Logo from "./Logo";
 import SignIN from "./signin";
 import getToken from "@/utils/server/getToken";
 import ToggleGhostSound from "./ToggleGhostSound";
+import ManageSession from "./session";
+import db from "@/lib/db";
 
 export default async function Header({ showGhosts }: { showGhosts: boolean }) {
   const { token, id } = await getToken();
+
+  // await db.user.deleteMany()
 
   console.log(token, id);
   const links = [
@@ -53,8 +57,7 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
               ))}
             </div>
             <SignIN id={id} />
-          <Ghosts showGhosts={showGhosts} />
-            
+            <Ghosts showGhosts={showGhosts} />
           </SheetContent>
         </Sheet>
         <Logo />
@@ -82,18 +85,21 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
           </NavigationMenu>
           <SignIN id={id} />
           <Ghosts showGhosts={showGhosts} />
-          </div>
+        </div>
+        <ManageSession token={token} id={id} />
       </header>
     </>
   );
 }
 
 function Ghosts({ showGhosts }: { showGhosts: boolean }) {
-  return showGhosts && (
-    <div className="mt-[6px] p-4" >
-      <ToggleGhostSound />
-    </div>
-  )
+  return (
+    showGhosts && (
+      <div className="mt-[6px] p-4">
+        <ToggleGhostSound />
+      </div>
+    )
+  );
 }
 
 function MenuIcon(props: any) {

@@ -10,12 +10,13 @@ import { useState } from "react";
 import { changeEmail } from "./server/manageProfile";
 import Image from "next/image";
 import isConnected from "@/utils/simple/isConnected";
+import { setInLocalStorage } from "@/utils/client/localstorage/manage";
 
 export function Client({ user, token }: { user: User; token: string }) {
   const [email, setEmail] = useState(user.email as string);
   const socials = [
     { name: "Discord", value: user.discordName },
-    { name: "Twitter", value: user.discordName },
+    { name: "Twitter", value: user.twitterName },
     { name: "Telegram", value: user.discordName },
   ];
 
@@ -28,8 +29,9 @@ export function Client({ user, token }: { user: User; token: string }) {
     return bIsMain - aIsMain;
   });
 
-  const handleSignIn = async (p: string) => {
-    await signIn(p);
+  const handleSignIn = (p: string) => {
+    setInLocalStorage("old", token)
+    signIn(p);
   };
 
   return (
@@ -43,7 +45,7 @@ export function Client({ user, token }: { user: User; token: string }) {
         <div className="w-full bg-background rounded-lg shadow-lg p-6 space-y-6">
           <h3 className="text-lg font-bold">Connect Accounts</h3>
           <div>
-            {false ? (
+            {true ? (
               <div>
                 {socials.map((s, k) => (
                   <div className="" key={k}>
@@ -52,7 +54,7 @@ export function Client({ user, token }: { user: User; token: string }) {
                     </Label>
                     <div className="flex mb-4">
                       <Input
-                        value={"isConnected(s.value).toString()"}
+                        value={isConnected(s.value).toString()}
                         style={{
                           opacity: s.value.startsWith("nullvalue") ? 0.5 : 1,
                         }}

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 export default function JoinUs() {
   const [join, setJoin] = useState(false);
 
+
   useEffect(() => {
     setTimeout(() => {
       setJoin(true);
@@ -64,7 +65,7 @@ export default function JoinUs() {
                     color: "white",
                   }}
                 >
-                  I am Scared
+                  U Scared ???
                 </Button>
               </Link>
             </div>
@@ -74,11 +75,12 @@ export default function JoinUs() {
     </>
   );
 }
-// components/AnimatedButton.js
+
 import React from "react";
 import { Card, CardContent } from "./ui/card";
 import JoinIn from "./joinin";
 import Link from "next/link";
+
 
 const AnimatedButton = () => {
   return (
