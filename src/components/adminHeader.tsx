@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -8,10 +8,16 @@ import {
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 import { signOut } from "next-auth/react";
+import db from "@/lib/db";
 
 export default async function adminHeader() {
+  const pendingCount = await db.taskStatus.count({
+    where: {
+      status: "PENDING",
+      screenShot: { not: { equals: null } },
+    },
+  });
 
-  
   const links = [
     { name: "NFT", link: "/admin/nft" },
     { name: "Tasks", link: "/admin/tasks" },
@@ -48,13 +54,45 @@ export default async function adminHeader() {
                   {l.name}
                 </Link>
               ))}
-              <Button onClick={()=>{signOut()}} >Sign Out</Button>
-              </div>
+              <Button
+                onClick={() => {
+                  signOut();
+                }}
+              >
+                Sign Out
+              </Button>
+            </div>
           </SheetContent>
         </Sheet>
         <div className="ml-auto hidden lg:flex">
           <NavigationMenu>
             <NavigationMenuList>
+              <NavigationMenuLink
+                style={{
+                  fontFamily: "'CustomFont', sans-serif",
+                }}
+                asChild
+              >
+                <Link
+                  href="/admin/tasks/pending"
+                  className="text-2xl px-4 font-medium hover:opacity-70 transition"
+                  prefetch={false}
+                >
+                  Pending Tasks
+                  <span
+                    style={{
+                      background: "#59a3fe",
+                      borderRadius: "100%",
+                      padding: "7px 10px",
+                      color: "black",
+                      fontFamily: "auto",
+                      margin: "0 8px",
+                    }}
+                  >
+                    {pendingCount}
+                  </span>
+                </Link>
+              </NavigationMenuLink>
               {links.map((l, k) => (
                 <NavigationMenuLink
                   style={{
@@ -72,12 +110,17 @@ export default async function adminHeader() {
                   </Link>
                 </NavigationMenuLink>
               ))}
-              <Button onClick={()=>{signOut()}} >Sign Out</Button>
+              <Button
+                onClick={() => {
+                  signOut();
+                }}
+              >
+                Sign Out
+              </Button>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
       </header>
-      
     </>
   );
 }

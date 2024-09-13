@@ -25,6 +25,7 @@ enum TaskType {
 
 enum TaskVerificationType {
   SCREEN_SHOT
+  LINK_PROOF
   JWT_CODE
   AUTO_API
 }
@@ -76,15 +77,16 @@ model Task {
 }
 
 model TaskStatus {
-  id         String         @id @default(uuid()) @db.VarChar(36)
-  xp         Int
-  userId     String
-  taskId     String
-  status     TaskStatusEnum
-  screenShot String?
-  user       User           @relation(fields: [userId], references: [id])
-  task       Task           @relation(fields: [taskId], references: [id])
-  createdAt  DateTime       @default(now())
+  id               String         @id @default(uuid()) @db.VarChar(36)
+  xp               Int
+  userId           String
+  taskId           String
+  status           TaskStatusEnum
+  screenShot       String?
+  verificationLink String?
+  user             User           @relation(fields: [userId], references: [id])
+  task             Task           @relation(fields: [taskId], references: [id])
+  createdAt        DateTime       @default(now())
 
   @@unique([userId, taskId])
 }

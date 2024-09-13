@@ -7,12 +7,14 @@ import db from "@/lib/db";
 
 export default async function Dashboard() {
   const { token, user, id } = await getTokenOrBack({ admin: false });
+  const dbUser = await db.user.findUnique({where: {id}})
   const tasks = await db.task.findMany({
     orderBy: { createdAt: "desc" },
     where: {
       active: true,
       userStatuses: { none: { userId: id } },
     },
+    take: 4
   });
   const count = tasks.length;
   const nftCount = await db.nFT.count();
@@ -35,7 +37,7 @@ export default async function Dashboard() {
           count={count}
           nftCount={nftCount}
           token={token}
-          xp={user?.xp || 0}
+          xp={dbUser?.xp as number}
         />
       </div>
       <Footer />

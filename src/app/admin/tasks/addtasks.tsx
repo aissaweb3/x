@@ -89,6 +89,11 @@ export default function Add({
 
   return (
     <section>
+      <div>
+        <Link href="/admin/tasks/pending" >
+          <Button>Pending Tasks</Button>
+        </Link>
+      </div>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-2xl font-bold">Latest Tasks</h2>
         <Button
@@ -224,6 +229,7 @@ export default function Add({
                         <SelectItem value="AUTO_API">Automatic</SelectItem>
                         <SelectItem value="SCREEN_SHOT">Screenshot</SelectItem>
                         <SelectItem value="JWT_CODE">Token</SelectItem>
+                        <SelectItem value="LINK_PROOF">Verification Link</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
