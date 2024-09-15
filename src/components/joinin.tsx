@@ -58,10 +58,11 @@ export default function JoinIn({ id }: { id: string }) {
               </div>
               <div style={{ zIndex: 1 }} className="relative grid gap-4">
                 {providers.map((p, key) => (
-                  <LoadingWrapper>
+                  <LoadingWrapper
+                    key={key}
+                  >
                     <button
                       onClick={() => handleSignIn(p.toLowerCase())}
-                      key={key}
                       className="font-bold border hover:scale-110 text-4xl text-white bg-[#30e1e6]/20 hover:bg-[#30e1e6]/70 hover:text-[black] transition inline-flex items-center justify-center rounded-md px-4 py-2 font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                       style={{
                         borderRadius: "3rem",
