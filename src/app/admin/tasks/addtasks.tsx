@@ -33,6 +33,9 @@ export default function Add({
   const [error, setError] = useState("");
   const [dTasks, setDTasks] = useState(latestTasks);
 
+  console.log(addingTask);
+  
+
   const addTaskAction = async (e: FormData) => {
     const title = e.get("title") as string;
     const description = e.get("description") as string;

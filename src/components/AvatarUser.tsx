@@ -1,4 +1,4 @@
-
+"use client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -18,9 +18,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
-
-
-
+import Image from "next/image";
 
 export default function AvatarUser() {
     const [isOpen, setIsOpen] = useState(false);
@@ -31,13 +29,18 @@ export default function AvatarUser() {
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="relative h-8 w-8 rounded-full"
+            style={{ borderRadius: "100%" }}
+            className="relative h-16 w-16 rounded-full"
             onMouseEnter={() => setIsOpen(true)}
             onMouseLeave={() => setIsOpen(false)}
           >
-            <Avatar className="h-8 w-8">
-              <AvatarImage
-                src={(data?.user?.image as string) + "?height=32&width=32"}
+            <Avatar className="h-16 w-16">
+              <Image
+                width="100"
+                height="100"
+                style={{ borderRadius: "100%" }}
+                className="bg-card border border-xl text-primary"
+                src={data?.user?.image as string}
                 alt="User avatar"
               />
               <AvatarFallback></AvatarFallback>

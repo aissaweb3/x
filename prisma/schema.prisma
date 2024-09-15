@@ -46,19 +46,23 @@ model User {
   id              String       @id @default(uuid()) @db.VarChar(36)
   mainAccount     Account
   mainAccountId   String       @unique
-  mainAccountName String       @unique
-  discordId       String       @unique
-  discordName     String       @unique
-  twitterId       String       @unique
-  twitterName     String       @unique
+  mainAccountName String       @unique @db.VarChar(100)
+  discordId       String       @unique @db.VarChar(50)
+  discordName     String       @unique @db.VarChar(50)
+  twitterId       String       @unique @db.VarChar(50)
+  twitterName     String       @unique @db.VarChar(50)
+  referralId      String       @unique @default(uuid()) @db.VarChar(36)
   email           String?
   walletAddress   String?
   password        String?
   xp              Int          @default(0)
+  referrals       Int          @default(0)
+  referredBy      String?
   createdAt       DateTime     @default(now())
   tasks           TaskStatus[]
   NFTs            UserNFT[]
 }
+
 
 model Task {
   id                   String               @id @default(uuid()) @db.VarChar(36)

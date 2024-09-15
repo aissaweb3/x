@@ -1,14 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import FlickeringText from "./flickeringText";
 
 export default function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2" prefetch={false}>
+    <Link href="/" prefetch={false}>
       <Image
-        className="absolute"
+        className="animate-pulse"
         style={{ top: "0" }}
-        src="/images/media/logo.png"
+        src="/images/media/forb.png"
         width="150"
         height="150"
         alt="logo"

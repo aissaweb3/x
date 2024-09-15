@@ -1,4 +1,4 @@
-import { getServerSession, NextAuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import TwitterProvider from "next-auth/providers/twitter";
 import DiscordProvider from "next-auth/providers/discord";
 import GoogleProvider from "next-auth/providers/google";
@@ -10,7 +10,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: "314", //process.env.AUTH_SECRET,
+  secret: process.env.AUTH_SECRET,
   providers: [
     TwitterProvider({
       clientId: process.env.TWITTER_CLIENT_ID as string,

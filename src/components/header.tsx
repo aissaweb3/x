@@ -12,6 +12,7 @@ import getToken from "@/utils/server/getToken";
 import ToggleGhostSound from "./ToggleGhostSound";
 import ManageSession from "./session";
 import db from "@/lib/db";
+import ManageReferral from "./referral";
 
 export default async function Header({ showGhosts }: { showGhosts: boolean }) {
   const { token, id } = await getToken();
@@ -41,7 +42,13 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="bg-muted/90">
-            <div className="grid gap-[40px] py-6">
+            <div className="grid gap-[40px]">
+              <div
+                className="h-8 w-full items-center text-center h-[5rem]"
+                style={{ display: "ruby" }}
+              >
+                <Logo />
+              </div>
               {links.map((l, k) => (
                 <Link
                   key={k}
@@ -56,14 +63,14 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
                 </Link>
               ))}
             </div>
-            <SignIN id={id} />
-            <Ghosts showGhosts={showGhosts} />
           </SheetContent>
         </Sheet>
-        <Logo />
-        <div className="ml-auto hidden lg:flex">
+        <div className="ml-auto hidden lg:flex pr-32">
+          <div className="absolute top-[-1rem] left-[2rem] w-[10rem]">
+            <Logo />
+          </div>
           <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className="px-32">
               {links.map((l, k) => (
                 <NavigationMenuLink
                   style={{
@@ -83,10 +90,15 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
               ))}
             </NavigationMenuList>
           </NavigationMenu>
-          <SignIN id={id} />
-          <Ghosts showGhosts={showGhosts} />
         </div>
         <ManageSession token={token} id={id} />
+        <ManageReferral token={token} id={id} />
+        <div className="absolute right-0 p-4">
+          <div className="container justify-center text-end items-center flex">
+            <Ghosts showGhosts={showGhosts} />
+            <SignIN id={id} />
+          </div>
+        </div>
       </header>
     </>
   );
@@ -95,9 +107,7 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
 function Ghosts({ showGhosts }: { showGhosts: boolean }) {
   return (
     showGhosts && (
-      <div className="mt-[6px] p-4">
-        <ToggleGhostSound />
-      </div>
+      <ToggleGhostSound />
     )
   );
 }

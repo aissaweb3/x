@@ -4,6 +4,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const mergeUsers = require("./server/mergeUsers");
+const createReferral = require("./server/createReferral");
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 
@@ -41,6 +42,16 @@ app.prepare().then(() => {
     const { newUserToken, oldUserToken } = req.body;
     try {
       await mergeUsers(newUserToken, oldUserToken, process.env.AUTH_SECRET);
+    } catch (error) {
+      console.log(error);
+    }
+    res.json({success: true})
+  });
+
+  server.post("/api/createReferral", async (req, res) => {
+    const { token, referralToken } = req.body;
+    try {
+      await createReferral(token, referralToken, process.env.AUTH_SECRET);
     } catch (error) {
       console.log(error);
     }

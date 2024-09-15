@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 export default function JoinUs() {
   const [join, setJoin] = useState(false);
 
-
   useEffect(() => {
     setTimeout(() => {
       setJoin(true);
@@ -17,60 +16,43 @@ export default function JoinUs() {
       <main
         style={{
           fontFamily: "'customFont'",
+          opacity: join ? 1 : 0,
         }}
-        className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-6 md:px-12 text-white"
+        className="transition flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-6 md:px-12 text-white"
       >
-        <Card
+        <div
           style={{
-            maxWidth: "40rem",
-            opacity: join ? 1 : 0,
-            transition: "all 1s ease",
+            fontFamily: "'customFont'",
           }}
-          className="items-center"
+          className="text-center"
         >
-          <CardContent>
-            <div
+          <h1
+            style={{
+              fontSize: "4rem",
+            }}
+          >
+            Hello There
+          </h1>
+          <h2 className="opacity-50">
+            You must be cold out there, Please COME IN.
+          </h2>
+        </div>
+        <div className="grid gap-8 p-8 justify-center text-center">
+          <JoinIn id="" />
+          <Link href="https://google.com">
+            <Button
+              className="rounded-full py-8 px-16 bold opacity-40 hover:opacity-60 hover:scale-110 transition"
               style={{
-                fontFamily: "'customFont'",
+                borderRadius: "1rem",
+                fontSize: "xx-large",
+                background: "linear-gradient(45deg, #f00, rgb(149 6 6 / 0.37))",
+                color: "white",
               }}
-              className="text-center"
             >
-              <h1
-                style={{
-                  fontSize: "4rem",
-                }}
-              >
-                HELLO THERE !
-              </h1>
-              <h2 className="opacity-70">
-                Welcome To the forbidden Forest, Lorem ipsum dolor sit amet
-                consectetur adipisicing elit. Maiores veritatis totam voluptas
-                reiciendis accusamus culpa sapiente quos expedita temporibus,
-                perferendis nihil, veniam eveniet. At natus totam ad facere
-                minus itaque in dicta doloremque repellat vero velit incidunt
-                qui dolorum error porro delectus excepturi, aliquid accusantium
-                ex! Itaque quas sapiente quos.
-              </h2>
-            </div>
-            <div className="flex gap-16 p-8">
-              <JoinIn id="" />
-              <Link href="https://google.com">
-                <Button
-                  className="rounded-full py-8 px-16 bold opacity-40 hover:opacity-60 hover:scale-110 transition"
-                  style={{
-                    borderRadius: "1rem",
-                    fontSize: "xx-large",
-                    background:
-                      "linear-gradient(45deg, #f00, rgb(149 6 6 / 0.37))",
-                    color: "white",
-                  }}
-                >
-                  U Scared ???
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+              U Scared ???
+            </Button>
+          </Link>
+        </div>
       </main>
     </>
   );
@@ -80,7 +62,6 @@ import React from "react";
 import { Card, CardContent } from "./ui/card";
 import JoinIn from "./joinin";
 import Link from "next/link";
-
 
 const AnimatedButton = () => {
   return (
