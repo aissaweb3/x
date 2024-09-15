@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "./ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
 import providers from "./homePage/providers";
+import { LoadingWrapper } from "./LoadingWrapper";
 
 export default function JoinIn({ id }: { id: string }) {
   const [wantsToSignIn, setWantsToSignIn] = useState(false);
@@ -38,7 +39,6 @@ export default function JoinIn({ id }: { id: string }) {
       >
         Join Us
       </Button>
-
       <Modal
         isOpen={wantsToSignIn}
         onClose={() => {
@@ -58,28 +58,30 @@ export default function JoinIn({ id }: { id: string }) {
               </div>
               <div style={{ zIndex: 1 }} className="relative grid gap-4">
                 {providers.map((p, key) => (
-                  <button
-                    onClick={() => handleSignIn(p.toLowerCase())}
-                    key={key}
-                    className="font-bold border hover:scale-110 text-4xl text-white bg-[#30e1e6]/20 hover:bg-[#30e1e6]/70 hover:text-[black] transition inline-flex items-center justify-center rounded-md px-4 py-2 font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    style={{
-                      borderRadius: "3rem",
-                      transition: "all 0.3s ease",
-                    }}
-                  >
-                    <Image
-                      src={`/images/social/${p.toLowerCase()}.png`}
-                      alt={p}
-                      className="opacity-40 rounded-full w-[30%] h-[5rem]"
-                      width={50}
-                      height={50}
+                  <LoadingWrapper>
+                    <button
+                      onClick={() => handleSignIn(p.toLowerCase())}
+                      key={key}
+                      className="font-bold border hover:scale-110 text-4xl text-white bg-[#30e1e6]/20 hover:bg-[#30e1e6]/70 hover:text-[black] transition inline-flex items-center justify-center rounded-md px-4 py-2 font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                       style={{
-                        aspectRatio: "20/20",
-                        objectFit: "cover",
+                        borderRadius: "3rem",
+                        transition: "all 0.3s ease",
                       }}
-                    />
-                    Sign in with {p}
-                  </button>
+                    >
+                      <Image
+                        src={`/images/social/${p.toLowerCase()}.png`}
+                        alt={p}
+                        className="opacity-40 rounded-full w-[30%] h-[5rem]"
+                        width={50}
+                        height={50}
+                        style={{
+                          aspectRatio: "20/20",
+                          objectFit: "cover",
+                        }}
+                      />
+                      Sign in with {p}
+                    </button>
+                  </LoadingWrapper>
                 ))}
               </div>
             </div>
@@ -105,10 +107,8 @@ import {
   User,
   LogOut,
 } from "lucide-react";
-import { ScrollDownButton } from "@radix-ui/react-select";
 import { Card, CardContent } from "./ui/card";
 import { setInLocalStorage } from "@/utils/client/localstorage/manage";
-import SignIN from "./signin";
 
 function AvatarUser() {
   const [isOpen, setIsOpen] = useState(false);

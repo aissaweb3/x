@@ -11,6 +11,7 @@ import { changeEmail } from "./server/manageProfile";
 import Image from "next/image";
 import isConnected from "@/utils/simple/isConnected";
 import { setInLocalStorage } from "@/utils/client/localstorage/manage";
+import { LoadingWrapper } from "@/components/LoadingWrapper";
 
 export function Client({ user, token }: { user: User; token: string }) {
   const [email, setEmail] = useState(user.email as string);
@@ -61,22 +62,24 @@ export function Client({ user, token }: { user: User; token: string }) {
                         readOnly
                       />
                       {user.mainAccount !== s.name.toUpperCase() && (
-                        <Button
-                          onClick={() => {
-                            handleSignIn(s.name.toLowerCase());
-                          }}
-                          variant="outline"
-                          className="flex bg-[#184c6b] flex-col items-center gap-2"
-                        >
-                          <Image
-                            className="h-full w-[auto]"
-                            src={`/images/social/${s.name.toLowerCase()}.png`}
-                            width="100"
-                            height="100"
-                            alt={s.name}
-                          />
-                          {/*<span>{s.name}</span>*/}
-                        </Button>
+                        <LoadingWrapper>
+                          <Button
+                            onClick={() => {
+                              handleSignIn(s.name.toLowerCase());
+                            }}
+                            variant="outline"
+                            className="flex bg-[#184c6b] flex-col items-center gap-2"
+                          >
+                            <Image
+                              className="h-full w-[auto]"
+                              src={`/images/social/${s.name.toLowerCase()}.png`}
+                              width="100"
+                              height="100"
+                              alt={s.name}
+                            />
+                            {/*<span>{s.name}</span>*/}
+                          </Button>
+                        </LoadingWrapper>
                       )}
                     </div>
                   </div>

@@ -23,7 +23,7 @@ export default function Contact() {
         <Header showGhosts />
       </div>
       <div className="w-full">
-        <section className="w-full py-6 md:py-12 lg:py-16">
+        <section className="w-full grid mt-8 justify-center py-6 md:py-12 lg:py-16">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-4">
