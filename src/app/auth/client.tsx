@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 
-export default async function Client() {
+export default function Client() {
   return (
     <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#1a1a1a] px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-md text-center">

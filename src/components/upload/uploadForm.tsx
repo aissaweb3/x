@@ -4,6 +4,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { Upload, X, Loader2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
+import Image from 'next/image'
 
 export default function UploadForm({ onUploadSuccess }: { onUploadSuccess: any }) {
   const [file, setFile] = useState<File | null>(null)
@@ -75,7 +76,7 @@ export default function UploadForm({ onUploadSuccess }: { onUploadSuccess: any }
           
           {preview && (
             <div className="relative mt-4">
-              <img src={preview} alt="File preview" className="rounded-lg w-full h-48 object-cover" />
+              <Image width="100" height="100" src={preview} alt="File preview" className="rounded-lg w-full h-48 object-cover" />
               <button
                 type="button"
                 onClick={removeFile}

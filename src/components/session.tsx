@@ -47,6 +47,6 @@ function Client({
       }
     };
     sendPostRequest();
-  }, []);
+  });
   return null;
 }

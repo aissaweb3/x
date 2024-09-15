@@ -60,8 +60,9 @@ export default function Client({
 
   const handleComplete = async (e: FormData) => {
     const taskId = e.get("taskId") as string;
+    const JWT_CODE = e.get("JWT_CODE") as string;
 
-    const result = await completeTaskServer({ token, taskId, img });
+    const result = await completeTaskServer({ token, taskId, img, JWT_CODE });
     if (!result.success) return setError(result.error);
     // success
     setTasks((prev) =>
