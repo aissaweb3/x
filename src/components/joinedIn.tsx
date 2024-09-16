@@ -9,23 +9,24 @@ export default function JoinedIn() {
         }}
         className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-6 md:px-12 text-white"
       >
-          <div>
-            <div
+        <div>
+          <div
+            style={{
+              fontFamily: "'customFont'",
+            }}
+            className="text-center"
+          >
+            <h1
               style={{
-                fontFamily: "'customFont'",
+                fontSize: "4rem",
               }}
-              className="text-center"
             >
-              <h1
-                style={{
-                  fontSize: "4rem",
-                }}
-              >
-                Welcome BACK Home
-              </h1>
-              <h2 className="opacity-50" >You are now INSIDE the House</h2>
-            </div>
-            <div className="grid gap-8 p-8 justify-center text-center">
+              Welcome BACK Home
+            </h1>
+            <h2 className="opacity-50" >You are now INSIDE the House</h2>
+          </div>
+          <div className="grid gap-8 p-8 justify-center text-center">
+            <LoadingWrapper className="" >
               <Link href="/user/dashboard">
                 <Button
                   className="rounded-full py-8 px-16 bold opacity-60 hover:opacity-100 hover:scale-110 transition"
@@ -41,9 +42,12 @@ export default function JoinedIn() {
                   Guests Room
                 </Button>
               </Link>
+            </LoadingWrapper>
+            <LoadingWrapper className="" >
               <RunAway />
-            </div>
+            </LoadingWrapper>
           </div>
+        </div>
       </main>
     </>
   );
@@ -55,6 +59,7 @@ import JoinIn from "./joinin";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import RunAway from "./runAway";
+import { LoadingWrapper } from "./LoadingWrapper";
 
 const AnimatedButton = () => {
   return (

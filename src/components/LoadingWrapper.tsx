@@ -4,6 +4,7 @@ import GhostLoader from '@/app/loading';
 import React, { useState, ReactNode } from 'react'
 
 interface LoadingWrapperProps {
+  className: string;
   children: ReactNode;
   loadingIndicator?: ReactNode;
   delay?: number;
@@ -12,7 +13,7 @@ interface LoadingWrapperProps {
 
 
 export const LoadingWrapper: React.FC<LoadingWrapperProps> = ({
-  children,
+  children,className,
   loadingIndicator = <div className="fixed w-[100vw] h-[100vh] bg-[#00192b] top-0 left-0 " style={{ zIndex: "60" }} ><GhostLoader /></div>,
 }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -22,7 +23,7 @@ export const LoadingWrapper: React.FC<LoadingWrapperProps> = ({
   }
 
   return (
-    <div className="relative inline-block" onClick={handleClick}>
+    <div className={className} onClick={handleClick}>
       {children}
       {isLoading && loadingIndicator}
     </div>

@@ -12,6 +12,7 @@ import Image from "next/image";
 import isConnected from "@/utils/simple/isConnected";
 import { setInLocalStorage } from "@/utils/client/localstorage/manage";
 import { LoadingWrapper } from "@/components/LoadingWrapper";
+import CopyLink from "@/components/copy/copylink";
 
 export function Client({ user, token }: { user: User; token: string }) {
   const [email, setEmail] = useState(user.email as string);
@@ -31,7 +32,7 @@ export function Client({ user, token }: { user: User; token: string }) {
   });
 
   const handleSignIn = (p: string) => {
-    setInLocalStorage("old", token)
+    setInLocalStorage("old", token);
     signIn(p);
   };
 
@@ -44,7 +45,12 @@ export function Client({ user, token }: { user: User; token: string }) {
           </h1>
         </div>
         <div className="w-full bg-background rounded-lg shadow-lg p-6 space-y-6">
-          <h3 className="text-lg font-bold">Connect Accounts</h3>
+          <h3
+            style={{ fontFamily: "CustomFont"}}
+            className="text-lg font-bold"
+          >
+            Connect Accounts
+          </h3>
           <div>
             {true ? (
               <div>
@@ -62,7 +68,7 @@ export function Client({ user, token }: { user: User; token: string }) {
                         readOnly
                       />
                       {user.mainAccount !== s.name.toUpperCase() && (
-                        <LoadingWrapper>
+                        <LoadingWrapper className="">
                           <Button
                             onClick={() => {
                               handleSignIn(s.name.toLowerCase());
@@ -86,8 +92,19 @@ export function Client({ user, token }: { user: User; token: string }) {
                 ))}
               </div>
             ) : (
-              <div className="opacity-80" >Still Under Work...</div>
+              <div className="opacity-80">Still Under Work...</div>
             )}
+          </div>
+        </div>
+        <div className="w-full bg-background rounded-lg shadow-lg p-6 space-y-6">
+          <h3
+            style={{ fontFamily: "CustomFont"}}
+            className="text-lg font-bold"
+          >
+            Referral Link
+          </h3>
+          <div>
+            <CopyLink referral={user.referralId} />
           </div>
         </div>
         <div className="w-full bg-background rounded-lg shadow-lg p-6 space-y-6">

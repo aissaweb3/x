@@ -11,6 +11,12 @@ export default async function getData(perPage: number, page: number, filter: str
           take: perPage,
           orderBy: { xp: "desc" }
         });
+      } else if (filter === "Referrals") {
+        items = await db.user.findMany({
+          skip: perPage * (page - 1),
+          take: perPage,
+          orderBy: { referrals: "desc" }
+        });
       } else if (filter === "Latest") {
         items = await db.user.findMany({
           skip: perPage * (page - 1),

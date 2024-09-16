@@ -1,58 +1,78 @@
-"use client";
-
+"use client"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { AlertCircle, Twitter } from "lucide-react";
+import Image from "next/image";
+import { LoadingWrapper } from "@/components/LoadingWrapper";
+import { signIn } from "next-auth/react";
 
 export default function Client() {
   return (
-    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-[#1a1a1a] px-4 py-12 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-md text-center">
-        <div className="mx-auto h-12 w-12 rounded-full bg-[#ff6b6b] p-2 text-[#1a1a1a] animate-bounce">
-          <GhostIcon className="h-full w-full" />
-        </div>
-        <h1 className="mt-4 text-3xl font-bold tracking-tight text-[#f0f0f0] sm:text-4xl animate-pulse">
-          Welcome to the Haunted Realm
-        </h1>
-        <p className="mt-4 text-[#b3b3b3] animate-wiggle">
-          Embark on a thrilling adventure through the darkest corners of our
-          haunted website. Sign in with your Discord or Twitter account to begin
-          your quest.
-        </p>
-        <div className="mt-6 grid grid-cols-2 gap-4 animate-bounce">
-          <Button
-            variant="outline"
-            className="flex items-center justify-center gap-2 hover:bg-[#ff6b6b] hover:text-[#1a1a1a]"
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle
+            style={{
+              fontFamily: "'CustomFont', sans-serif",
+            }}
+            className="text-4xl font-bold text-primary-foreground"
           >
-            Discord
-          </Button>
-          <Button
-            variant="outline"
-            className="flex items-center justify-center gap-2 hover:bg-[#ff6b6b] hover:text-[#1a1a1a]"
+            Sign In
+          </CardTitle>
+          <CardDescription
+            style={{
+              fontFamily: "'CustomFont', sans-serif",
+            }}
+            className="text-muted-foreground"
           >
-            Twitter
-          </Button>
-        </div>
-      </div>
+            Welcome to the HAUNTED HOUSE
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="bg-muted text-muted-foreground p-3 rounded-md flex items-start space-x-2">
+              <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+              <p
+                style={{
+                  fontFamily: "'CustomFont', sans-serif",
+                }}
+                className="text-sm"
+              >
+                Come on in, the house isn't going to fill itself. Your freinds
+                are waiting for you !
+              </p>
+            </div>
+            <LoadingWrapper className="" >
+              <Button onClick={()=>{signIn("discord")}} className="w-full text-white" variant="outline">
+                <Image
+                  src="/images/social/discord.png"
+                  alt=""
+                  width="20"
+                  height="20"
+                />
+                Sign in with Discord
+              </Button>
+            </LoadingWrapper>
+            <LoadingWrapper className="" >
+              <Button onClick={()=>{signIn("twitter")}} className="w-full text-white" variant="outline">
+                <Image
+                  src="/images/social/twitter.png"
+                  alt=""
+                  width="20"
+                  height="20"
+                />
+                Sign in with Twitter
+              </Button>
+            </LoadingWrapper>
+          </div>
+        </CardContent>
+      </Card>
     </div>
-  );
-}
-
-function GhostIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M9 10h.01" />
-      <path d="M15 10h.01" />
-      <path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z" />
-    </svg>
   );
 }

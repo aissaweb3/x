@@ -32,7 +32,7 @@ function isOlderThan10Minutes(date) {
   const now = new Date();
   const providedDate = new Date(date);
   const diffInMillis = now - providedDate;
-  const tenMinutesInMillis = 10 * 60 * 1000;
+  const tenMinutesInMillis = 24 * 60 * 60 * 1000;
   return diffInMillis > tenMinutesInMillis;
 }
 

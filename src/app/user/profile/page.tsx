@@ -17,7 +17,7 @@ export default async function page() {
     <div
       style={{
         backgroundSize: "cover",
-        backgroundImage: "url('/images/media/bg1.jpg')",
+        backgroundImage: "url('/images/media/room (4).jpg')",
       }}
     >
       <div className="relative" style={{ zIndex: "2" }}>

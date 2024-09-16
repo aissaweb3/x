@@ -32,7 +32,7 @@ export default async function NFT_page() {
     <div
       style={{
         backgroundSize: "cover",
-        backgroundImage: "url('/images/media/bg1.jpg')",
+        backgroundImage: "url('/images/media/room (5).jpg')",
         minHeight: "100vh"
       }}
     >

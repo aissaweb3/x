@@ -304,7 +304,7 @@ export default function Client({
         </Card>
       </Modal>
     </>
-  );
+  )
 }
 
 function CalendarIcon(props: any) {

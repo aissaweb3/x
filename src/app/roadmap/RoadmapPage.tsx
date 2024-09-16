@@ -23,7 +23,7 @@ export default function RoadmapPage() {
           <div key={index} className={`flex items-center mb-16 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
             <div className="relative">
               <div 
-                className="absolute w-12 h-12 bg-primary border-2 border-accent rounded-full flex items-center justify-center z-10"
+                className="absolute w-12 h-12 bg-primary border-2 border-accent rounded-full flex items-center justify-center z-2"
                 style={{
                   left: index % 2 === 0 ? '-6px' : 'auto',
                   right: index % 2 === 1 ? '-6px' : 'auto',

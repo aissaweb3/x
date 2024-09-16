@@ -5,6 +5,7 @@ import { Task } from "@prisma/client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import { LoadingWrapper } from "@/components/LoadingWrapper";
 
 export function Client({
   tasksSTR,
@@ -75,12 +76,14 @@ export function Client({
           <CardHeader>
             <div className="flex gap-2 items-center">
               <CardTitle>NFTs</CardTitle>
-              <Link
-                href="/user/nft"
-                className="text-[white] underline hover:opacity-80"
-              >
-                Buy NFT
-              </Link>
+              <LoadingWrapper className="" >
+                <Link
+                  href="/user/nft"
+                  className="text-[white] underline hover:opacity-80"
+                >
+                  Buy NFT
+                </Link>
+              </LoadingWrapper>
             </div>
           </CardHeader>
           <CardContent className="flex items-center justify-between">
@@ -93,9 +96,11 @@ export function Client({
         <CardHeader>
           <div className="flex gap-4" style={{ alignItems: "center" }}>
             <CardTitle>Latest Tasks</CardTitle>
-            <Link href="/user/tasks">
-              <Button>See More</Button>
-            </Link>
+            <LoadingWrapper className="" >
+              <Link href="/user/tasks">
+                <Button>See More</Button>
+              </Link>
+            </LoadingWrapper>
           </div>
         </CardHeader>
         <CardContent>

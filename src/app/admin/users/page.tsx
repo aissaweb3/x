@@ -36,7 +36,7 @@ export default async function Page({ searchParams }: { searchParams: any }) {
     }
   }
 
-  const filters = ["Latest", "XP", "Oldest"];
+  const filters = ["Latest", "XP", "Referrals", "Oldest"];
 
   return (
     <div className="p-8">
@@ -56,6 +56,7 @@ export default async function Page({ searchParams }: { searchParams: any }) {
               <TableHead>Twitter</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>XP</TableHead>
+              <TableHead>Referrals</TableHead>
               <TableHead>Created At</TableHead>
             </TableRow>
           </TableHeader>
@@ -68,6 +69,7 @@ export default async function Page({ searchParams }: { searchParams: any }) {
                   <TableCell>{isConnected(user.twitterName)}</TableCell>
                   <TableCell>{user.email || "N/A"}</TableCell>
                   <TableCell>{user.xp}</TableCell>
+                  <TableCell>{user.referrals}</TableCell>
                   <TableCell>{formatDateSimple(user.createdAt)}</TableCell>
                 </TableRow>
               ))}

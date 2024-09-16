@@ -5,11 +5,7 @@ import Referral from "@/components/referral/set";
 import Video from "@/components/Video";
 import getToken from "@/utils/server/getToken";
 
-export default async function Component({
-  searchParams,
-}: {
-  searchParams: any;
-}) {
+export default async function Home() {
   const { id } = await getToken();
   return (
     <>
@@ -18,15 +14,12 @@ export default async function Component({
           <Video src="welcome" loop={false} />
           <Header showGhosts={false} />
           <JoinUs />
-          {
-            //<Referral id={searchParams.referral} />
-          }
         </div>
       ) : (
         <div
           style={{
             backgroundSize: "cover",
-            backgroundImage: "url('/images/media/rest1.jpg')",
+            backgroundImage: "url('/images/media/room (2).jpg')",
             minHeight: "100vh",
           }}
         >

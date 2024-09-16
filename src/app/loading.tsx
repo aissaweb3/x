@@ -13,7 +13,13 @@ export default function GhostLoader() {
   }, [])
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-white animate-pulse">
+    <div
+    
+    style={{
+      fontFamily: "'CustomFont', sans-serif",
+    }}
+    
+    className="flex flex-col items-center justify-center min-h-screen bg-gray-100 text-white animate-pulse">
       <div className={`transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-50'}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

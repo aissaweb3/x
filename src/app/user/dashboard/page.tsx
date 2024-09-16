@@ -21,7 +21,7 @@ export default async function Dashboard() {
   return (
     <div
       style={{
-        background: "url('/images/media/bg1.jpg')",
+        background: "url('/images/media/room (3).jpg')",
       }}
     >
       <div className="relative" style={{ zIndex: "1" }}>

@@ -13,6 +13,7 @@ import ToggleGhostSound from "./ToggleGhostSound";
 import ManageSession from "./session";
 import db from "@/lib/db";
 import ManageReferral from "./referral";
+import { LoadingWrapper } from "./LoadingWrapper";
 
 export default async function Header({ showGhosts }: { showGhosts: boolean }) {
   const { token, id } = await getToken();
@@ -50,17 +51,19 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
                 <Logo />
               </div>
               {links.map((l, k) => (
-                <Link
-                  key={k}
-                  href={l.link}
-                  className="text-2xl font-medium hover:opacity-70 transition"
-                  prefetch={false}
-                  style={{
-                    fontFamily: "'CustomFont', sans-serif",
-                  }}
-                >
-                  {l.name}
-                </Link>
+                <LoadingWrapper
+                  key={k}>
+                  <Link
+                    href={l.link}
+                    className="text-2xl font-medium hover:opacity-70 transition"
+                    prefetch={false}
+                    style={{
+                      fontFamily: "'CustomFont', sans-serif",
+                    }}
+                  >
+                    {l.name}
+                  </Link>
+                </LoadingWrapper>
               ))}
             </div>
           </SheetContent>
@@ -79,13 +82,15 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
                   key={k}
                   asChild
                 >
-                  <Link
-                    href={l.link}
-                    className="text-2xl px-4 font-medium hover:opacity-70 transition"
-                    prefetch={false}
-                  >
-                    {l.name}
-                  </Link>
+                  <LoadingWrapper className="" >
+                    <Link
+                      href={l.link}
+                      className="text-2xl px-4 font-medium hover:opacity-70 transition"
+                      prefetch={false}
+                    >
+                      {l.name}
+                    </Link>
+                  </LoadingWrapper>
                 </NavigationMenuLink>
               ))}
             </NavigationMenuList>

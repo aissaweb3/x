@@ -4,19 +4,27 @@ import Link from "next/link";
 import Modal from "./simple/Modal";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import providers from "./homePage/providers";
 import { LoadingWrapper } from "./LoadingWrapper";
+import { Card, CardContent } from "./ui/card";
+import { setInLocalStorage } from "@/utils/client/localstorage/manage";
+import AvatarUser from "./AvatarUser";
 
 export default function JoinIn({ id }: { id: string }) {
   const [wantsToSignIn, setWantsToSignIn] = useState(false);
 
   const handleSignIn = (p: string) => {
-    setInLocalStorage("old", "")
+    setInLocalStorage("old", "");
     signIn(p);
   };
 
-  if (id) return <AvatarUser />;
+  if (id)
+    return (
+      <SessionProvider>
+        <AvatarUser />
+      </SessionProvider>
+    );
 
   return (
     <div
@@ -58,9 +66,7 @@ export default function JoinIn({ id }: { id: string }) {
               </div>
               <div style={{ zIndex: 1 }} className="relative grid gap-4">
                 {providers.map((p, key) => (
-                  <LoadingWrapper
-                    key={key}
-                  >
+                  <LoadingWrapper className=""key={key}>
                     <button
                       onClick={() => handleSignIn(p.toLowerCase())}
                       className="font-bold border hover:scale-110 text-4xl text-white bg-[#30e1e6]/20 hover:bg-[#30e1e6]/70 hover:text-[black] transition inline-flex items-center justify-center rounded-md px-4 py-2 font-medium shadow transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
@@ -90,89 +96,5 @@ export default function JoinIn({ id }: { id: string }) {
         </Card>
       </Modal>
     </div>
-  );
-}
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Laptop,
-  ListTodo,
-  Image as ImageIcon,
-  User,
-  LogOut,
-} from "lucide-react";
-import { Card, CardContent } from "./ui/card";
-import { setInLocalStorage } from "@/utils/client/localstorage/manage";
-
-function AvatarUser() {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleSignOut = () => {
-    setInLocalStorage("old", "")
-    signOut()
-  }
-
-  return (
-    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="relative h-8 w-8 rounded-full"
-          onMouseEnter={() => setIsOpen(true)}
-          onMouseLeave={() => setIsOpen(false)}
-        >
-          <Avatar className="h-8 w-8">
-            <AvatarImage
-              src="/placeholder.svg?height=32&width=32"
-              alt="User avatar"
-            />
-            <AvatarFallback>U</AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent
-        className="w-56"
-        align="end"
-        forceMount
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
-      >
-        <DropdownMenuItem asChild>
-          <Link href="/user/dashboard" className="flex items-center text-white">
-            <Laptop className="mr-2 h-4 w-4" />
-            <span>Dashboard</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/user/tasks" className="flex items-center text-white">
-            <ListTodo className="mr-2 h-4 w-4" />
-            <span>Tasks</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/user/nft" className="flex items-center text-white">
-            <ImageIcon className="mr-2 h-4 w-4" />
-            <span>NFTs</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/user/profile" className="flex items-center text-white">
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onSelect={() => handleSignOut()}>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Sign out</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
   );
 }

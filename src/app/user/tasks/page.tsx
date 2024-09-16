@@ -31,13 +31,13 @@ export default async function server() {
       <div
         style={{
           backgroundSize: "cover",
-          backgroundImage: "url('/images/media/rest.jpg')",
+          backgroundImage: "url('/images/media/room (7).jpg')",
         }}
       >
         <div className="relative" style={{ zIndex: "2" }}>
           <Header showGhosts />
         </div>
-        <Client tasksSTR={JSON.stringify(tasksPro)} token={token} />;
+        <Client tasksSTR={JSON.stringify(tasksPro)} token={token} />
         <Footer />
       </div>
     </>

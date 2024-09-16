@@ -6,7 +6,7 @@ export default async function Component() {
     <div
       style={{
         fontFamily: "'CustomFont'",
-        backgroundImage: "url('/images/media/rest1.jpg')",
+        backgroundImage: "url('/images/media/room (5).jpg')",
         backgroundSize: "cover",
         minHeight: "100vh",
       }}
