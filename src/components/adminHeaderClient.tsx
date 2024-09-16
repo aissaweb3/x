@@ -94,6 +94,7 @@ export default function AdminHeaderClient({
               </NavigationMenuLink>
               {links.map((l, k) => (
                 <NavigationMenuLink
+                  key={k}
                   style={{
                     fontFamily: "'CustomFont', sans-serif",
                   }}
