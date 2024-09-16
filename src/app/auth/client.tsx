@@ -44,7 +44,7 @@ export default function Client() {
                 }}
                 className="text-sm"
               >
-                Come on in, the house isn't going to fill itself. Your freinds
+                Come on in, the house is not going to fill itself. Your freinds
                 are waiting for you !
               </p>
             </div>

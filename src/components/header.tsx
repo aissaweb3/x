@@ -52,6 +52,7 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
               </div>
               {links.map((l, k) => (
                 <LoadingWrapper
+                  className=""
                   key={k}>
                   <Link
                     href={l.link}

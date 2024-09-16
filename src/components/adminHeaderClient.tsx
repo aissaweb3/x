@@ -10,7 +10,7 @@ import {
 import { signOut } from "next-auth/react";
 import { LoadingWrapper } from "./LoadingWrapper";
 
-export default async function AdminHeaderClient({
+export default function AdminHeaderClient({
   pendingCount,
 }: {
   pendingCount: number;
