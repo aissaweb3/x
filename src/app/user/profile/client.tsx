@@ -19,7 +19,7 @@ export function Client({ user, token }: { user: User; token: string }) {
   const socials = [
     { name: "Discord", value: user.discordName },
     { name: "Twitter", value: user.twitterName },
-    { name: "Telegram", value: user.discordName },
+    //{ name: "Telegram", value: user.discordName },
   ];
 
   socials.sort((a, b) => {
