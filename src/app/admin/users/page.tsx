@@ -65,8 +65,8 @@ export default async function Page({ searchParams }: { searchParams: any }) {
               .filter((u) => u.email !== "admin")
               .map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell>{isConnected(user.discordName)}</TableCell>
-                  <TableCell>{isConnected(user.twitterName)}</TableCell>
+                  <TableCell style={{ opacity: isConnected(user.discordName) === "Not Connected" ? 0.2 : 1 }} >{isConnected(user.discordName)}</TableCell>
+                  <TableCell style={{ opacity: isConnected(user.twitterName) === "Not Connected" ? 0.2 : 1 }} >{isConnected(user.twitterName)}</TableCell>
                   <TableCell>{user.email || "N/A"}</TableCell>
                   <TableCell>{user.xp}</TableCell>
                   <TableCell>{user.referrals}</TableCell>

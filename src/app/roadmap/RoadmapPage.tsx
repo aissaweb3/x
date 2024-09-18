@@ -1,90 +1,128 @@
 'use client'
-import { useState } from 'react'
-import { Star, Zap, Target, Rocket, Flag } from 'lucide-react'
-import { Card, CardContent } from "@/components/ui/card"
+import React, { useState, useRef, useEffect } from 'react'
+import Link from 'next/link'
 
-const roadmapItems = [
-  { icon: Star, title: "Phase 1: Genesis", description: "Launch of the token and initial community building." },
-  { icon: Zap, title: "Phase 2: Amplification", description: "Community expansion and partnership with other projects." },
-  { icon: Target, title: "Phase 3: Targeting", description: "Major marketing push and listing on top exchanges." },
-  { icon: Rocket, title: "Phase 4: Liftoff", description: "Launch of our exclusive NFT collection." },
-  { icon: Flag, title: "Phase 5: New Horizons", description: "Release of our decentralized gaming platform." },
-]
+interface RoadmapItem {
+  quarter: string;
+  title: string;
+  items: string[];
+}
 
-export default function RoadmapPage() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+interface RoadmapCardProps extends RoadmapItem {}
+
+const RoadmapCard: React.FC<RoadmapCardProps> = ({ quarter, title, items }) => (
+  <div className="flex-shrink-0 w-80 bg-card p-6 rounded-lg shadow-lg mx-4 my-8 transform transition-transform hover:scale-105">
+    <h3 className="text-accent opacity-60 text-2xl font-bold mb-4">{quarter}</h3>
+    <h4 className="text-card-foreground text-xl font-semibold mb-2">{title}</h4>
+    <ul
+    style={{ fontFamily: "auto" }}
+    className="list-disc list-inside text-card-foreground text-sm">
+      {items && items.map((item, index) => (
+        <li key={index} className="mb-2">{item}</li>
+      ))}
+    </ul>
+  </div>
+)
+
+const RoadmapPage: React.FC = () => {
+  const [isDragging, setIsDragging] = useState<boolean>(false)
+  const [startX, setStartX] = useState<number>(0)
+  const [scrollLeft, setScrollLeft] = useState<number>(0)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  const roadmapData: RoadmapItem[] = [
+    {
+      quarter: 'Q1',
+      title: 'Preparation and Foundation',
+      items: [
+        'Secure the "Forbidden Forest" domain',
+        'Develop the official website',
+        'Finalize the branding',
+        'Create the "BOO Forest" NFTs',
+        'Begin game bot development'
+      ]
+    },
+    {
+      quarter: 'Q2',
+      title: 'Community Building and Initial Launch',
+      items: [
+        'Launch the official website',
+        'Engage with the community',
+        'Distribute "BOO Forest" NFTs',
+        'Launch game bot beta version'
+      ]
+    },
+    {
+      quarter: 'Q3',
+      title: 'Expansion and Public Sale',
+      items: [
+        'Launch game bot to the public',
+        'Conduct private sale',
+        'Launch marketing campaigns',
+        'Execute public sale'
+      ]
+    },
+    {
+      quarter: 'Q4',
+      title: 'Full Launch and Ecosystem Growth',
+      items: [
+        'Integrate game bot with ecosystem',
+        'Distribute TGE airdrops',
+        'List token on CEX',
+        'Develop additional features',
+        'Secure strategic partnerships'
+      ]
+    }
+  ]
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (scrollRef.current) {
+      setIsDragging(true)
+      setStartX(e.pageX - scrollRef.current.offsetLeft)
+      setScrollLeft(scrollRef.current.scrollLeft)
+    }
+  }
+
+  const handleMouseUp = () => {
+    setIsDragging(false)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || !scrollRef.current) return
+    e.preventDefault()
+    const x = e.pageX - scrollRef.current.offsetLeft
+    const walk = (x - startX) * 2
+    scrollRef.current.scrollLeft = scrollLeft - walk
+  }
+
+  useEffect(() => {
+    document.addEventListener('mouseup', handleMouseUp)
+    return () => document.removeEventListener('mouseup', handleMouseUp)
+  }, [])
 
   return (
-    <div className="min-h-screen text-primary-foreground p-4 md:p-8 flex flex-col items-center justify-center relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-radial from-primary-dark to-background opacity-10" />
-      <h1 className="text-3xl md:text-4xl font-bold mb-12 text-accent">Roadmap</h1>
-      <div className="relative w-full max-w-4xl">
-        {roadmapItems.map((item, index) => (
-          <div key={index} className={`flex items-center mb-16 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-            <div className="relative">
-              <div 
-                className="absolute w-12 h-12 bg-primary border-2 border-accent rounded-full flex items-center justify-center z-2"
-                style={{
-                  left: index % 2 === 0 ? '-6px' : 'auto',
-                  right: index % 2 === 1 ? '-6px' : 'auto',
-                  boxShadow: hoveredIndex === index ? '0 0 15px #38fdfd' : 'none',
-                  transition: 'box-shadow 0.3s ease-in-out',
-                }}
-              >
-                <item.icon className="w-6 h-6 text-accent" />
+    <div className="min-h-screen flex flex-col text-primary-foreground">
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold text-accent mb-12 text-center">Forbidden Forest Roadmap</h1>
+        <div 
+          ref={scrollRef}
+          className="flex overflow-x-auto pb-8 cursor-grab active:cursor-grabbing"
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+        >
+          <div className="flex">
+            {roadmapData.map((item, index) => (
+              <div key={index} className={`transform ${index % 2 === 0 ? 'translate-y-8' : '-translate-y-8'}`}>
+                <RoadmapCard quarter={item.quarter} title={item.title} items={item.items} />
               </div>
-              <Card 
-                className={`w-64 md:w-80 bg-card hover:bg-primary-dark transition-colors duration-300 ${
-                  index % 2 === 0 ? 'ml-8' : 'mr-8'
-                }`}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
-              >
-                <CardContent className="p-4">
-                  <h3 className="text-xl font-semibold text-accent mb-2">{item.title}</h3>
-                  <p style={{fontFamily: "auto"}} className="text-card-foreground">{item.description}</p>
-                </CardContent>
-              </Card>
-            </div>
-            {index < roadmapItems.length - 1 && (
-              <div 
-                className="absolute w-1/2 border-t-2 border-accent z-0"
-                style={{
-                  left: index % 2 === 0 ? '0' : '50%',
-                  top: '6px',
-                  transform: index % 2 === 0 ? 'translateY(120px)' : 'translateY(-40px)',
-                }}
-              >
-                <div 
-                  className="absolute w-3 h-3 bg-accent rounded-full"
-                  style={{
-                    top: '-6px',
-                    [index % 2 === 0 ? 'right' : 'left']: '-6px',
-                    animation: 'pulse 2s infinite',
-                    animationDelay: `${index * 0.5}s`,
-                  }}
-                />
-              </div>
-            )}
+            ))}
           </div>
-        ))}
-      </div>
-      <style jsx>{`
-        @keyframes pulse {
-          0% {
-            transform: scale(1);
-            opacity: 1;
-          }
-          50% {
-            transform: scale(1.5);
-            opacity: 0.7;
-          }
-          100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-      `}</style>
+        </div>
+      </main>
     </div>
   )
 }
+
+export default RoadmapPage

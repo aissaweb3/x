@@ -2,7 +2,11 @@ import Image from "next/image";
 import RandomGhosts from "./ghost";
 
 export default function Footer() {
-  return null;
+  return  ( <footer className="bg-primary py-4 mt-8">
+    <div className="container mx-auto px-4 text-center text-accent">
+      <p>&copy; 2023 Forbidden Forest. All rights reserved.</p>
+    </div>
+  </footer>);
   return (
     <footer className="py-4">
       <div className="border border-card-foreground rounded-[15px] bg-primary-dark/80 w-fit container mx-auto p-4 sm:px-6 lg:px-8 justify-center gap-4">

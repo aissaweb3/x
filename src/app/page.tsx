@@ -1,12 +1,18 @@
+
 import Header from "@/components/header";
 import JoinedIn from "@/components/joinedIn";
 import JoinUs from "@/components/JoinUs";
 import Referral from "@/components/referral/set";
 import Video from "@/components/Video";
 import getToken from "@/utils/server/getToken";
+import { redirect } from "next/navigation";
+
 
 export default async function Home() {
   const { id } = await getToken();
+  
+  if (id === process.env.ADMIN_ID) redirect ("/admin/dashboard")
+
   return (
     <>
       {!id ? (

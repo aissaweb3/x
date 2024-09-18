@@ -3,10 +3,17 @@ const { verify } = require("jsonwebtoken");
 const prisma = new PrismaClient();
 
 const createReferral = async (token, referralToken, SECRET) => {
-  const { referralId } = verify(referralToken, SECRET);
+  console.log("referring...");
+  
+    
+  const { referral:referralId } = verify(referralToken, SECRET);
   const { id } = verify(token, SECRET);
 
-  if (!id || !referralId) return;
+  console.log({referralToken, token});
+  console.log({referralId, id});
+  
+
+  if (!id || !referralId) return console.log("not valid");
 
   const newUser = await prisma.user.findUnique({ where: { id } });
   const referralUser = await prisma.user.findUnique({ where: { referralId } });

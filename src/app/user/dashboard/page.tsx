@@ -21,12 +21,14 @@ export default async function Dashboard() {
   return (
     <div
       style={{
-        background: "url('/images/media/room (3).jpg')",
+        background: "url('/images/media/dashboard.jpg')",
+        backgroundSize: "contain",
+        backgroundRepeat: "no-repeat"
       }}
     >
-      <div className="relative" style={{ zIndex: "1" }}>
+      {/*<div className="relative" style={{ zIndex: "1" }}>
         <Video loop={false} src="home" />
-      </div>
+      </div>*/}
       <div className="relative" style={{ zIndex: "2" }}>
         <Header showGhosts />
       </div>
@@ -38,6 +40,7 @@ export default async function Dashboard() {
           nftCount={nftCount}
           token={token}
           xp={dbUser?.xp as number}
+          referrals={dbUser?.referrals as number}
         />
       </div>
       <Footer />

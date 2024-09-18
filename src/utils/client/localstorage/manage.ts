@@ -4,7 +4,7 @@ export const getFromLocalStorage = (key: string) => {
   }
 
   const item = localStorage.getItem(key);
-  return item ? item : null;
+  return item ? JSON.parse(item) : null;
 };
 
 export const setInLocalStorage = (key: string, value: any) => {

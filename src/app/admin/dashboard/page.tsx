@@ -4,13 +4,13 @@ import Client from "./client";
 
 export default async function AdminDashboard() {
   const { token } = await getTokenOrBack({ admin: true });
-  const lastTasks = await await db.task.findMany({
+  /*const lastTasks = await await db.task.findMany({
     orderBy: {
       createdAt: "desc",
     },
     take: 4,
   });
-
+*/
   return (
     <div
       style={{ fontFamily: "auto" }}
@@ -21,9 +21,6 @@ export default async function AdminDashboard() {
           HELLO ADMIN
         </h1>
       </div>
-      <main className="flex-1 p-4 sm:p-6">
-        <Client />
-      </main>
     </div>
   );
 }

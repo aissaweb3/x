@@ -8,7 +8,7 @@ import { SessionProvider, useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 export default function ManageSession({ token, id }: { token: string, id: string }) {
-  const oldUserToken = getFromLocalStorage("old") as string;
+  const oldUserToken = getFromLocalStorage("old");
 
   if (!oldUserToken || !id) return null;
 
@@ -41,7 +41,9 @@ function Client({
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        if (data.success) setInLocalStorage("old", "");
+        if (data.success) {
+          setInLocalStorage("old", "");
+        }
       } catch (error) {
         console.error("Error:", error);
       }

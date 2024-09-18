@@ -11,12 +11,14 @@ export function Client({
   tasksSTR,
   token,
   xp,
+  referrals,
   count,
   nftCount,
 }: {
   tasksSTR: string;
   token: string;
   xp: number;
+  referrals: number;
   count: number;
   nftCount: number;
 }) {
@@ -58,7 +60,8 @@ export function Client({
               className="text-6xl font-bold text-[#ff0]"
               style={{ fontFamily: "'CustomFont'" }}
             >
-              {xp} <span className="text-3xl opacity-80">Secrets</span>
+              {xp} <span className="text-3xl opacity-80">Secrets </span>
+              {referrals} <span className="text-3xl opacity-80">Referral{referrals > 1 && 's'}</span>
             </div>
             <TrophyIcon className="h-8 w-8 text-white opacity-50" />
           </CardContent>

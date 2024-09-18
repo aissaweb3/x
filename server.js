@@ -39,17 +39,32 @@ app.prepare().then(() => {
   });
 
   server.post("/api/linkAccounts", async (req, res) => {
-    const { newUserToken, oldUserToken } = req.body;
+    console.log("wants to link accounts");
+    try {
+      
+    const { newUserToken } = req.body;
+    const oldUserToken = req.body.oldUserToken;
+    if (!oldUserToken) return res.json({success: false})
+    
+    
     try {
       await mergeUsers(newUserToken, oldUserToken, process.env.AUTH_SECRET);
     } catch (error) {
       console.log(error);
     }
+  } catch (error) {
+   console.log(error);
+      
+  }
     res.json({success: true})
   });
 
   server.post("/api/createReferral", async (req, res) => {
-    const { token, referralToken } = req.body;
+    console.log("referral");
+    
+    const { token } = req.body;
+    const referralToken = req.body.referralToken;
+    if (!referralToken) return res.json({success: true})
     try {
       await createReferral(token, referralToken, process.env.AUTH_SECRET);
     } catch (error) {
@@ -57,6 +72,9 @@ app.prepare().then(() => {
     }
     res.json({success: true})
   });
+
+  const telegramRouter = require("./server/telegramRouter.js")
+  server.use("/", telegramRouter)
 
   server.all("*", (req, res) => {
     return handle(req, res);

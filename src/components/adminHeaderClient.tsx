@@ -70,7 +70,6 @@ export default function AdminHeaderClient({
                 }}
                 asChild
               >
-                <LoadingWrapper className="">
                   <Link
                     href="/admin/tasks/pending"
                     className="text-2xl px-4 font-medium hover:opacity-70 transition"
@@ -90,7 +89,6 @@ export default function AdminHeaderClient({
                       {pendingCount}
                     </span>
                   </Link>
-                </LoadingWrapper>
               </NavigationMenuLink>
               {links.map((l, k) => (
                 <NavigationMenuLink

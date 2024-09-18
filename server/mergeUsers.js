@@ -3,7 +3,8 @@ const { verify } = require("jsonwebtoken");
 const prisma = new PrismaClient();
 
 const mergeUsers = async (newUserToken, oldUserToken, SECRET) => {
-  const { id: oldUserId, provider: oldProvider } = verify(oldUserToken, SECRET);
+  try {
+    const { id: oldUserId, provider: oldProvider } = verify(oldUserToken, SECRET);
   const { id: newUserId, provider: newProvider } = verify(newUserToken, SECRET);
 
   if (!oldUserId || !newUserId) return;
@@ -56,6 +57,11 @@ const mergeUsers = async (newUserToken, oldUserToken, SECRET) => {
 
     return;
   }
+} catch (error) {
+  console.error(`Error in merging users: ${error}`);
+
+  return;
+}
 };
 
 module.exports = mergeUsers;

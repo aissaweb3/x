@@ -20,10 +20,6 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.DISCORD_CLIENT_ID as string,
       clientSecret: process.env.DISCORD_CLIENT_SECRET as string,
     }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -55,6 +51,8 @@ export const authOptions: NextAuthOptions = {
                 twitterName: "x",
                 mainAccountId: "x",
                 mainAccountName: "x",
+                telegramId: "x",
+                telegramName: "x",
               },
             });
           }
@@ -92,6 +90,8 @@ export const authOptions: NextAuthOptions = {
               mainAccountName: discordName,
               twitterId: `nullvalue-${crypto.randomUUID()}`,
               twitterName: `nullvalue-${crypto.randomUUID()}`,
+              telegramId: `nullvalue-${crypto.randomUUID()}`,
+              telegramName: `nullvalue-${crypto.randomUUID()}`,
             },
           });
         }
@@ -116,6 +116,8 @@ export const authOptions: NextAuthOptions = {
               mainAccountName: twitterName,
               discordId: `nullvalue-${crypto.randomUUID()}`,
               discordName: `nullvalue-${crypto.randomUUID()}`,
+              telegramId: `nullvalue-${crypto.randomUUID()}`,
+              telegramName: `nullvalue-${crypto.randomUUID()}`,
             },
           });
         }

@@ -21,6 +21,7 @@ enum TaskType {
   REPOST
   COMMENT
   WATCH
+  REACT
 }
 
 enum TaskVerificationType {
@@ -51,6 +52,8 @@ model User {
   discordName     String       @unique @db.VarChar(50)
   twitterId       String       @unique @db.VarChar(50)
   twitterName     String       @unique @db.VarChar(50)
+  telegramId       String       @unique @db.VarChar(50)
+  telegramName     String       @unique @db.VarChar(50)
   referralId      String       @unique @default(uuid()) @db.VarChar(36)
   email           String?
   walletAddress   String?
