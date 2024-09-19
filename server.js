@@ -75,6 +75,9 @@ app.prepare().then(() => {
 
   const telegramRouter = require("./server/telegramRouter.js")
   server.use("/", telegramRouter)
+  server.get("/test", (req,res)=>{
+    res.send("test")
+  })
 
   server.all("*", (req, res) => {
     return handle(req, res);

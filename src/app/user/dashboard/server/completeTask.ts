@@ -8,10 +8,11 @@ type Data = {
   token: string;
   img: string;
   JWT_CODE: string | undefined;
+  vLink: string | undefined;
 };
 
 export const completeTaskServer = async (data: Data) => {
-  const { taskId, token, img, JWT_CODE } = data;
+  const { taskId, token, img, JWT_CODE, vLink } = data;
 
   const decoded: any = verify(token, process.env.JWT_SECRET as string);
   const { id } = decoded;
@@ -83,6 +84,7 @@ export const completeTaskServer = async (data: Data) => {
         status: "PENDING",
         xp: task.xp,
         screenShot: img,
+        verificationLink: vLink
       },
     });
     return { success: true, error: "" };

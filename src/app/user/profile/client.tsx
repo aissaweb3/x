@@ -13,6 +13,7 @@ import isConnected from "@/utils/simple/isConnected";
 import { setInLocalStorage } from "@/utils/client/localstorage/manage";
 import { LoadingWrapper } from "@/components/LoadingWrapper";
 import CopyLink from "@/components/copy/copylink";
+import Link from "next/link";
 
 export function Client({ user, token }: { user: User; token: string }) {
   const [email, setEmail] = useState(user.email as string);
@@ -90,6 +91,34 @@ export function Client({ user, token }: { user: User; token: string }) {
                     </div>
                   </div>
                 ))}
+                <div className="">
+                  <Label>
+                    <p>Telegram</p>
+                  </Label>
+                  <div className="flex mb-4">
+                    <Input
+                      value={isConnected(user.telegramName).toString()}
+                      style={{
+                        opacity: user.telegramName.startsWith("nullvalue") ? 0.5 : 1,
+                      }}
+                      readOnly
+                    />
+                    <LoadingWrapper className="">
+                      <Link
+                        href={`/linkTelegram?token=${token}`}
+                        className="flex bg-[#184c6b] flex-col items-center gap-2"
+                      >
+                        <Image
+                          className="h-full w-[auto]"
+                          src={`/images/social/telegram.png`}
+                          width="100"
+                          height="100"
+                          alt="telegram"
+                        />
+                      </Link>
+                    </LoadingWrapper>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="opacity-80">Still Under Work...</div>
@@ -124,7 +153,7 @@ export function Client({ user, token }: { user: User; token: string }) {
                   type="text"
                   placeholder="email@example.com"
                   className="px-3 py-2 bg-muted rounded-md focus:ring-0 focus:border-primary"
-                  onChange={(e) => {
+                  onChange={(e: any) => {
                     setEmail(e.target.value as string);
                   }}
                   value={email}

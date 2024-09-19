@@ -11,12 +11,15 @@ const app = express.Router()
 
 
 const crypto = require('crypto');
+const linkTelegram = require("./linkTelegram");
+const ENV = require("../getENV");
+const { verify } = require("jsonwebtoken");
 
 app.use(express.urlencoded({ extended: true }));
 
-const BOT_TOKEN = '7325926168:AAGKV38wHOVbFKogqtoXXTXw_u1VInlOU94'; // Place your bot token here
+const BOT_TOKEN = ENV.TELEGRAM_BOT_TOKEN; 
 
-// Helper function to verify Telegram authorization
+
 function checkTelegramAuthorization(authData) {
   const checkHash = authData.hash;
   delete authData.hash;
@@ -42,15 +45,23 @@ function checkTelegramAuthorization(authData) {
   return authData;
 }
 
-// Route to handle Telegram authorization
-app.get('/check_authorization', (req, res) => {
+
+app.get('/check_authorization', async (req, res) => {
   try {
     const { token, ...telegramQueries } = req.query;
     const authData = checkTelegramAuthorization(telegramQueries);
 
-    console.log('Authorized Telegram Data:', authData);
-    console.log('token:', token);
-    res.redirect('/login_example');
+    //console.log('Authorized Telegram Data:', authData);
+    //console.log('token:', token);
+
+    const { id, username } = authData;
+    try {      
+      await linkTelegram(id, username, token)
+    } catch (error) {
+      console.log(error);
+    }
+
+    res.redirect('/user/profile');
     
   } catch (error) {
     console.error('Authorization failed:', error.message);
@@ -58,15 +69,19 @@ app.get('/check_authorization', (req, res) => {
   }
 });
 
-// Example login page route
-app.get('/login_example', (req, res) => {
-  const botUsername = 'issatest_thisisatest_bot'; // Replace with your bot's username
+
+app.get('/linkTelegram', (req, res) => {
+  const token = req.query.token;
+  //if (!token) return res.send("You are not authenticated !")
+  //const { id } = verify(token, ENV.JWT_SECRET);
+  //if (!id) return res.send("You are not authenticated !")
+  const botUsername = ENV.TELEGRAM_BOT_USERNAME; 
   res.send(`
     <!DOCTYPE html>
     <html>
       <head>
         <meta charset="utf-8">
-        <title>Login Widget Example</title>
+        <title>Link Telegram</title>
       </head>
       <body>
         <center>
@@ -74,7 +89,7 @@ app.get('/login_example', (req, res) => {
           <script async src="https://telegram.org/js/telegram-widget.js?2" 
             data-telegram-login="${botUsername}" 
             data-size="large" 
-            data-auth-url="/check_authorization?token=ikhan">
+            data-auth-url="/check_authorization?token=${token}">
           </script>
         </center>
       </body>

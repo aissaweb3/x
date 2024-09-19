@@ -219,6 +219,9 @@ export default function Add({
                         <SelectItem value="follow">Follow</SelectItem>
                         <SelectItem value="like">Like</SelectItem>
                         <SelectItem value="repost">Repost</SelectItem>
+                        <SelectItem value="comment">Comment</SelectItem>
+                        <SelectItem value="watch">Watch</SelectItem>
+                        <SelectItem value="react">React</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -235,16 +238,6 @@ export default function Add({
                         <SelectItem value="LINK_PROOF">Verification Link</SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="xp">Secrets</Label>
-                    <Input name="xp" id="xp" type="number" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="expires-at">Expires At</Label>
-                    <Input name="expiresAt" id="expiresAt" type="date" />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">

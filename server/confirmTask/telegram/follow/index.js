@@ -1,56 +1,26 @@
+const axios = require("axios");
+const ENV = require("../../../../getENV");
 
-const { Client, GatewayIntentBits } = require('discord.js');
-
-// Initialize the Discord client with the necessary intents
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-  ],
-});
-
-const token = 'YOUR_BOT_TOKEN_HERE';
-const guildId = 'YOUR_GUILD_ID_HERE';
-
-// The user ID you want to check
-const userIdToCheck = 'USER_ID_HERE';
-
-client.once('ready', async () => {
-  console.log(`Logged in as ${client.user.tag}`);
+async function verify(CHANNEL_USERNAME, USER_ID) {
+  const url = `https://api.telegram.org/bot${ENV.BOT_TOKEN}/getChatMember`;
 
   try {
-    // Fetch the guild
-    const guild = await client.guilds.fetch(guildId);
+    const response = await axios.post(url, {
+      chat_id: CHANNEL_USERNAME,
+      user_id: USER_ID,
+    });
 
-    // Fetch the member list
-    const member = await guild.members.fetch(userIdToCheck);
+    const memberStatus = response.data.result.status;
 
-    if (member) {
-      console.log(`User with ID ${userIdToCheck} is in the server.`);
-    }
+    return (
+      memberStatus === "member" ||
+      memberStatus === "administrator" ||
+      memberStatus === "creator"
+    );
   } catch (error) {
-    if (error.message.includes('Unknown Member')) {
-      console.log(`User with ID ${userIdToCheck} is not in the server.`);
-    } else {
-      console.error('An error occurred:', error);
-    }
+    console.error(`Error: ${error}`);
+    return false;
   }
-});
-
-client.login(token);
-
-
-
-
-
-
-
-
-
-const verify = async (telegramId) => {
-    
 }
 
 

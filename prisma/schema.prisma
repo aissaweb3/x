@@ -52,8 +52,8 @@ model User {
   discordName     String       @unique @db.VarChar(50)
   twitterId       String       @unique @db.VarChar(50)
   twitterName     String       @unique @db.VarChar(50)
-  telegramId       String       @unique @db.VarChar(50)
-  telegramName     String       @unique @db.VarChar(50)
+  telegramId      String       @unique @db.VarChar(50)
+  telegramName    String       @unique @db.VarChar(50)
   referralId      String       @unique @default(uuid()) @db.VarChar(36)
   email           String?
   walletAddress   String?
@@ -66,13 +66,13 @@ model User {
   NFTs            UserNFT[]
 }
 
-
 model Task {
   id                   String               @id @default(uuid()) @db.VarChar(36)
   xp                   Int
   title                String
   description          String
   link                 String
+  channelId            String?
   platform             Platform
   taskType             TaskType
   taskVerificationType TaskVerificationType

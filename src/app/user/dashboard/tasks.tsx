@@ -38,8 +38,9 @@ export default function Tasks({
 
   const handleComplete = async (e: FormData) => {
     const taskId = e.get("taskId") as string;
+    const vLink = e.get("vLink") as string;
 
-    const result = await completeTaskServer({ token, taskId, img, JWT_CODE });
+    const result = await completeTaskServer({ token, taskId, img, JWT_CODE, vLink });
     if (!result.success) return setError(result.error);
     // success
     let current = dTasks.filter((t) => t.id !== taskId);
@@ -121,6 +122,13 @@ export default function Tasks({
                 </div>
               ) : completeTask?.taskVerificationType === "SCREEN_SHOT" ? (
                 <UploadCompo currentImg={img} handleUploadSuccess={setImg} />
+              ) : completeTask?.taskVerificationType === "LINK_PROOF" ? (
+                
+                <div>
+                  <Label htmlFor="vLink" >Enter the Link Proof here :</Label>
+                  <Input 
+                  type="text" name="vLink" id="vLink" placeholder="https://..." required />
+                </div>
               ) : null}
             </div>
           </CardContent>
