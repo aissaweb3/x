@@ -25,8 +25,9 @@ export const completeTaskServer = async (data: Data) => {
     console.log(JWT_CODE);
     
     if (!JWT_CODE)
-      return { success: false, error: "KEY is not Valid or Expired !!" };
+      return { success: false, error: "KEY is Required!" };
     const decodedCode: any = verify(JWT_CODE, process.env.JWT_SECRET as string);
+
     const { verification } = decodedCode;
     if (verification === true) {
       const alreadydid = await db.taskStatus.findFirst({

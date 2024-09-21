@@ -8,7 +8,7 @@ export default function JoinUs() {
   useEffect(() => {
     setTimeout(() => {
       setJoin(true);
-    }, 18000);
+    }, 20000);
   }, []);
 
   return (
@@ -39,19 +39,6 @@ export default function JoinUs() {
         </div>
         <div className="grid gap-8 p-8 justify-center text-center">
           <JoinIn id="" />
-          <Link href="https://google.com">
-            <Button
-              className="rounded-full py-8 px-16 bold opacity-40 hover:opacity-60 hover:scale-110 transition"
-              style={{
-                borderRadius: "1rem",
-                fontSize: "xx-large",
-                background: "linear-gradient(45deg, #f00, rgb(149 6 6 / 0.37))",
-                color: "white",
-              }}
-            >
-              U Scared ???
-            </Button>
-          </Link>
         </div>
       </main>
     </>

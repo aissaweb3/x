@@ -51,6 +51,26 @@ export default function AdminHeaderClient({
                   {l.name}
                 </Link>
               ))}
+
+              <Link
+                href="/admin/tasks/pending"
+                className="text-2xl px-4 font-medium hover:opacity-70 transition"
+                prefetch={false}
+              >
+                Pending Tasks
+                <span
+                  style={{
+                    background: pendingCount > 0 ? "#59a3fe" : "#5b5b5b",
+                    borderRadius: "100%",
+                    padding: "7px 10px",
+                    color: "black",
+                    fontFamily: "auto",
+                    margin: "0 8px",
+                  }}
+                >
+                  {pendingCount}
+                </span>
+              </Link>
               <Button
                 onClick={() => {
                   signOut();
@@ -70,25 +90,25 @@ export default function AdminHeaderClient({
                 }}
                 asChild
               >
-                  <Link
-                    href="/admin/tasks/pending"
-                    className="text-2xl px-4 font-medium hover:opacity-70 transition"
-                    prefetch={false}
+                <Link
+                  href="/admin/tasks/pending"
+                  className="text-2xl px-4 font-medium hover:opacity-70 transition"
+                  prefetch={false}
+                >
+                  Pending Tasks
+                  <span
+                    style={{
+                      background: pendingCount > 0 ? "#59a3fe" : "#5b5b5b",
+                      borderRadius: "100%",
+                      padding: "7px 10px",
+                      color: "black",
+                      fontFamily: "auto",
+                      margin: "0 8px",
+                    }}
                   >
-                    Pending Tasks
-                    <span
-                      style={{
-                        background: "#59a3fe",
-                        borderRadius: "100%",
-                        padding: "7px 10px",
-                        color: "black",
-                        fontFamily: "auto",
-                        margin: "0 8px",
-                      }}
-                    >
-                      {pendingCount}
-                    </span>
-                  </Link>
+                    {pendingCount}
+                  </span>
+                </Link>
               </NavigationMenuLink>
               {links.map((l, k) => (
                 <NavigationMenuLink

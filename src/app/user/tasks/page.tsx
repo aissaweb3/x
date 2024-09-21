@@ -21,6 +21,12 @@ export default async function server() {
 
       return {
         ...task,
+
+
+
+
+
+        
         status: userTaskStatus?.status || "NONE",
       };
     })

@@ -28,11 +28,12 @@ import { TaskStatus } from "@prisma/client";
 import Image from "next/image";
 import FormBtn from "@/components/simple/FormBtn";
 import { DeleteTask, VerifyTask } from "./server/verify";
+import Link from "next/link";
 
 type PendingTasksPro = TaskStatus & {
   username: string;
   platform: string;
-  type: "img" | "link";
+  type: "img" | "link" | "none";
 };
 
 export function Verify({
@@ -105,13 +106,23 @@ export function Verify({
                       </DialogTitle>
                     </DialogHeader>
                     {task.type === "img" ? (
-                      <Image
-                        src={`/images/uploads/${task.screenShot}`}
-                        alt={`Task img`}
-                        width="500"
-                        height="500"
-                        className="w-full h-auto"
-                      />
+                      <>
+                        <a
+                          target="_blank"
+                          className="text-underline"
+                          href={`/images/uploads/${task.screenShot}?t=${Date.now()}`}
+                        >
+                          See Image
+                        </a>
+                        <Image
+                          src={`/images/uploads/${task.screenShot}?t=${Date.now()}`}
+                          alt={`Task img`}
+                          width="500"
+                          height="500"
+                          className="w-full h-auto"
+                          style={{ maxHeight: "30rem" }}
+                        />
+                      </>
                     ) : (
                       <div className="flex items-center justify-between bg-muted p-4 rounded-md">
                         <span className="text-sm font-medium">

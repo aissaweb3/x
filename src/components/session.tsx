@@ -4,15 +4,16 @@ import {
   getFromLocalStorage,
   setInLocalStorage,
 } from "@/utils/client/localstorage/manage";
-import { SessionProvider, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function ManageSession({ token, id }: { token: string, id: string }) {
   const oldUserToken = getFromLocalStorage("old");
 
+  // If there's no old user token or id, return null
   if (!oldUserToken || !id) return null;
 
-  return <Client newUserToken={token} oldUserToken={oldUserToken} />;
   return (
     <SessionProvider>
       <Client newUserToken={token} oldUserToken={oldUserToken} />
@@ -27,6 +28,8 @@ function Client({
   newUserToken: string;
   oldUserToken: any;
 }) {
+  const router = useRouter();
+
   useEffect(() => {
     const sendPostRequest = async () => {
       try {
@@ -37,18 +40,23 @@ function Client({
           },
           body: JSON.stringify({ newUserToken, oldUserToken }),
         });
+
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
+
         const data = await response.json();
         if (data.success) {
-          setInLocalStorage("old", "");
+          setInLocalStorage("old", ""); // Clear the old token
+          router.refresh(); 
         }
       } catch (error) {
         console.error("Error:", error);
       }
     };
+
     sendPostRequest();
-  });
-  return null;
+  }, [newUserToken, oldUserToken, router]); 
+
+  return null; 
 }

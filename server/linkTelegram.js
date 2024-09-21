@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const linkTelegram = async (telegramId, telegramName, token) => {
     const { id } = verify(token, ENV.JWT_SECRET);
-    if (id) return;
+    if (!id) return;
     await prisma.user.update({ where: {id}, data: { telegramId, telegramName } })
 };
 

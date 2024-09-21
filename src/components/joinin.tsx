@@ -83,10 +83,10 @@ export default function JoinIn({ id }: { id: string }) {
                         height={50}
                         style={{
                           aspectRatio: "20/20",
-                          objectFit: "cover",
+                          objectFit: "contain",
                         }}
                       />
-                      Sign in with {p}
+                      {p}
                     </button>
                   </LoadingWrapper>
                 ))}

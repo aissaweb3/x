@@ -47,7 +47,7 @@ export function Client({ user, token }: { user: User; token: string }) {
         </div>
         <div className="w-full bg-background rounded-lg shadow-lg p-6 space-y-6">
           <h3
-            style={{ fontFamily: "CustomFont"}}
+            style={{ fontFamily: "CustomFont" }}
             className="text-lg font-bold"
           >
             Connect Accounts
@@ -99,22 +99,23 @@ export function Client({ user, token }: { user: User; token: string }) {
                     <Input
                       value={isConnected(user.telegramName).toString()}
                       style={{
-                        opacity: user.telegramName.startsWith("nullvalue") ? 0.5 : 1,
+                        opacity: user.telegramName.startsWith("nullvalue")
+                          ? 0.5
+                          : 1,
                       }}
                       readOnly
                     />
                     <LoadingWrapper className="">
-                      <Link
-                        href={`/linkTelegram?token=${token}`}
-                        className="flex bg-[#184c6b] flex-col items-center gap-2"
-                      >
-                        <Image
-                          className="h-full w-[auto]"
-                          src={`/images/social/telegram.png`}
-                          width="100"
-                          height="100"
-                          alt="telegram"
-                        />
+                      <Link href={`/linkTelegram?token=${token}`}>
+                        <Button className="flex bg-[#184c6b] flex-col items-center gap-2 w-[3rem]">
+                          <Image
+                            className="w-[auto] h-[auto]"
+                            src={`/images/social/telegram.png`}
+                            width="100"
+                            height="100"
+                            alt="telegram"
+                          />
+                        </Button>
                       </Link>
                     </LoadingWrapper>
                   </div>
@@ -127,7 +128,7 @@ export function Client({ user, token }: { user: User; token: string }) {
         </div>
         <div className="w-full bg-background rounded-lg shadow-lg p-6 space-y-6">
           <h3
-            style={{ fontFamily: "CustomFont"}}
+            style={{ fontFamily: "CustomFont" }}
             className="text-lg font-bold"
           >
             Referral Link

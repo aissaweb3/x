@@ -61,7 +61,20 @@ export function Client({
               style={{ fontFamily: "'CustomFont'" }}
             >
               {xp} <span className="text-3xl opacity-80">Secrets </span>
-              {referrals} <span className="text-3xl opacity-80">Referral{referrals > 1 && 's'}</span>
+            </div>
+            <TrophyIcon className="h-8 w-8 text-white opacity-50" />
+          </CardContent>
+        </Card>
+        <Card className="flex flex-col gap-4">
+          <CardHeader>
+            <CardTitle>Referrals</CardTitle>
+          </CardHeader>
+          <CardContent className="flex items-center justify-between">
+            <div
+              className="text-6xl font-bold text-[#ff0]"
+              style={{ fontFamily: "'CustomFont'" }}
+            >
+              {referrals} <span className="text-3xl opacity-80">Referral{referrals !== 1 && 's'}</span>
             </div>
             <TrophyIcon className="h-8 w-8 text-white opacity-50" />
           </CardContent>
@@ -73,25 +86,6 @@ export function Client({
           <CardContent className="flex items-center justify-between">
             <div className="text-4xl font-bold">{count}</div>
             <ClipboardListIcon className="h-8 w-8 text-white opacity-50" />
-          </CardContent>
-        </Card>
-        <Card className="flex flex-col gap-4">
-          <CardHeader>
-            <div className="flex gap-2 items-center">
-              <CardTitle>NFTs</CardTitle>
-              <LoadingWrapper className="" >
-                <Link
-                  href="/user/nft"
-                  className="text-[white] underline hover:opacity-80"
-                >
-                  Buy NFT
-                </Link>
-              </LoadingWrapper>
-            </div>
-          </CardHeader>
-          <CardContent className="flex items-center justify-between">
-            <div className="text-4xl font-bold">{nftCount}</div>
-            <TrophyIcon className="h-8 w-8 text-white opacity-50" />
           </CardContent>
         </Card>
       </div>

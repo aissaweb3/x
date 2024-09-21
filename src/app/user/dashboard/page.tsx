@@ -21,7 +21,12 @@ export default async function Dashboard() {
   return (
     <div
       style={{
-        background: "url('/images/media/dashboard.jpg')",
+        background: "url('/images/media/room (5).jpg')",
+      }}
+    >
+    <div
+      style={{
+        background: "url('/images/media/room (6).jpg')",
         backgroundSize: "contain",
         backgroundRepeat: "no-repeat"
       }}
@@ -44,6 +49,7 @@ export default async function Dashboard() {
         />
       </div>
       <Footer />
+    </div>
     </div>
   );
 }

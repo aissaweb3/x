@@ -6,17 +6,18 @@ const oneTwoS = () => {
     return Math.random() < 0.6 ? 1000 : 2000;
 }
 
-const getNum = () => {
-    if (Math.random() < 0.33) return "0";
-    if (Math.random() < 0.66) return "1";
-    return "2";
+const getNum = (name: string) => {
+  if (name !== "nothing") return name
+  if (Math.random() < 0.33) return "ghost0";
+  if (Math.random() < 0.66) return "ghost1";
+  return "ghost2";
 }
 
 interface AudioPlayerProps {
     play: boolean; // Prop to control audio play/pause
 }
 
-const AudioPlayer = ({ play }: {play: boolean}) => {
+const AudioPlayer = ({ play, name }: {play: boolean, name: string}) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -24,10 +25,11 @@ const AudioPlayer = ({ play }: {play: boolean}) => {
     const audio = document.createElement('audio');
     audio.autoplay = true;
     audio.loop = true;
+    audio.volume = Math.random() * 0.1;
     audioRef.current = audio;
 
     const source = document.createElement('source');
-    source.src = `/audio/ghost${getNum()}.mp3`;
+    source.src = `/audio/${getNum(name)}.mp3`;
     source.type = 'audio/mpeg';
     audio.appendChild(source);
     document.body.appendChild(audio);
@@ -39,7 +41,7 @@ const AudioPlayer = ({ play }: {play: boolean}) => {
         audioRef.current.remove();
       }
     };
-  }, []);
+  }, [name]);
 
   useEffect(() => {
     if (audioRef.current) {

@@ -2,50 +2,32 @@ import Image from "next/image";
 import RandomGhosts from "./ghost";
 
 export default function Footer() {
-  return  ( <footer className="bg-primary py-4 mt-8">
-    <div className="container mx-auto px-4 text-center text-accent">
-      <p>&copy; 2023 Forbidden Forest. All rights reserved.</p>
-    </div>
-  </footer>);
   return (
-    <footer className="py-4">
-      <div className="border border-card-foreground rounded-[15px] bg-primary-dark/80 w-fit container mx-auto p-4 sm:px-6 lg:px-8 justify-center gap-4">
-        <div>
-          <h1
-            style={{
-              fontFamily: "'CustomFont', sans-serif",
-            }}
-          >
-            Find Us On
-          </h1>
-        </div>
-        <div className="flex gap-2">
+    <footer className="bg-[#0e2f50] fixed bottom-0 w-[100vw] py-6 mt-8">
+      <div className="container mx-auto px-4 text-center text-accent">
+        <div className="flex justify-center space-x-4 mb-4">
           {[
-            { name: "twitter", link: "" },
-            { name: "discord", link: "" },
-            { name: "telegram", link: "" },
-            { name: "youtube", link: "" },
+            { name: "twitter", link: "https://x.com/BooForbidden" },
+            { name: "discord", link: "https://discord.com/invite/F9bYZQeBbw" },
+            { name: "telegram", link: "https://t.me/forbiddenforestboo" },
+            {
+              name: "youtube",
+              link: "https://youtube.com/@forbiddenforest-boo",
+            },
           ].map((l, k) => (
-            <div key={k}>
-              <a
-                href={l.link}
-                className="text-muted-foreground hover:text-foreground opacity-70 hover:opacity-50 animate-bounce"
-                target="_blank"
-              >
-                <div>
-                  <Image
-                    src={`/images/social/${l.name}.png`}
-                    width="100"
-                    height="100"
-                    alt={l.name}
-                    className="animation animate-bounce"
-                  />
-                </div>
-                <span className="sr-only">{l.name}</span>
-              </a>
-            </div>
+            <a
+              key={k}
+              href={l.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-accent-foreground transition-colors"
+            >
+              <Image alt="" src={`/images/social/${l.name}.png`} width="20" height="20" />
+              <span className="sr-only">{l.name}</span>
+            </a>
           ))}
         </div>
+        <p>&copy; 2024 Forbidden Forest. All rights reserved.</p>
       </div>
     </footer>
   );

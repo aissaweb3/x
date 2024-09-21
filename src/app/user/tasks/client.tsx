@@ -28,6 +28,8 @@ export default function Client({
   const [sort, setSort] = useState("xp");
   const [tasks, setTasks] = useState<TaskPro[]>(JSON.parse(tasksSTR));
   const [img, setImg] = useState("");
+  const [JWT_CODE, setJWT_CODE] = useState("");
+  const [vLink, setLink] = useState("");
 
   const filteredTasks = useMemo(() => {
     let filtered = tasks;
@@ -60,9 +62,14 @@ export default function Client({
 
   const handleComplete = async (e: FormData) => {
     const taskId = e.get("taskId") as string;
-    const JWT_CODE = e.get("JWT_CODE") as string;
 
-    const result = await completeTaskServer({ token, taskId, img, JWT_CODE });
+    const result = await completeTaskServer({
+      token,
+      taskId,
+      img,
+      JWT_CODE,
+      vLink,
+    });
     if (!result.success) return setError(result.error);
     // success
     setTasks((prev) =>
@@ -263,6 +270,93 @@ export default function Client({
                 </div>
               ) : completeTask?.taskVerificationType === "SCREEN_SHOT" ? (
                 <UploadCompo currentImg={img} handleUploadSuccess={setImg} />
+              ) : completeTask?.taskVerificationType === "LINK_PROOF" ? (
+                <div>
+                  <Label htmlFor="vLink">Enter the Link Proof here :</Label>
+                  <Input
+                    type="text"
+                    name="vLink"
+                    id="vLink"
+                    placeholder="https://..."
+                    required
+                  />
+                </div>
+              ) : null}
+            </div>
+          </CardContent>
+          <CardFooter
+            className="flex items-end"
+            style={{ placeContent: "end" }}
+          >
+            <form action={handleComplete}>
+              <input type="hidden" name="taskId" value={completeTask?.id} />
+              {clickedLink ? (
+                <FormBtn>Complete</FormBtn>
+              ) : (
+                <a
+                  href={completeTask?.link as string}
+                  className="text-white underline hover:opacity-80"
+                  target="_blank"
+                  onClick={() => {
+                    setClickedLink(true);
+                  }}
+                >
+                  <Button>Task Link</Button>
+                </a>
+              )}
+            </form>
+            
+      <Modal
+        isOpen={completeTask !== null}
+        onClose={() => {
+          setCompleteTask(null);
+        }}
+      >
+        <Card className="bg-[#020a10ba] p-4" style={{maxWidth: "25rem"}} >
+          <CardHeader>
+            <CardTitle>Complete The Task</CardTitle>
+            <CardDescription>
+              Finish the task below to earn{" "}
+              <span className="text-[#ff0]/80">{completeTask?.xp} Secrets</span>
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <h3 className="text-lg font-medium">{completeTask?.title}</h3>
+                <p className="text-muted-foreground">
+                  {completeTask?.description}
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-16">
+              {completeTask?.taskVerificationType === "JWT_CODE" ? (
+                <div>
+                  <Label htmlFor="JWT_CODE">Enter the KEY here :</Label>
+                  <Input
+                    type="text"
+                    id="JWT_CODE"
+                    value={JWT_CODE}
+                    onChange={(e)=>{setJWT_CODE(e.target.value)}}
+                    placeholder="eyJ..."
+                    required
+                  />
+                </div>
+              ) : completeTask?.taskVerificationType === "SCREEN_SHOT" ? (
+                <UploadCompo currentImg={img} handleUploadSuccess={setImg} />
+              ) : completeTask?.taskVerificationType === "LINK_PROOF" ? (
+                <div>
+                  <Label htmlFor="vLink">Enter the Link Proof here :</Label>
+                  <Input
+                    type="text"
+                    id="vLink"
+                    value={vLink}
+                    onChange={(e)=>{setLink(e.target.value)}}
+                    placeholder="https://..."
+                    required
+                  />
+                </div>
               ) : null}
             </div>
           </CardContent>
@@ -303,8 +397,11 @@ export default function Client({
           </CardFooter>
         </Card>
       </Modal>
+          </CardFooter>
+        </Card>
+      </Modal>
     </>
-  )
+  );
 }
 
 function CalendarIcon(props: any) {

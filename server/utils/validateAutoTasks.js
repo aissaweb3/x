@@ -7,10 +7,9 @@ const validateAutoTasks = async () => {
   const pendingTasks = await prisma.taskStatus.findMany({
     where: {
       status: "PENDING",
-      screenShot: { equals: null },
-      verificationLink: { equals: null },
     },
   });
+  console.log(pendingTasks);
 
   pendingTasks.forEach(async pendingTask => {
     const { taskId, userId } = pendingTask;

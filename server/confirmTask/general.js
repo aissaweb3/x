@@ -7,7 +7,7 @@ const cancelTask = async (userId, taskId) => {
 
 const successTask = async (userId, taskId, taskXP) => {
   await prisma.$transaction(async (prisma) => {
-    const t1 = await prisma.taskStatus.update({
+    const t1 = await prisma.taskStatus.updateMany({
       where: { userId, taskId },
       data: { status: "COMPLETED" },
     });
@@ -28,7 +28,7 @@ const confirmTask = async (userId, taskId) => {
     !["DISCORD", "TELEGRAM"].includes(task.platform) &&
     task.taskVerificationType === "AUTO_API"
   ) {
-    await cancelTask(userid, taskId);
+    await cancelTask(userId, taskId);
     return;
   }
 
@@ -39,12 +39,41 @@ const confirmTask = async (userId, taskId) => {
       ? user.telegramId
       : "";
 
-  const verify = require(`./telegram/${task.taskType.toLowerCase()}/index.js`);
-  const result = await verify(task.channelId, socialId);
-  if (result) {
-    await successTask(userid, taskId, task.xp);
+  if (socialId.startsWith("nullvalue")) {
+    console.log("task cancel...");
+    await cancelTask(userId, taskId);
+    return;
+  }
+
+  if (task.platform === "DISCORD") {
+    const {
+      verify,
+      client,
+    } = require(`./${task.platform.toLowerCase()}/${task.taskType.toLowerCase()}/index.js`);
+    client.once("ready", async () => {
+      try {
+        console.log("checking discord...");
+        const result = await verify(task.channelId, socialId);
+        if (result) {
+          console.log("discord success...");
+          await successTask(userId, taskId, task.xp);
+        } else {
+          console.log("discord cancel...");
+          await cancelTask(userId, taskId);
+        }
+        return;
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
   } else {
-    await cancelTask(userid, taskId);
+    const verify = require(`./${task.platform.toLowerCase()}/${task.taskType.toLowerCase()}/index.js`);
+    const result = await verify(task.channelId, socialId);
+    if (result) {
+      await successTask(userId, taskId, task.xp);
+    } else {
+      await cancelTask(userId, taskId);
+    }
   }
 };
 

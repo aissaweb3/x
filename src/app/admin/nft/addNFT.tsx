@@ -117,7 +117,7 @@ export default function Add({
           <Card key={nft.id}>
             <CardHeader>
               <Image
-                src={`/images/uploads/${nft.img}`}
+                src={`/images/uploads/${nft.img}?t=${Date.now()}`}
                 alt={nft.name}
                 width={200}
                 height={200}

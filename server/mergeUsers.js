@@ -7,13 +7,14 @@ const mergeUsers = async (newUserToken, oldUserToken, SECRET) => {
     const { id: oldUserId, provider: oldProvider } = verify(oldUserToken, SECRET);
   const { id: newUserId, provider: newProvider } = verify(newUserToken, SECRET);
 
-  if (!oldUserId || !newUserId) return;
+  if (!oldUserId || !newUserId) return false;
+  if (oldUserId === newUserId) return false;
 
   const oldUser = await prisma.user.findUnique({ where: { id: oldUserId } });
   const newUser = await prisma.user.findUnique({ where: { id: newUserId } });
 
-  if (!oldUser || !newUser) return;
-  if (oldUser.mainAccount.toLowerCase() === newProvider.toLowerCase()) return;
+  if (!oldUser || !newUser) return false;
+  if (oldUser.mainAccount.toLowerCase() === newProvider.toLowerCase()) return false;
 
   let data = null;
   if (newProvider === "twitter") {
@@ -35,14 +36,14 @@ const mergeUsers = async (newUserToken, oldUserToken, SECRET) => {
       const existingNewUser = await prisma.user.findUnique({
         where: { id: newUserId },
       });
-      if (!existingNewUser) return;
+      if (!existingNewUser) return false;
 
       await prisma.user.delete({ where: { id: newUserId } });
 
       const existingOldUser = await prisma.user.findUnique({
         where: { id: oldUserId },
       });
-      if (!existingOldUser) return;
+      if (!existingOldUser) return false;
 
       await prisma.user.update({
         where: { id: oldUserId },
@@ -52,15 +53,14 @@ const mergeUsers = async (newUserToken, oldUserToken, SECRET) => {
         },
       });
     });
+    return true
   } catch (error) {
     console.error(`Error in merging users: ${error.message}`);
-
-    return;
+    return false;
   }
 } catch (error) {
   console.error(`Error in merging users: ${error}`);
-
-  return;
+  return false;
 }
 };
 

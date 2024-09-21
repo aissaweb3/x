@@ -6,7 +6,7 @@ import { TaskStatus } from "@prisma/client";
 type PendingTasksPro = (TaskStatus & {
   platform: string;
   username: string;
-  type: "img" | "link";
+  type: "img" | "link" | "none";
 });
 
 export default async function AdminDashboard() {
@@ -14,9 +14,9 @@ export default async function AdminDashboard() {
   let pendingTasks = await db.taskStatus.findMany({
     where: {
       status: "PENDING",
-      screenShot: { not: { equals: null } },
     },
   });
+  
 
   const pendingTasksPro = await Promise.all(pendingTasks.map(async (pendingTask) => {
     const { userId, taskId } = pendingTask;
@@ -32,7 +32,7 @@ export default async function AdminDashboard() {
       username = user?.email ?? '';
     }
 
-    const type = task?.taskVerificationType === "SCREEN_SHOT" ? "img" : "link";
+    const type = task?.taskVerificationType === "SCREEN_SHOT" ? "img" : task?.taskVerificationType === "AUTO_API" ? "link" : "none";
     const platform = task?.platform as string
 
     return {
@@ -42,6 +42,8 @@ export default async function AdminDashboard() {
       type,
     } as PendingTasksPro;
   }));
+
+  pendingTasksPro.filter(pt=>pt.type !== "none")
 
   return (
     <div

@@ -14,6 +14,7 @@ type Data = {
   token: string;
   daily: boolean;
   taskVerificationType: TaskVerificationType;
+  channelId: string;
 };
 
 export const addTask = async (data: Data) => {
@@ -27,7 +28,8 @@ export const addTask = async (data: Data) => {
     link,
     title,
     daily,
-    taskVerificationType
+    taskVerificationType,
+    channelId,
   } = data;
 
   const decoded: any = verify(token, process.env.JWT_SECRET as string);
@@ -47,7 +49,8 @@ export const addTask = async (data: Data) => {
         taskType,
         xp,
         daily,
-        taskVerificationType
+        taskVerificationType,
+        channelId
       },
     });
     return { success: created, error: "" };

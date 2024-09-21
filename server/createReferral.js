@@ -4,14 +4,12 @@ const prisma = new PrismaClient();
 
 const createReferral = async (token, referralToken, SECRET) => {
   console.log("referring...");
-  
-    
-  const { referral:referralId } = verify(referralToken, SECRET);
+
+  const { referral: referralId } = verify(referralToken, SECRET);
   const { id } = verify(token, SECRET);
 
-  console.log({referralToken, token});
-  console.log({referralId, id});
-  
+  console.log({ referralToken, token });
+  console.log({ referralId, id });
 
   if (!id || !referralId) return console.log("not valid");
 
@@ -19,16 +17,19 @@ const createReferral = async (token, referralToken, SECRET) => {
   const referralUser = await prisma.user.findUnique({ where: { referralId } });
 
   if (!referralUser || !newUser) return;
-  if (isOlderThan10Minutes(newUser.createdAt)) return
+  if (isOlderThan10Minutes(newUser.createdAt)) return;
+  if (newUser.referredBy !== null) return;
 
   await prisma.$transaction(async (prisma) => {
     const t1 = await prisma.user.update({
       where: { referralId },
-      data: { referrals: { increment: 1 } },
+      data: { referrals: { increment: 1 }, xp: { increment: 1000 } },
     });
     const t2 = await prisma.user.update({
       where: { id },
-      data: { referredBy: referralId },
+      data: {
+        referredBy: referralId, xp: { increment: 20 }
+      },
     });
 
     return [t1, t2];

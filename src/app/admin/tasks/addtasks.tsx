@@ -21,31 +21,39 @@ import { addTask, deleteTask, toggleStateTask } from "./server/manageTask";
 import formatDateSimple from "@/utils/simple/formatDateSimple";
 import Link from "next/link";
 
-export default function Add({
-  token,
-  tasks,
-}: {
-  token: string;
-  tasks: string;
-}) {
+const platformTaskTypes: Record<Platform, TaskType[]> = {
+  TWITTER: ["FOLLOW", "LIKE", "REPOST", "COMMENT"],
+  YOUTUBE: ["WATCH"],
+  TELEGRAM: ["FOLLOW"],
+  DISCORD: ["FOLLOW"],
+};
+
+const verificationTypes: TaskVerificationType[] = [
+  "AUTO_API",
+  "SCREEN_SHOT",
+  "JWT_CODE",
+  "LINK_PROOF",
+];
+
+export default function Add({ token, tasks }: { token: string; tasks: string }) {
   const [addingTask, setAddingTask] = useState(false);
   const latestTasks: Task[] = JSON.parse(tasks);
   const [error, setError] = useState("");
-  const [dTasks, setDTasks] = useState(latestTasks);
-
-  console.log(addingTask);
+  const [dTasks, setDTasks] = useState<Task[]>(latestTasks);
   
+  const [selectedPlatform, setSelectedPlatform] = useState<Platform | "">("");
+  const [selectedTaskType, setSelectedTaskType] = useState<TaskType | "">("");
 
   const addTaskAction = async (e: FormData) => {
     const title = e.get("title") as string;
     const description = e.get("description") as string;
     const link = e.get("link") as string;
-    const platform = e.get("platform")?.toString().toUpperCase() as Platform;
-    const taskType = e.get("taskType")?.toString().toUpperCase() as TaskType;
-    const taskVerificationType = e.get("taskVerificationType")?.toString().toUpperCase() as TaskVerificationType;
-    const xp = parseFloat(e.get("xp") as string) as number;
+    const platform = selectedPlatform as Platform;
+    const taskType = selectedTaskType as TaskType;
+    const xp = parseFloat(e.get("xp") as string);
     const expiresAt = new Date(e.get("expiresAt") as string) || null;
-    const daily = e.get("daily")?.toString().toLowerCase() === "daily";
+    const channelId = e.get("channelId") as string;
+    const taskVerificationType = e.get("taskVerificationType") as TaskVerificationType;
 
     const payload = {
       title,
@@ -56,54 +64,51 @@ export default function Add({
       xp,
       expiresAt,
       token,
-      daily,
-      taskVerificationType
+      daily: false,
+      taskVerificationType,
+      channelId,
     };
+
     const result = await addTask(payload);
     if (!result.success) return setError(result.error);
+
     // success
-    let current = dTasks;
-    current.unshift(result.success as Task);
-    setDTasks(current.slice(0, 4));
+    setDTasks((prev) => [result.success as Task, ...prev.slice(0, 3)]);
     setAddingTask(false);
   };
 
   const handleDelete = async (taskId: string) => {
     const result = await deleteTask({ token, taskId });
     if (!result.success) return setError(result.error);
-    // success
+    
     setDTasks((prev) => prev.filter((t) => t.id !== taskId));
   };
+
   const handleDisable = async (taskId: string) => {
     const newState = !(dTasks.find((t) => t.id === taskId) as Task).active;
-    const result = await toggleStateTask({
-      token,
-      taskId,
-      newState,
-    });
+    const result = await toggleStateTask({ token, taskId, newState });
     if (!result.success) return setError(result.error);
-    // success
-    setDTasks((tasks) =>
-      tasks.map((task) =>
-        task.id === taskId ? { ...task, active: !task.active } : task
-      )
-    );
+    
+    setDTasks((tasks) => tasks.map((task) => 
+      task.id === taskId ? { ...task, active: !task.active } : task
+    ));
+  };
+
+  const handlePlatformChange = (value: string) => {
+    setSelectedPlatform(value as Platform);
+    setSelectedTaskType(""); // Reset task type when platform changes
   };
 
   return (
     <section>
       <div>
-        <Link href="/admin/tasks/pending" >
+        <Link href="/admin/tasks/pending">
           <Button>Pending Tasks</Button>
         </Link>
       </div>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-2xl font-bold">Latest Tasks</h2>
-        <Button
-          onClick={() => {
-            setAddingTask(true);
-          }}
-        >
+        <Button onClick={() => setAddingTask(true)}>
           <PlusIcon className="mr-2 h-4 w-4" />
           Add Task
         </Button>
@@ -139,40 +144,25 @@ export default function Add({
               <div className="flex items-center justify-between">
                 <div className="text-sm text-muted-foreground">
                   {t.expiresAt
-                    ? "Expires:" + formatDateSimple(t.expiresAt)
-                    : "No Expirement Date"}
+                    ? "Expires: " + formatDateSimple(t.expiresAt)
+                    : "No Expiration Date"}
                 </div>
                 <div className="flex gap-2">
-                  <form
-                    action={async () => {
-                      await handleDisable(t.id);
-                    }}
-                  >
-                    <Button variant="outline" size="icon">
-                      <DeleteIcon className="h-4 w-4" />
-                    </Button>
-                  </form>
-                  <form
-                    action={async () => {
-                      await handleDelete(t.id);
-                    }}
-                  >
-                    <Button variant="outline" size="icon">
-                      <TrashIcon className="h-4 w-4" />
-                    </Button>
-                  </form>
+                  <Button variant="outline" size="icon" onClick={() => handleDisable(t.id)}>
+                    {
+                      //<DeleteIcon className="h-4 w-4" />
+                    }
+                  </Button>
+                  <Button variant="outline" size="icon" onClick={() => handleDelete(t.id)}>
+                    <TrashIcon className="h-4 w-4" />
+                  </Button>
                 </div>
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
-      <Modal
-        onClose={() => {
-          setAddingTask(false);
-        }}
-        isOpen={addingTask}
-      >
+      <Modal onClose={() => setAddingTask(false)} isOpen={addingTask}>
         <div className="max-w-6xl w-full mx-auto flex items-center gap-4">
           <Card>
             <CardHeader>
@@ -197,66 +187,86 @@ export default function Add({
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="platform">Platform</Label>
-                    <Select name="platform">
+                    <Select name="platform" onValueChange={handlePlatformChange}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select platform" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="twitter">Twitter</SelectItem>
-                        <SelectItem value="youtube">YouTube</SelectItem>
-                        <SelectItem value="telegram">Telegram</SelectItem>
-                        <SelectItem value="discord">Discord</SelectItem>
+                        {Object.keys(platformTaskTypes).map((platform) => (
+                          <SelectItem key={platform} value={platform}>
+                            {platform}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="taskType">Type</Label>
-                    <Select name="taskType">
+                    <Label htmlFor="taskType">Task Type</Label>
+                    <Select
+                      name="taskType"
+                      onValueChange={(e)=>{setSelectedTaskType(e as TaskType)}}
+                      value={selectedTaskType}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="follow">Follow</SelectItem>
-                        <SelectItem value="like">Like</SelectItem>
-                        <SelectItem value="repost">Repost</SelectItem>
-                        <SelectItem value="comment">Comment</SelectItem>
-                        <SelectItem value="watch">Watch</SelectItem>
-                        <SelectItem value="react">React</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="taskVerificationType">Verification Type</Label>
-                    <Select name="taskVerificationType">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="AUTO_API">Automatic</SelectItem>
-                        <SelectItem value="SCREEN_SHOT">Screenshot</SelectItem>
-                        <SelectItem value="JWT_CODE">Token</SelectItem>
-                        <SelectItem value="LINK_PROOF">Verification Link</SelectItem>
+                        {selectedPlatform &&
+                          platformTaskTypes[selectedPlatform].map((type) => (
+                            <SelectItem key={type} value={type}>
+                              {type}
+                            </SelectItem>
+                          ))}
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
+
+                {/* Conditional Input for Telegram Channel */}
+                {selectedPlatform === "TELEGRAM" && (
+                  <div className="space-y-2">
+                    <Label htmlFor="channelId">Telegram Channel Id (@...)</Label>
+                    <Input name="channelId" id="channelId" type="text" placeholder="@123456798" />
+                  </div>
+                )}
+
+                {/* Conditional Input for Discord Server Id */}
+                {selectedPlatform === "DISCORD" && (
+                  <div className="space-y-2">
+                    <Label htmlFor="channelId">Discord Server Channel</Label>
+                    <Input name="channelId" id="channelId" type="text" />
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <Label htmlFor="taskVerificationType">Verification Type</Label>
+                  <Select
+                    name="taskVerificationType"
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select verification type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {verificationTypes.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="daily">Period</Label>
-                    <Select name="daily">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select Period" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="daily">Daily</SelectItem>
-                        <SelectItem value="none">Not Daily</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Label htmlFor="xp">XP Value</Label>
+                    <Input name="xp" id="xp" type="number" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="expiresAt">Expiration Date</Label>
+                    <Input name="expiresAt" id="expiresAt" type="date" />
                   </div>
                 </div>
-                <div>
-                  <p style={{ color: "red" }}>{error}</p>
-                </div>
+                {error && <div className="text-red-500">{error}</div>}
                 <FormBtn>Save Task</FormBtn>
               </form>
             </CardContent>
@@ -267,26 +277,7 @@ export default function Add({
   );
 }
 
-function DeleteIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 5H9l-7 7 7 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z" />
-      <line x1="18" x2="12" y1="9" y2="15" />
-      <line x1="12" x2="18" y1="9" y2="15" />
-    </svg>
-  );
-}
+// Icon components (DeleteIcon, PlusIcon, StarIcon, TrashIcon) remain unchanged...
 
 function FilePenIcon(props: any) {
   return (

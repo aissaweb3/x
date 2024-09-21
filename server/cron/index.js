@@ -1,5 +1,6 @@
 const cron = require("node-cron")
+const validateAutoTasks = require("../utils/validateAutoTasks")
 
-cron.schedule('*/10 * * * *', () => {
+cron.schedule('* * * * *', () => {
     validateAutoTasks();
 });

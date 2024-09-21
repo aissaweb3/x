@@ -95,7 +95,7 @@ export default function Client({
           {nfts.map((nft) => (
             <Card key={nft.id} className="group relative overflow-hidden">
               <Image
-                src={`/images/uploads/${nft.img}`}
+                src={`/images/uploads/${nft.img}?t=${Date.now()}`}
                 alt={nft.name}
                 width={400}
                 height={400}
@@ -159,7 +159,7 @@ export default function Client({
                   </div>
                   <div className="flex overflow-hidden h-[20rem] justify-center">
                     <Image
-                      src={`/images/uploads/${nft.img}`}
+                      src={`/images/uploads/${nft.img}?t=${Date.now()}`}
                       alt={nft.name}
                       width={400}
                       height={400}
