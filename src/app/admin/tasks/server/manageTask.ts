@@ -1,7 +1,7 @@
 "use server";
 import db from "@/lib/db";
 import { Platform, TaskType, TaskVerificationType } from "@prisma/client";
-import { verify } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 
 type Data = {
   title: string;
@@ -10,7 +10,6 @@ type Data = {
   platform: Platform;
   taskType: TaskType;
   xp: number;
-  expiresAt: Date;
   token: string;
   daily: boolean;
   taskVerificationType: TaskVerificationType;
@@ -22,7 +21,6 @@ export const addTask = async (data: Data) => {
     platform,
     taskType,
     xp,
-    expiresAt,
     token,
     description,
     link,
@@ -35,7 +33,7 @@ export const addTask = async (data: Data) => {
   const decoded: any = verify(token, process.env.JWT_SECRET as string);
   const { id } = decoded;
   if (id !== process.env.ADMIN_ID)
-    return { success: false, error: "Only Admin Can Add Tasks" };
+    return { success: false, error: "Only Admin Can Add Tasks", taskToken: "" };
 
   // continue
   try {
@@ -44,7 +42,6 @@ export const addTask = async (data: Data) => {
         title,
         description,
         link,
-        expiresAt,
         platform,
         taskType,
         xp,
@@ -53,10 +50,12 @@ export const addTask = async (data: Data) => {
         channelId
       },
     });
-    return { success: created, error: "" };
+    let taskToken = ""
+    if (taskVerificationType === "JWT_CODE") taskToken = sign({ taskId: created.id, verification: true }, process.env.JWT_SECRET as string)
+    return { success: created, error: "", taskToken };
   } catch (error) {
     console.log(error);
-    return { success: false, error: "Server Error or Connection Issue !" };
+    return { success: false, error: "Server Error or Connection Issue !", taskToken: "" };
   }
 };
 

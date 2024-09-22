@@ -26,6 +26,7 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
     { name: "Roadmap", link: "/roadmap" },
     { name: "Airdrop", link: "/airdrop" },
     { name: "Contact Us", link: "/contact" },
+    { name: "My Privacy", link: "/privacy" },
   ];
   return (
     <>
@@ -74,7 +75,7 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
             <Logo />
           </div>
           <NavigationMenu>
-            <NavigationMenuList className="px-32">
+            <NavigationMenuList className="pr-32">
               {links.map((l, k) => (
                 <NavigationMenuLink
                   style={{
@@ -99,7 +100,7 @@ export default async function Header({ showGhosts }: { showGhosts: boolean }) {
         </div>
         <ManageSession token={token} id={id} />
         <ManageReferral token={token} id={id} />
-        <div className="absolute right-0 p-4">
+        <div className="absolute right-0 p-4" style={{ zIndex: 10 }} >
           <div className="container justify-center text-end items-center flex">
             <Ghosts showGhosts={showGhosts} />
             <SignIN id={id} />

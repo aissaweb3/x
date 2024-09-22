@@ -16,7 +16,7 @@ export default function Contact() {
     <div
       style={{
         fontFamily: "'CustomFont'",
-        backgroundImage: "url('/images/media/room (1).jpg')",backgroundSize: "cover", minHeight: "100vh",
+        backgroundImage: "url('/images/media/contact.png')",backgroundSize: "cover", minHeight: "100vh",
       }}
     >
       <div className="relative" style={{ zIndex: "2" }}>

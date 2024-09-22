@@ -17,14 +17,14 @@ interface AudioPlayerProps {
     play: boolean; // Prop to control audio play/pause
 }
 
-const AudioPlayer = ({ play, name }: {play: boolean, name: string}) => {
+const AudioPlayer = ({ play, loop, name }: {play: boolean, loop: boolean, name: string}) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     // Create and configure audio element
     const audio = document.createElement('audio');
     audio.autoplay = true;
-    audio.loop = true;
+    audio.loop = loop;
     audio.volume = Math.random() * 0.1;
     audioRef.current = audio;
 
@@ -41,7 +41,7 @@ const AudioPlayer = ({ play, name }: {play: boolean, name: string}) => {
         audioRef.current.remove();
       }
     };
-  }, [name]);
+  }, [name, loop]);
 
   useEffect(() => {
     if (audioRef.current) {

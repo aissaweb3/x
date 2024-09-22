@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Boo - Forbidden Forest",
@@ -21,6 +22,9 @@ export default function RootLayout({
         }}
       >
         <div className="overflow-hidden">{children}</div>
+        <div className="relative" style={{ zIndex: 3 }} >
+          <Footer />
+        </div>
       </body>
     </html>
   );

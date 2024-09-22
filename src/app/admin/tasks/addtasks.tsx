@@ -39,6 +39,7 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
   const [addingTask, setAddingTask] = useState(false);
   const latestTasks: Task[] = JSON.parse(tasks);
   const [error, setError] = useState("");
+  const [taskToken, setToken] = useState("");
   const [dTasks, setDTasks] = useState<Task[]>(latestTasks);
   
   const [selectedPlatform, setSelectedPlatform] = useState<Platform | "">("");
@@ -51,7 +52,6 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
     const platform = selectedPlatform as Platform;
     const taskType = selectedTaskType as TaskType;
     const xp = parseFloat(e.get("xp") as string);
-    const expiresAt = new Date(e.get("expiresAt") as string) || null;
     const channelId = e.get("channelId") as string;
     const taskVerificationType = e.get("taskVerificationType") as TaskVerificationType;
 
@@ -62,7 +62,6 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
       platform,
       taskType,
       xp,
-      expiresAt,
       token,
       daily: false,
       taskVerificationType,
@@ -75,6 +74,7 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
     // success
     setDTasks((prev) => [result.success as Task, ...prev.slice(0, 3)]);
     setAddingTask(false);
+    setToken(result.taskToken)
   };
 
   const handleDelete = async (taskId: string) => {
@@ -142,11 +142,6 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <div className="text-sm text-muted-foreground">
-                  {t.expiresAt
-                    ? "Expires: " + formatDateSimple(t.expiresAt)
-                    : "No Expiration Date"}
-                </div>
                 <div className="flex gap-2">
                   <Button variant="outline" size="icon" onClick={() => handleDisable(t.id)}>
                     {
@@ -261,10 +256,6 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
                     <Label htmlFor="xp">XP Value</Label>
                     <Input name="xp" id="xp" type="number" />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="expiresAt">Expiration Date</Label>
-                    <Input name="expiresAt" id="expiresAt" type="date" />
-                  </div>
                 </div>
                 {error && <div className="text-red-500">{error}</div>}
                 <FormBtn>Save Task</FormBtn>
@@ -272,6 +263,15 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
             </CardContent>
           </Card>
         </div>
+      </Modal>
+      <Modal isOpen={taskToken !== ""} onClose={()=>{setToken("")}} >
+        <Card>
+          <CardContent>
+            <div className="w-[400px]" >
+              <h2>{taskToken}</h2>
+            </div>
+          </CardContent>
+        </Card>
       </Modal>
     </section>
   );

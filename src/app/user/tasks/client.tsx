@@ -198,14 +198,6 @@ export default function Client({
                 <h3 className="text-lg font-semibold mb-2">{task.title}</h3>
               </div>
               <div className="flex items-center justify-between mb-4">
-                {task.expiresAt && (
-                  <div className="flex items-center gap-2">
-                    <CalendarIcon className="w-5 h-5 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">
-                      Expires on {formatDateSimple(task.expiresAt)}
-                    </span>
-                  </div>
-                )}
                 <div className="flex items-center gap-2">
                   <StarIcon className="w-5 h-5 text-[#ff0]" />
                   <span className="text-sm font-medium text-[#ff0]">

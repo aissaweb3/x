@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { LoadingWrapper } from "@/components/LoadingWrapper";
+import Image from "next/image";
 
 export function Client({
   tasksSTR,
@@ -42,7 +43,6 @@ export function Client({
       }
       className="flex flex-col gap-8 p-6 sm:p-10"
     >
-      <div style={{ height: "60vh" }}></div>
       <div
         style={{
           height: "40vh",
@@ -74,7 +74,10 @@ export function Client({
               className="text-6xl font-bold text-[#ff0]"
               style={{ fontFamily: "'CustomFont'" }}
             >
-              {referrals} <span className="text-3xl opacity-80">Referral{referrals !== 1 && 's'}</span>
+              {referrals}{" "}
+              <span className="text-3xl opacity-80">
+                Referral{referrals !== 1 && "s"}
+              </span>
             </div>
             <TrophyIcon className="h-8 w-8 text-white opacity-50" />
           </CardContent>
@@ -93,7 +96,7 @@ export function Client({
         <CardHeader>
           <div className="flex gap-4" style={{ alignItems: "center" }}>
             <CardTitle>Latest Tasks</CardTitle>
-            <LoadingWrapper className="" >
+            <LoadingWrapper className="">
               <Link href="/user/tasks">
                 <Button>See More</Button>
               </Link>

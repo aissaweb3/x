@@ -44,7 +44,6 @@ export default async function server() {
           <Header showGhosts />
         </div>
         <Client tasksSTR={JSON.stringify(tasksPro)} token={token} />
-        <Footer />
       </div>
     </>
   );

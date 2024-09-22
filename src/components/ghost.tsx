@@ -96,7 +96,7 @@ export default function RandomGhosts({ reverse, sound }: { reverse: boolean, sou
           />
           <div>
             {
-              sound ? <AudioPlayer play={sound} name="nothing" /> : null
+              sound ? <AudioPlayer loop play={sound} name="nothing" /> : null
             }
           </div>
           

@@ -32,7 +32,7 @@ export default async function NFT_page() {
     <div
       style={{
         backgroundSize: "cover",
-        backgroundImage: "url('/images/media/room (5).jpg')",
+        backgroundImage: "url('/images/media/nft.png')",
         minHeight: "100vh"
       }}
     >
@@ -40,7 +40,7 @@ export default async function NFT_page() {
         <Header showGhosts />
       </div>
       <Client NFTs={NFTsPro} xp={dbUser.xp} token={token} />
-      <Footer />
+      
     </div>
   );
 }

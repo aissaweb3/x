@@ -14,7 +14,6 @@ export default async function AdminDashboard() {
           HELLO ADMIN
         </h1>
       </div>
-      <GenerateToken adminToken={token} />
     </div>
   );
 }

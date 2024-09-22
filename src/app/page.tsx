@@ -35,7 +35,7 @@ export default async function Home() {
                 title="Video"
               ></iframe>
             </div>
-            <AudioPlayer play name="welcome" /> 
+            <AudioPlayer play loop={false} name="welcome" />
           </div>
           <Header showGhosts={false} />
           <JoinUs />
