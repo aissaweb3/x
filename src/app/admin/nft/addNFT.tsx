@@ -34,6 +34,7 @@ export default function Add({
     name: "",
     img: "",
     xp: 0,
+    url: ""
   });
 
   const handleUploadSuccess = (fileName: string) => {
@@ -50,13 +51,13 @@ export default function Add({
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { name, xp, img } = newNFT;
-    const result = await addNFT({ name, xp, img, token });
+    const { name, xp, img, url } = newNFT;
+    const result = await addNFT({ name, xp, img, token, url });
     if (!result.success) return alert(result.error);
     // success
     const { id } = result.success as NFT;
     setNfts((prev) => [...prev, { ...newNFT, userId, id }]);
-    setNewNFT({ name: "", img: "", xp: 0 });
+    setNewNFT({ name: "", img: "", xp: 0, url });
   };
 
   const handleDelete = async (e: FormData) => {
@@ -95,8 +96,19 @@ export default function Add({
                 name="xp"
                 value={newNFT.xp}
                 onChange={handleInputChange}
-                placeholder="Enter xp in XP"
+                placeholder="Enter price in XP"
                 min="0"
+              />
+            </div>
+            <div className="grid w-full items-center gap-1.5">
+              <Label htmlFor="url">NFT url</Label>
+              <Input
+                type="text"
+                id="url"
+                name="url"
+                value={newNFT.url}
+                onChange={handleInputChange}
+                placeholder="https://opensea.com/...."
               />
             </div>
             <FormBtn className="w-full">Add NFT</FormBtn>

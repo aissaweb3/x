@@ -17,7 +17,7 @@ export default async function getTokenOrBack({
   //
   if (id === process.env.ADMIN_ID && !admin)
     return redirect("/admin/dashboard");
-  if (admin && id !== process.env.ADMIN_ID) return redirect("/user/dashboard");
+  if (admin && id !== process.env.ADMIN_ID) return redirect("/api/auth/signin");
   //
   const token = sign({ id, provider }, process.env.JWT_SECRET as string);
   

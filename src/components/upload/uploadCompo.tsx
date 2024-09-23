@@ -21,15 +21,8 @@ export default function UploadCompo({
 
   return (
     <>
-      <div className="grid w-full items-center gap-1.5">
-        {currentImg ? "Image Uploaded" : "No Image Uploaded"}
-        <Image
-          src={`/images/uploads/${currentImg}?t=${Date.now()}`}
-          alt=""
-          width={200}
-          height={200}
-          className="w-full bg-[#ffffff47] border h-12 object-contain rounded-t-lg"
-        />
+      <div className="p-4 mt-2 bg-background grid w-full items-center gap-1.5">
+        {currentImg ? <p style={{ color: "#00ef09" }}>No Image Uploaded Successfully</p> : <p style={{ color: "#f72e36" }}>No Image Uploaded</p>}
         <Button
           type="button"
           onClick={() => {

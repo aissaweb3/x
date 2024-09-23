@@ -42,7 +42,7 @@ export default async function Dashboard() {
       </div>
 
       <div
-        className="relative grid overflow-hidden w-[100vw] justify-center text-center"
+        className="relative flex overflow-hidden w-[100vw] justify-center items-center"
         style={{ zIndex: "1", height: "80vh", margin: "-5rem 0", background: "#000" }}
       >
         <Image

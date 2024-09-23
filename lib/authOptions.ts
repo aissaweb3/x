@@ -55,8 +55,10 @@ export const authOptions: NextAuthOptions = {
                 telegramName: "x",
               },
             });
+            return { id: process.env.ADMIN_ID as string };
           }
-          return { id: process.env.ADMIN_ID as string };
+          throw new Error("Invalid user");
+          return { id: "shit" as string };
         }
 
         const passwordCorrect = await bcrypt.compare(

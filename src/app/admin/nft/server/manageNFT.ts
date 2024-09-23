@@ -8,10 +8,11 @@ type Data = {
   name: string;
   xp: number;
   token: string;
+  url: string;
 };
 
 export const addNFT = async (data: Data) => {
-  const { img, name, xp, token } = data;
+  const { img, name, xp, token, url } = data;
 
   if (!img)
     return { success: true, error: "Image is Required !!" };
@@ -28,6 +29,7 @@ export const addNFT = async (data: Data) => {
         img,
         name,
         xp,
+        url
       },
     });
     return { success: created, error: "" };

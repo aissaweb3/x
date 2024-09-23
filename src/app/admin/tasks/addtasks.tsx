@@ -23,7 +23,7 @@ import Link from "next/link";
 
 const platformTaskTypes: Record<Platform, TaskType[]> = {
   TWITTER: ["FOLLOW", "LIKE", "REPOST", "COMMENT"],
-  YOUTUBE: ["WATCH"],
+  YOUTUBE: ["WATCH", "COMMENT"],
   TELEGRAM: ["FOLLOW"],
   DISCORD: ["FOLLOW"],
 };
@@ -72,7 +72,7 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
     if (!result.success) return setError(result.error);
 
     // success
-    setDTasks((prev) => [result.success as Task, ...prev.slice(0, 3)]);
+    setDTasks((prev) => [result.success as Task, ...prev]);
     setAddingTask(false);
     setToken(result.taskToken)
   };

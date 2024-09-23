@@ -8,7 +8,7 @@ export default function Footer() {
           {[
             { name: "twitter", link: "https://x.com/BooForbidden" },
             { name: "discord", link: "https://discord.com/invite/F9bYZQeBbw" },
-            { name: "telegram", link: "https://t.me/forbiddenforestboo" },
+            { name: "telegram", link: "https://t.me/forbiddenforestgroup" },
             {
               name: "youtube",
               link: "https://youtube.com/@forbiddenforest-boo",

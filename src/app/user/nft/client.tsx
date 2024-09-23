@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import FormBtn from "@/components/simple/FormBtn";
 import buyNFT from "./server/buyNFT";
+import Link from "next/link";
 
 type NFTPro = NFT & { brought: boolean };
 
@@ -119,13 +120,22 @@ export default function Client({
                     Secrets
                   </p>
 
-                  <Button
-                    onClick={() => setBuying(nft)}
-                    //disabled={userXP < nft.xp}
+                  <a
+                    target="_blank"
+                    href={nft.url}
                     className="bg-primary hover:bg-primary-dark transition-colors duration-300"
                   >
                     {nft.brought ? "View My NFT" : "Buy NFT"}
-                  </Button>
+                  </a>
+                  {/*
+                    <Button
+                      onClick={() => setBuying(nft)}
+                      //disabled={userXP < nft.xp}
+                      className="bg-primary hover:bg-primary-dark transition-colors duration-300"
+                    >
+                      {nft.brought ? "View My NFT" : "Buy NFT"}
+                    </Button>
+                    */}
                 </div>
               </div>
             </Card>

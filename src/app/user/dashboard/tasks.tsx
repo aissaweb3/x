@@ -81,9 +81,6 @@ export default function Tasks({
                 </div>
               </div>
             </div>
-            <div className="text-muted-foreground">
-              {formatDateSimple(t.createdAt)}
-            </div>
           </div>
         ))}
       </div>
