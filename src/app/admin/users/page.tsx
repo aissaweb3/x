@@ -14,13 +14,15 @@ import { User } from "@prisma/client";
 import Link from "next/link";
 import getData from "./server/getData";
 import { Button } from "@/components/ui/button";
+import Top from "./top";
 
 export default async function Page({ searchParams }: { searchParams: any }) {
   let page = parseInt(searchParams.page, 10);
   page = !page || page < 1 ? 1 : page;
-  const perPage = 10;
-  const filter = searchParams.filter || "Latest";
-  const data = await getData(perPage, page, filter);
+  let perPage = parseInt(searchParams.perPage, 10);
+  perPage = !perPage || perPage < 1 ? 10 : perPage;
+  const sort = searchParams.sort || "Latest";
+  const data = await getData(perPage, page, sort);
 
   const totalPages = Math.ceil(data.itemCount / perPage);
 
@@ -36,16 +38,23 @@ export default async function Page({ searchParams }: { searchParams: any }) {
     }
   }
 
-  const filters = ["Latest", "XP", "Referrals", "Oldest"];
+  const sorts = ["Latest", "XP", "Referrals", "Oldest"];
 
   return (
     <div className="p-8">
       <div className="flex gap-4">
-        {filters.map((filter, key) => (
-          <Link href={`?page=${page}&filter=${filter}`} key={key}>
-            <Button>Sort by the {filter}</Button>
+        {sorts.map((sort, key) => (
+          <Link
+            href={`?page=${page}&perPage=${perPage}&sort=${sort}`}
+            key={key}
+          >
+            <Button>Sort by the {sort}</Button>
           </Link>
         ))}
+        <Top perPage={perPage} page={page} sort={sort} />
+      </div>
+      <div className="flex gap-4">
+        
       </div>
       <div className="container mx-auto mt-8">
         <Table>
@@ -66,9 +75,36 @@ export default async function Page({ searchParams }: { searchParams: any }) {
               .filter((u) => u.email !== "admin")
               .map((user) => (
                 <TableRow key={user.id}>
-                  <TableCell style={{ opacity: isConnected(user.discordName) === "Not Connected" ? 0.2 : 1 }} >{isConnected(user.discordName)}</TableCell>
-                  <TableCell style={{ opacity: isConnected(user.twitterName) === "Not Connected" ? 0.2 : 1 }} >{isConnected(user.twitterName)}</TableCell>
-                  <TableCell style={{ opacity: isConnected(user.telegramName) === "Not Connected" ? 0.2 : 1 }} >{isConnected(user.telegramName)}</TableCell>
+                  <TableCell
+                    style={{
+                      opacity:
+                        isConnected(user.discordName) === "Not Connected"
+                          ? 0.2
+                          : 1,
+                    }}
+                  >
+                    {isConnected(user.discordName)}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      opacity:
+                        isConnected(user.twitterName) === "Not Connected"
+                          ? 0.2
+                          : 1,
+                    }}
+                  >
+                    {isConnected(user.twitterName)}
+                  </TableCell>
+                  <TableCell
+                    style={{
+                      opacity:
+                        isConnected(user.telegramName) === "Not Connected"
+                          ? 0.2
+                          : 1,
+                    }}
+                  >
+                    {isConnected(user.telegramName)}
+                  </TableCell>
                   <TableCell>{user.email || "N/A"}</TableCell>
                   <TableCell>{user.xp}</TableCell>
                   <TableCell>{user.referrals}</TableCell>
@@ -88,7 +124,10 @@ export default async function Page({ searchParams }: { searchParams: any }) {
                   Previous
                 </div>
               ) : (
-                <Link href={`?page=${prevPage}&filter=${filter}`} aria-label="Previous Page">
+                <Link
+                  href={`?page=${prevPage}&perPage=${perPage}&sort=${sort}`}
+                  aria-label="Previous Page"
+                >
                   Previous
                 </Link>
               )}
@@ -101,7 +140,7 @@ export default async function Page({ searchParams }: { searchParams: any }) {
                       ? "bg-green-500 fw-bold px-2 rounded-md text-black"
                       : "hover:bg-green-500 px-1 rounded-md"
                   }
-                  href={`?page=${pageNumber}&filter=${filter}`}
+                  href={`?page=${pageNumber}&perPage=${perPage}&sort=${sort}`}
                 >
                   {pageNumber}
                 </Link>
@@ -112,7 +151,10 @@ export default async function Page({ searchParams }: { searchParams: any }) {
                   Next
                 </div>
               ) : (
-                <Link href={`?page=${nextPage}&filter=${filter}`} aria-label="Next Page">
+                <Link
+                  href={`?page=${nextPage}&perPage=${perPage}&sort=${sort}`}
+                  aria-label="Next Page"
+                >
                   Next
                 </Link>
               )}

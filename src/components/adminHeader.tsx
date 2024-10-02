@@ -10,6 +10,9 @@ export default async function adminHeader() {
       screenShot: { not: { equals: null } },
     },
   });
+  const tasks = await db.task.count();
+  const users = await db.user.count();
+  const nfts = await db.nFT.count();
 
-  return <AdminHeaderClient pendingCount={pendingCount} />;
+  return <AdminHeaderClient data={{tasks, users, nfts, pendingCount}} />;
 }

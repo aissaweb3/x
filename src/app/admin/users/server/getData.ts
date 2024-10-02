@@ -1,29 +1,29 @@
 import db from "@/lib/db";
 import { User } from "@prisma/client";
 
-export default async function getData(perPage: number, page: number, filter: string) {
+export default async function getData(perPage: number, page: number, sort: string) {
     try {
       // DB Query
       let items: User[] = [];
-      if (filter === "XP") {
+      if (sort === "XP") {
         items = await db.user.findMany({
           skip: perPage * (page - 1),
           take: perPage,
           orderBy: { xp: "desc" }
         });
-      } else if (filter === "Referrals") {
+      } else if (sort === "Referrals") {
         items = await db.user.findMany({
           skip: perPage * (page - 1),
           take: perPage,
           orderBy: { referrals: "desc" }
         });
-      } else if (filter === "Latest") {
+      } else if (sort === "Latest") {
         items = await db.user.findMany({
           skip: perPage * (page - 1),
           take: perPage,
           orderBy: { createdAt: "desc" }
         });
-      } else if (filter === "Oldest") {
+      } else if (sort === "Oldest") {
         items = await db.user.findMany({
           skip: perPage * (page - 1),
           take: perPage,

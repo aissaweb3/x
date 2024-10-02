@@ -11,15 +11,20 @@ import { signOut } from "next-auth/react";
 import { LoadingWrapper } from "./LoadingWrapper";
 
 export default function AdminHeaderClient({
-  pendingCount,
+  data,
 }: {
-  pendingCount: number;
+  data: { users: number; tasks: number; nfts: number; pendingCount: number };
 }) {
   const links = [
-    { name: "NFT", link: "/admin/nft" },
-    { name: "Tasks", link: "/admin/tasks" },
-    { name: "Users", link: "/admin/users" },
-    { name: "Dashboard", link: "/admin/dashboard" },
+    {
+      name: "Pending Tasks",
+      link: "/admin/tasks/pending",
+      count: data.pendingCount,
+    },
+    { name: "NFT", link: "/admin/nft", count: data.nfts },
+    { name: "Tasks", link: "/admin/tasks", count: data.tasks },
+    { name: "Users", link: "/admin/users", count: data.users },
+    { name: "Dashboard", link: "/admin/dashboard", count: -1 },
   ];
   return (
     <>
@@ -49,28 +54,24 @@ export default function AdminHeaderClient({
                   }}
                 >
                   {l.name}
+
+                  {l.count > -1 && (
+                    <span
+                      style={{
+                        background: l.count > 0 ? "#59a3fe" : "#5b5b5b",
+                        borderRadius: "100%",
+                        padding: "7px 10px",
+                        color: "black",
+                        fontFamily: "auto",
+                        margin: "0 8px",
+                      }}
+                    >
+                      {l.count}
+                    </span>
+                  )}
                 </Link>
               ))}
 
-              <Link
-                href="/admin/tasks/pending"
-                className="text-2xl px-4 font-medium hover:opacity-70 transition"
-                prefetch={false}
-              >
-                Pending Tasks
-                <span
-                  style={{
-                    background: pendingCount > 0 ? "#59a3fe" : "#5b5b5b",
-                    borderRadius: "100%",
-                    padding: "7px 10px",
-                    color: "black",
-                    fontFamily: "auto",
-                    margin: "0 8px",
-                  }}
-                >
-                  {pendingCount}
-                </span>
-              </Link>
               <Button
                 onClick={() => {
                   signOut();
@@ -89,27 +90,7 @@ export default function AdminHeaderClient({
                   fontFamily: "'CustomFont', sans-serif",
                 }}
                 asChild
-              >
-                <Link
-                  href="/admin/tasks/pending"
-                  className="text-2xl px-4 font-medium hover:opacity-70 transition"
-                  prefetch={false}
-                >
-                  Pending Tasks
-                  <span
-                    style={{
-                      background: pendingCount > 0 ? "#59a3fe" : "#5b5b5b",
-                      borderRadius: "100%",
-                      padding: "7px 10px",
-                      color: "black",
-                      fontFamily: "auto",
-                      margin: "0 8px",
-                    }}
-                  >
-                    {pendingCount}
-                  </span>
-                </Link>
-              </NavigationMenuLink>
+              ></NavigationMenuLink>
               {links.map((l, k) => (
                 <NavigationMenuLink
                   key={k}
@@ -124,6 +105,20 @@ export default function AdminHeaderClient({
                     prefetch={false}
                   >
                     {l.name}
+                    {l.count > -1 && (
+                      <span
+                        style={{
+                          background: l.count > 0 ? "#59a3fe" : "#5b5b5b",
+                          borderRadius: "100%",
+                          padding: "7px 10px",
+                          color: "black",
+                          fontFamily: "auto",
+                          margin: "0 8px",
+                        }}
+                      >
+                        {l.count}
+                      </span>
+                    )}
                   </Link>
                 </NavigationMenuLink>
               ))}

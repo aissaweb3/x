@@ -253,12 +253,12 @@ export default function Client({
             <div className="pt-16">
               {completeTask?.taskVerificationType === "JWT_CODE" ? (
                 <div>
-                  <Label htmlFor="JWT_CODE">Enter the KEY here :</Label>
+                  <Label htmlFor="JWT_CODE">Enter the Secret Word here :</Label>
                   <Input
                     type="text"
                     name="JWT_CODE"
                     id="JWT_CODE"
-                    placeholder="eyJ..."
+                    placeholder="Secret Word"
                     required
                   />
                 </div>
@@ -327,13 +327,13 @@ export default function Client({
             <div className="pt-16">
               {completeTask?.taskVerificationType === "JWT_CODE" ? (
                 <div>
-                  <Label htmlFor="JWT_CODE">Enter the KEY here :</Label>
+                  <Label htmlFor="JWT_CODE">Enter the Secret Word here :</Label>
                   <Input
                     type="text"
                     id="JWT_CODE"
                     value={JWT_CODE}
                     onChange={(e)=>{setJWT_CODE(e.target.value)}}
-                    placeholder="eyJ..."
+                    placeholder="Secret Word"
                     required
                   />
                 </div>

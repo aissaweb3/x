@@ -50,9 +50,7 @@ export const addTask = async (data: Data) => {
         channelId
       },
     });
-    let taskToken = ""
-    if (taskVerificationType === "JWT_CODE") taskToken = sign({ taskId: created.id, verification: true }, process.env.JWT_SECRET as string)
-    return { success: created, error: "", taskToken };
+    return { success: created, error: "" };
   } catch (error) {
     console.log(error);
     return { success: false, error: "Server Error or Connection Issue !", taskToken: "" };

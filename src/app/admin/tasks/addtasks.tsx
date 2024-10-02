@@ -28,6 +28,16 @@ const platformTaskTypes: Record<Platform, TaskType[]> = {
   DISCORD: ["FOLLOW"],
 };
 
+const translate = (value: TaskVerificationType) => {
+  return value === "AUTO_API"
+    ? "automatic"
+    : value === "JWT_CODE"
+    ? "Secret Word"
+    : value === "LINK_PROOF"
+    ? "Link"
+    : "Screen Shot";
+};
+
 const verificationTypes: TaskVerificationType[] = [
   "AUTO_API",
   "SCREEN_SHOT",
@@ -35,15 +45,23 @@ const verificationTypes: TaskVerificationType[] = [
   "LINK_PROOF",
 ];
 
-export default function Add({ token, tasks }: { token: string; tasks: string }) {
+export default function Add({
+  token,
+  tasks,
+}: {
+  token: string;
+  tasks: string;
+}) {
   const [addingTask, setAddingTask] = useState(false);
   const latestTasks: Task[] = JSON.parse(tasks);
   const [error, setError] = useState("");
-  const [taskToken, setToken] = useState("");
   const [dTasks, setDTasks] = useState<Task[]>(latestTasks);
-  
+
   const [selectedPlatform, setSelectedPlatform] = useState<Platform | "">("");
   const [selectedTaskType, setSelectedTaskType] = useState<TaskType | "">("");
+  const [selectedVerificationType, setSelectedVerificationType] = useState<
+    TaskVerificationType | ""
+  >("");
 
   const addTaskAction = async (e: FormData) => {
     const title = e.get("title") as string;
@@ -53,7 +71,9 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
     const taskType = selectedTaskType as TaskType;
     const xp = parseFloat(e.get("xp") as string);
     const channelId = e.get("channelId") as string;
-    const taskVerificationType = e.get("taskVerificationType") as TaskVerificationType;
+    const taskVerificationType = e.get(
+      "taskVerificationType"
+    ) as TaskVerificationType;
 
     const payload = {
       title,
@@ -74,13 +94,12 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
     // success
     setDTasks((prev) => [result.success as Task, ...prev]);
     setAddingTask(false);
-    setToken(result.taskToken)
   };
 
   const handleDelete = async (taskId: string) => {
     const result = await deleteTask({ token, taskId });
     if (!result.success) return setError(result.error);
-    
+
     setDTasks((prev) => prev.filter((t) => t.id !== taskId));
   };
 
@@ -88,10 +107,12 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
     const newState = !(dTasks.find((t) => t.id === taskId) as Task).active;
     const result = await toggleStateTask({ token, taskId, newState });
     if (!result.success) return setError(result.error);
-    
-    setDTasks((tasks) => tasks.map((task) => 
-      task.id === taskId ? { ...task, active: !task.active } : task
-    ));
+
+    setDTasks((tasks) =>
+      tasks.map((task) =>
+        task.id === taskId ? { ...task, active: !task.active } : task
+      )
+    );
   };
 
   const handlePlatformChange = (value: string) => {
@@ -143,12 +164,20 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex gap-2">
-                  <Button variant="outline" size="icon" onClick={() => handleDisable(t.id)}>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleDisable(t.id)}
+                  >
                     {
                       //<DeleteIcon className="h-4 w-4" />
                     }
                   </Button>
-                  <Button variant="outline" size="icon" onClick={() => handleDelete(t.id)}>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => handleDelete(t.id)}
+                  >
                     <TrashIcon className="h-4 w-4" />
                   </Button>
                 </div>
@@ -182,7 +211,10 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="platform">Platform</Label>
-                    <Select name="platform" onValueChange={handlePlatformChange}>
+                    <Select
+                      name="platform"
+                      onValueChange={handlePlatformChange}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select platform" />
                       </SelectTrigger>
@@ -199,7 +231,9 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
                     <Label htmlFor="taskType">Task Type</Label>
                     <Select
                       name="taskType"
-                      onValueChange={(e)=>{setSelectedTaskType(e as TaskType)}}
+                      onValueChange={(e) => {
+                        setSelectedTaskType(e as TaskType);
+                      }}
                       value={selectedTaskType}
                     >
                       <SelectTrigger>
@@ -220,8 +254,15 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
                 {/* Conditional Input for Telegram Channel */}
                 {selectedPlatform === "TELEGRAM" && (
                   <div className="space-y-2">
-                    <Label htmlFor="channelId">Telegram Channel Id (@...)</Label>
-                    <Input name="channelId" id="channelId" type="text" placeholder="@123456798" />
+                    <Label htmlFor="channelId">
+                      Telegram Channel Id (@...)
+                    </Label>
+                    <Input
+                      name="channelId"
+                      id="channelId"
+                      type="text"
+                      placeholder="@123456798"
+                    />
                   </div>
                 )}
 
@@ -233,10 +274,29 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
                   </div>
                 )}
 
+                {selectedVerificationType === "JWT_CODE" && (
+                  <div className="space-y-2">
+                    <Label htmlFor="channelId">Secret Word</Label>
+                    <Input
+                      name="channelId"
+                      id="channelId"
+                      type="text"
+                      placeholder="Enter secret word"
+                    />
+                  </div>
+                )}
+
                 <div className="space-y-2">
-                  <Label htmlFor="taskVerificationType">Verification Type</Label>
+                  <Label htmlFor="taskVerificationType">
+                    Verification Type
+                  </Label>
                   <Select
                     name="taskVerificationType"
+                    onValueChange={(value) => {
+                      setSelectedVerificationType(
+                        value as TaskVerificationType
+                      );
+                    }}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select verification type" />
@@ -244,7 +304,7 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
                     <SelectContent>
                       {verificationTypes.map((type) => (
                         <SelectItem key={type} value={type}>
-                          {type}
+                          {translate(type)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -263,15 +323,6 @@ export default function Add({ token, tasks }: { token: string; tasks: string }) 
             </CardContent>
           </Card>
         </div>
-      </Modal>
-      <Modal isOpen={taskToken !== ""} onClose={()=>{setToken("")}} >
-        <Card>
-          <CardContent>
-            <div className="w-[400px]" >
-              <h2>{taskToken}</h2>
-            </div>
-          </CardContent>
-        </Card>
       </Modal>
     </section>
   );

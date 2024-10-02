@@ -22,19 +22,7 @@ export const completeTaskServer = async (data: Data) => {
   if (!task) return { success: false, error: "Task Doesn't exist !" };
 
   if (task.taskVerificationType === "JWT_CODE") {
-    console.log(JWT_CODE);
-    
-    if (!JWT_CODE)
-      return { success: false, error: "KEY is Required!" };
-
-    let decodedCode: any = null;
-    try {
-       decodedCode = verify(JWT_CODE, process.env.JWT_SECRET as string) as any;
-    }catch{
-      return { success: false, error: "KEY not valid" }
-      }
-    const { verification, taskId: decodedTaskId } = decodedCode;
-    if (verification === true && taskId === decodedTaskId) {
+    if (JWT_CODE === task.channelId) {
       const alreadydid = await db.taskStatus.findFirst({
         where: { userId: id, taskId },
       });
@@ -72,7 +60,7 @@ export const completeTaskServer = async (data: Data) => {
       });
       return { success: true, error: "" };
     } else {
-      return { success: false, error: "KEY is not Valid or Expired !!" };
+      return { success: false, error: "Secret Word is not Valid !!" };
     }
   }
 
