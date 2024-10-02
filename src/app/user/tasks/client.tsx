@@ -104,12 +104,14 @@ export default function Client({
             >
               All
             </Button>
-            <Button
+        {/*
+	    <Button
               variant={filter === "daily" ? "default" : "outline"}
               onClick={() => setFilter("daily")}
             >
               Daily
             </Button>
+		*/}
             <Button
               variant={filter === "pending" ? "default" : "outline"}
               onClick={() => setFilter("pending")}

@@ -26,8 +26,13 @@ export const completeTaskServer = async (data: Data) => {
     
     if (!JWT_CODE)
       return { success: false, error: "KEY is Required!" };
-    const decodedCode: any = verify(JWT_CODE, process.env.JWT_SECRET as string);
 
+    let decodedCode: any = null;
+    try {
+       decodedCode = verify(JWT_CODE, process.env.JWT_SECRET as string) as any;
+    }catch{
+      return { success: false, error: "KEY not valid" }
+      }
     const { verification, taskId: decodedTaskId } = decodedCode;
     if (verification === true && taskId === decodedTaskId) {
       const alreadydid = await db.taskStatus.findFirst({
