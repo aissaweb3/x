@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+const prisma = new PrismaClient().$extends(withAccelerate());
 
 const cancelTask = async (userId, taskId) => {
   await prisma.taskStatus.deleteMany({ where: { userId, taskId } });

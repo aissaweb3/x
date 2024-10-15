@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const confirmTask = require("../confirmTask/general");
-const prisma = new PrismaClient();
+const prisma = new PrismaClient().$extends(withAccelerate());
 
 const validateAutoTasks = async () => {
   console.log("confirming pending tasks...");

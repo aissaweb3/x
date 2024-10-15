@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const { verify } = require("jsonwebtoken");
-const prisma = new PrismaClient();
+const prisma = new PrismaClient().$extends(withAccelerate());
 
 const mergeUsers = async (newUserToken, oldUserToken, SECRET) => {
   try {

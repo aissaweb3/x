@@ -4,7 +4,7 @@ import getTokenOrBack from "@/utils/server/getTokenOrBack";
 import Client from "./client";
 import { NFT, PrismaClient } from "@prisma/client";
 import db from "@/lib/db";
-const prisma = new PrismaClient();
+const prisma = new PrismaClient().$extends(withAccelerate());
 
 type NFTPro = NFT & { brought: boolean };
 
