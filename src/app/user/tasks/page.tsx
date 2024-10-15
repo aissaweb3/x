@@ -38,6 +38,7 @@ export default async function server() {
         style={{
           backgroundSize: "cover",
           backgroundImage: "url('/images/media/room (7).jpg')",
+		minHeight: "100vh",
         }}
       >
         <div className="relative" style={{ zIndex: "2" }}>
